@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Jump : MonoBehaviour
 {
     [SerializeField] private float jumpStrength = 100;
@@ -11,7 +12,7 @@ public class Jump : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody>();
     }
-
+    
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.Space))
