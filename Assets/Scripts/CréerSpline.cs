@@ -20,41 +20,38 @@ public class CréerSpline : MonoBehaviour
     private void Awake()
     {
         pointsSpline = new[] {new Vector2(0, 0), new(20, UnityEngine.Random.Range(21,25)), new(35, UnityEngine.Random.Range(13,20))};
-        
-        double premierX = pointsSpline[0].x;
-        double deuxiemeX = pointsSpline[1].x;
-        double troisiemeX = pointsSpline[2].x;
 
-        double premierY = pointsSpline[0].y;
-        double deuxiemeY = pointsSpline[1].y;
-        double troisiemeY = pointsSpline[2].y;
+        Vector<double> b = CréerMatriceB(pointsSpline[0].y, pointsSpline[1].y, pointsSpline[2].y);
+        Matrix<double> A = CréerMatriceA(pointsSpline[0].x, pointsSpline[1].x, pointsSpline[2].x);
         
-        Vector<double> b =  Vector<double>.Build.Dense(new[] { premierY, deuxiemeY, deuxiemeY, troisiemeY, 0, 0, 0, 0});
-        
-        Matrix<double> A = Matrix<double>.Build.DenseOfArray(new[,] {
-            
-            { Math.Pow(premierX, 3), Math.Pow(premierX, 2), premierX, 1, 0, 0, 0, 0 },
-            
-            { Math.Pow(deuxiemeX, 3), Math.Pow(deuxiemeX, 2), deuxiemeX, 1, 0, 0, 0, 0 },
-            
-            { 0, 0, 0, 0, Math.Pow(deuxiemeX, 3), Math.Pow(deuxiemeX, 2), deuxiemeX, 1,},
-            
-            { 0, 0, 0, 0, Math.Pow(troisiemeX, 3), Math.Pow(troisiemeX, 2), troisiemeX, 1 },
-            
-            { Math.Pow(deuxiemeX,2)*3f, deuxiemeX*2f, 1, 0, -Math.Pow(deuxiemeX,2)*3f, -(deuxiemeX*2f), -1, 0},
-            
-            { deuxiemeX*6f, 2, 0, 0, -deuxiemeX*6f, -2, 0, 0},
-            
-            { premierX*6f, 2, 0, 0, 0, 0, 0, 0}, 
-            
-            { 0, 0, 0, 0, troisiemeX*6f, 2, 0, 0} 
-        });
         coefficients = A.Solve(b);
 
         for (float i = 0; i <= pointsSpline[2].x; i += 0.5f)
         {
             points.Add(CréerPointSpline(i));
         }
+    }
+    private Vector<double> CréerMatriceB(double y1, double y2, double y3) => Vector<double>.Build.Dense(new[] {y1, y2, y2, y3, 0, 0, 0, 0});
+    private Matrix<double> CréerMatriceA(double x1, double x2, double x3)
+    {
+        return Matrix<double>.Build.DenseOfArray(new[,] {
+            
+            { Math.Pow(x1, 3), Math.Pow(x1, 2), x1, 1, 0, 0, 0, 0 },
+            
+            { Math.Pow(x2, 3), Math.Pow(x2, 2), x2, 1, 0, 0, 0, 0 },
+            
+            { 0, 0, 0, 0, Math.Pow(x2, 3), Math.Pow(x2, 2), x2, 1,},
+            
+            { 0, 0, 0, 0, Math.Pow(x3, 3), Math.Pow(x3, 2), x3, 1 },
+            
+            { Math.Pow(x2,2)*3f, x2*2f, 1, 0, -Math.Pow(x2,2)*3f, -(x2*2f), -1, 0},
+            
+            { x2*6f, 2, 0, 0, -x2*6f, -2, 0, 0},
+            
+            { x1*6f, 2, 0, 0, 0, 0, 0, 0}, 
+            
+            { 0, 0, 0, 0, x3*6f, 2, 0, 0} 
+        });
     }
     private void Start()
     {
@@ -71,7 +68,7 @@ public class CréerSpline : MonoBehaviour
     {
         if (current < points.Count)
         {
-            transform.localPosition = Vector3.MoveTowards(transform.localPosition, points[current], Time.deltaTime * 15);
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, points[current], Time.deltaTime * 20);
             
             if (transform.localPosition == points[current])
             {

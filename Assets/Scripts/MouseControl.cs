@@ -13,11 +13,10 @@ public class MouseControl : MonoBehaviour
 
     void Update()
     {
-        
         Cursor.lockState = CursorLockMode.Confined;
         x += speed * Input.GetAxis("Mouse X");
         y -= speed * Input.GetAxis("Mouse Y");
 
-        transform.eulerAngles = new Vector3(y, x, 0f);
+        transform.eulerAngles = new Vector3(0, x, 0f);
     }
 }
