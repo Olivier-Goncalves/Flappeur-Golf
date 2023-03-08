@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
+// Fait par: Guillaume Flamand
 public class Collision : MonoBehaviour
 {
     [SerializeField] private Vector3 respawn;

@@ -6,7 +6,7 @@ using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using UnityEngine;
 using Matrix = MathNet.Numerics.LinearAlgebra.Complex.Matrix;
-
+// Fait par: Guillaume Flamand
 public class CréerSpline : MonoBehaviour
 {
     private Time horloge;

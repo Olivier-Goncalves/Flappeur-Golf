@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+// Fait par: Louis-Félix Clément
 public class ParametreJoueur : MonoBehaviour
 {
     void Update()

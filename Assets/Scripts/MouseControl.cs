@@ -6,7 +6,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-// source: https://www.youtube.com/watch?v=vpn8CbPpvlU
+
+// Fait par: Guillaume Flamand & Louis-Félix Bouvrette
+
 public class MouseControl : MonoBehaviour
 {
     [SerializeField] private float sensitivité = 1;
@@ -25,14 +27,13 @@ public class MouseControl : MonoBehaviour
     
     void Update()
     {
-        
         Cursor.lockState = CursorLockMode.Confined;
         x += sensitivité * Input.GetAxis("Mouse X");
         y -= sensitivité * Input.GetAxis("Mouse Y");
         transform.eulerAngles =  new Vector3(y, x, 0f);
         AjusterPositionCamera();
     }
-
+    // source: https://www.youtube.com/watch?v=vpn8CbPpvlU
     public void AjusterPositionCamera()
     {
         Vector3 positionCameraVoulu = transform.TransformPoint(directionCamera * distanceCameraMinMax.y);

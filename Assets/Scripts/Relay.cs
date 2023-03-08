@@ -13,7 +13,7 @@ using Unity.Services.Relay.Models;
 using Unity.VisualScripting;
 using UnityEngine.UI;
 
-
+// Fait par: Olivier Gonçalves
 public class Relay : MonoBehaviour
 {
     [SerializeField] private int QuantitéJoueurs;
@@ -39,7 +39,6 @@ public class Relay : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
     }
 
-    // Start is called before the first frame update
     private async void Start()
     {
         await UnityServices.InitializeAsync();

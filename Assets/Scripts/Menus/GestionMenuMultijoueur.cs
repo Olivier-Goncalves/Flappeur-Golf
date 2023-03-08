@@ -7,6 +7,7 @@ using Unity.Netcode;
 using Unity.Collections;
 using Unity.Services.Authentication;
 
+// Fait par: Louis-Félix Clément
 public class GestionMenuMultijoueur : NetworkBehaviour
 {
     [SerializeField] private Button boutonRetour;
@@ -21,13 +22,8 @@ public class GestionMenuMultijoueur : NetworkBehaviour
         SceneManager.LoadScene("MenuAccueil");
         if (IsHost)
         {
-            Debug.Log("Je suis le host et je ferme la session");
             NetworkManager.Singleton.Shutdown();
-            
         }
-
         Cursor.visible = true;
-
-
     }
 }
