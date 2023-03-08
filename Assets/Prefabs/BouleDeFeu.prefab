@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7086683488560130316}
   - component: {fileID: 1637515842978486859}
   - component: {fileID: 8317764384718821715}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BouleDeFeu
   m_TagString: Untagged
   m_Icon: {fileID: 0}

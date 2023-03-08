@@ -9,6 +9,7 @@ using Matrix = MathNet.Numerics.LinearAlgebra.Complex.Matrix;
 
 public class CréerSpline : MonoBehaviour
 {
+    private Time horloge;
     private Vector2[] pointsSpline; 
     private List<Vector3> points = new();
 
@@ -56,6 +57,7 @@ public class CréerSpline : MonoBehaviour
     private void Start()
     {
         transform.localPosition = points[current];
+        
     }
 
     private Vector3 CréerPointSpline(float x)
@@ -66,22 +68,25 @@ public class CréerSpline : MonoBehaviour
 
     private void Update()
     {
-        if (current < points.Count)
         {
-            transform.localPosition = Vector3.MoveTowards(transform.localPosition, points[current], Time.deltaTime * 20);
-            
-            if (transform.localPosition == points[current])
+            if (current < points.Count)
             {
-                current = inversé ? current - 1 : current + 1;
+                transform.localPosition = Vector3.MoveTowards(transform.localPosition, points[current], Time.deltaTime * 200);
+                
+                if (transform.localPosition == points[current])
+                {
+                    current = inversé ? current - 1 : current + 1;
+                }
+            }
+            if (current == 0 && inversé)
+            {
+                inversé = false;
+            }
+            if (current == points.Count - 1)
+            {
+                inversé = true;
             }
         }
-        if (current == 0 && inversé)
-        {
-            inversé = false;
-        }
-        if (current == points.Count - 1)
-        {
-            inversé = true;
-        }
+        
     }
 }

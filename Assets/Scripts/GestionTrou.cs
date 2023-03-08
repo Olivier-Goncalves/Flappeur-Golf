@@ -33,7 +33,6 @@ public class GestionTrou : MonoBehaviour
     }
     private void clickBoutonProchainNiveau()
     {
-        SceneManager.LoadScene("Solo");
         SceneManager.LoadScene("Trou1");
     }
     private void OnCollisionEnter(UnityEngine.Collision collision)

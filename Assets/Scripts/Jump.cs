@@ -2,20 +2,25 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+
 [RequireComponent(typeof(Rigidbody))]
 public class Jump : MonoBehaviour
 {
     [SerializeField] private Material green;
     [SerializeField] private float jumpStrength = 100;
+    [SerializeField] TMP_Text text;
     private Rigidbody _rigidbody;
-
+    public int nbSauts = 0;
     private bool isOnGreen = false;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        
     }
 
     void Update()
@@ -25,12 +30,15 @@ public class Jump : MonoBehaviour
         {
             _rigidbody.velocity = velocity / 1.5f - new Vector3(0, 0, velocity.z / 2);
             _rigidbody.AddRelativeForce(new Vector3(0, 0, jumpStrength * 12));
+            nbSauts++;
         }
         else if (JoueurSaute())
         {
             _rigidbody.velocity = velocity / 1.5f - new Vector3(0, velocity.y / 2, 0);
             _rigidbody.AddRelativeForce(new Vector3(0, jumpStrength * 10, jumpStrength * 12));
+            nbSauts++;
         }
+            text.text = nbSauts.ToString();
     }
 
     private bool JoueurSaute() => Input.GetMouseButtonDown(0) || Input.GetKeyUp(KeyCode.Space);

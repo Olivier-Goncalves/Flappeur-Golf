@@ -16,6 +16,7 @@ public class MouseControl : MonoBehaviour
     private Vector3 directionCamera;
     private float x;
     private float y;
+    private float coussin = 0.2f;
     private void Start()
     {
         directionCamera = camera.transform.localPosition.normalized;
@@ -38,11 +39,11 @@ public class MouseControl : MonoBehaviour
         RaycastHit hit;
         if (Physics.Linecast(transform.position, positionCameraVoulu, out hit))
         {
-            camDistance = Mathf.Clamp(hit.distance - 0.1f, distanceCameraMinMax.x + 0.2f, distanceCameraMinMax.y);
+            camDistance = Mathf.Clamp(hit.distance - coussin, distanceCameraMinMax.x , distanceCameraMinMax.y);
         }
         else
         {
-            camDistance = distanceCameraMinMax.y + 0.2f;
+            camDistance = distanceCameraMinMax.y;
         }
 
         camera.localPosition = directionCamera * camDistance;
