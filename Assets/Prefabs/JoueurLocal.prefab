@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2063829884306766764}
   - component: {fileID: 1067180142532708433}
   - component: {fileID: 5082456881658228029}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6332569620912541401}
   - component: {fileID: 6008230804061366533}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 5841365167247044646}
   - component: {fileID: 5841365167247044641}
   - component: {fileID: 8210420565269839010}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: JoueurLocal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -415,7 +415,7 @@ GameObject:
   - component: {fileID: 5841365167851888701}
   - component: {fileID: 5841365167851889602}
   - component: {fileID: 5841365167851889603}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CameraJoueur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 1145019118130981782}
   - component: {fileID: 313938058059704165}
   - component: {fileID: 3461608710537392516}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Saut Texte
   m_TagString: Untagged
   m_Icon: {fileID: 0}

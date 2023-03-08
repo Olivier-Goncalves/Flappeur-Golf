@@ -37,6 +37,7 @@ public class GestionTrou : MonoBehaviour
     }
     private void OnCollisionEnter(UnityEngine.Collision collision)
     {
+        if(collision.gameObject.layer==10){
         Debug.Log("Trou Atteint");
         textFélicitation.enabled = true;
         canvas.enabled = true;
@@ -46,6 +47,7 @@ public class GestionTrou : MonoBehaviour
         
         collision.gameObject.GetComponentInChildren<Camera>().enabled = false;
         camera.GetComponent<Camera>().enabled = true;
+        }
     }
     
     
