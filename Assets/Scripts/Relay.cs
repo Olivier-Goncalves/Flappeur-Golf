@@ -27,7 +27,6 @@ public class Relay : MonoBehaviour
     private void Awake()
     {
         btnCréerRelais.onClick.AddListener(CreateRelay);
-        Debug.Log(inputJoinCode.text);
         btnJoindreRelais.onClick.AddListener(JoinRelay);
         canvasRelayUI = GetComponentInChildren<Canvas>();
         canvasJoinCodeUI.enabled = false;
@@ -61,8 +60,6 @@ public class Relay : MonoBehaviour
             string joinCode =  await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
             textJoinCode.text = "Join Code: " + joinCode;
             canvasJoinCodeUI.enabled = true;
-            
-            Debug.Log("Join Code: " + joinCode);
             
             RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
             
