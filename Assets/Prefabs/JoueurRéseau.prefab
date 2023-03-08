@@ -149,7 +149,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915ad09c914e398408b2a3dc8df4ada7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  "sensitivit\xE9": 1
+  camera: {fileID: 1818135770144367072}
 --- !u!114 &1494186610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -382,7 +383,7 @@ GameObject:
   - component: {fileID: 5724856644029710546}
   - component: {fileID: 1096781491347586289}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: Camera Joueur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -426,7 +427,7 @@ Camera:
     y: 0
     width: 1
     height: 1.38
-  near clip plane: 4
+  near clip plane: 0.01
   far clip plane: 999.68
   field of view: 34.189877
   orthographic: 0

@@ -215,7 +215,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 50237233}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.31295, y: 0.126, z: 34}
+  m_LocalPosition: {x: 10, y: 0.126, z: 122.5}
   m_LocalScale: {x: 1, y: 0.06492108, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1475,6 +1475,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 822404869602245110, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: fd80e5d341fb59344a3c01b04e608e22, type: 2}
     - target: {fileID: 5841365167247044647, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -1485,7 +1489,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5841365167247044647, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 11.12
+      value: 4.68
       objectReference: {fileID: 0}
     - target: {fileID: 5841365167247044647, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1523,5 +1527,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: JoueurLocal
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 5841365167851888701, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: near clip plane
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841365167851889600, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.087
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841365167851889600, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.711
+      objectReference: {fileID: 0}
+    - target: {fileID: 6705420046706828685, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: m_Mass
+      value: 0.0000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 6705420046706828685, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6705420046706828685, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
