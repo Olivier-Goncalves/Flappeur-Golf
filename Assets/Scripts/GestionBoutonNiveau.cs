@@ -14,6 +14,6 @@ public class GestionBoutonNiveau : MonoBehaviour
 
     private void GenererScene(int index)
     {
-        SceneManager.LoadScene($"Trou{index.ToString()}");
+        SceneManager.LoadScene($"Trou{index}");
     }
 }
