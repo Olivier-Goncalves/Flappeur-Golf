@@ -9,7 +9,7 @@ public class Laser : MonoBehaviour
     private int compteur ;
     private LineRenderer laser;
 
-    [FormerlySerializedAs("_offSet")] [SerializeField]
+    [FormerlySerializedAs("offSet")] [SerializeField]
     private Vector3 Vecteur;
 
     private void Start()
