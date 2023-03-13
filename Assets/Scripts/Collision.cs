@@ -8,18 +8,104 @@ using UnityEngine;
 // Fait par: Guillaume Flamand
 public class Collision : MonoBehaviour
 {
+    private static int StickyZoneLayer = 6;
+
+    private static int AcidZoneLayer = 7;
+
+    private static int TrouLayer = 8;
+
+    private bool isDissolving = false;
+    private bool isSolving = false;
+
+    private float alpha = -1.1f;
+
+    private Material material;
+
+    private Jump jumpComponent;
+
     [SerializeField] private Vector3 respawn;
+    
+    private void Awake()
+    {
+        material = GetComponent<Renderer>().material;
+        jumpComponent = GetComponent<Jump>();
+    }
+    
     private const int layerBouleDeFeu = 9;
+    
+    void Update()
+    {
+        if (isDissolving)
+        {
+            alpha += Time.deltaTime;
+            material.SetFloat("_Alpha", alpha);
+            if (alpha >= 1f)
+            {
+                isDissolving = false;
+                Ressusciter();
+            }
+        }
+
+        if (isSolving)
+        {
+            material.SetColor("_DissolveColor", material.GetColor("_Color"));
+
+            alpha -= Time.deltaTime;
+            material.SetFloat("_Alpha", alpha);
+            if (alpha <= -1.1f)
+            {
+                isSolving = false;
+                alpha = -1.1f;
+                material.SetFloat("_Alpha", alpha);
+            }
+        }
+    }
     private void OnCollisionEnter(UnityEngine.Collision collision)
     {
-        if (collision.collider.gameObject.layer == layerBouleDeFeu)
+        int collidedLayer = collision.contacts[0].otherCollider.gameObject.layer;
+
+        if (collidedLayer == StickyZoneLayer)
         {
-            Ressusciter();
+            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
         }
+        else if (collidedLayer == AcidZoneLayer)
+        {
+            material.SetColor("_DissolveColor", material.GetColor("_AcidDissolveColor"));
+            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
+            isDissolving = true;
+            jumpComponent.enabled = false;
+
+        }
+        else if (collidedLayer == TrouLayer)
+        {
+            material.SetColor("_DissolveColor", Color.red);
+            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
+            isDissolving = true;
+            jumpComponent.enabled = false;
+            
+        }
+        else if (collidedLayer == layerBouleDeFeu)
+        {
+            material.SetColor("_DissolveColor", material.GetColor("_FireDissolveColor"));
+            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
+            isDissolving = true;
+            jumpComponent.enabled = false;
+        }
+    }
+    private void OnCollisionExit(UnityEngine.Collision other)
+    {
+        transform.gameObject.GetComponent<Rigidbody>().useGravity = true;
     }
 
     private void Ressusciter()
     {
-        gameObject.transform.position = respawn;
+        transform.position = respawn;
+        transform.rotation = Quaternion.Euler(0, -90, 0);
+        isSolving = true;
+        jumpComponent.enabled = true;
     }
 }
