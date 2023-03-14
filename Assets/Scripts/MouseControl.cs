@@ -23,6 +23,7 @@ public class MouseControl : MonoBehaviour
     {
         directionCamera = camera.transform.localPosition.normalized;
         camDistance = distanceCameraMinMax.y;
+        y = -30;
     }
     
     void Update()

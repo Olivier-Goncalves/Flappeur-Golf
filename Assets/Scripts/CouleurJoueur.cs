@@ -3,14 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
-// Fait par: Louis-Félix Bouvrette
+// Fait par: Louis-FÃ©lix Bouvrette
 public class CouleurJoueur : NetworkBehaviour
 {
     private Material material;
     private Color[] colors = new[]
     {
-        Color.blue, Color.black, Color.red, Color.green, Color.cyan, Color.magenta, Color.yellow, Color.gray,
-        Color.white
+        Color.blue, Color.red, Color.green, Color.cyan, Color.magenta, Color.yellow, Color.gray
     };
     
     public override void OnNetworkSpawn()
