@@ -257,7 +257,11 @@ GameObject:
   - component: {fileID: 5841365167247044646}
   - component: {fileID: 5841365167247044641}
   - component: {fileID: 8210420565269839010}
+<<<<<<< HEAD
   - component: {fileID: 3191302756050101063}
+=======
+  - component: {fileID: -3182200702577882433}
+>>>>>>> 009978cf819e32af51bd90513fc3db4eda63abd1
   m_Layer: 10
   m_Name: JoueurLocal
   m_TagString: Untagged
@@ -404,7 +408,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd16547c1b43fb4d8de9c338daaaaef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
 --- !u!114 &3191302756050101063
+=======
+--- !u!114 &-3182200702577882433
+>>>>>>> 009978cf819e32af51bd90513fc3db4eda63abd1
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
