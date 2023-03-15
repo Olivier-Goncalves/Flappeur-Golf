@@ -16,14 +16,14 @@ using UnityEngine.UI;
 // Fait par: Olivier Gonçalves
 public class Relay : MonoBehaviour
 {
-    [SerializeField] private int QuantitéJoueurs;
+    public static int QuantitéJoueurs;
+    
     [SerializeField] private TMP_InputField inputJoinCode;
     [SerializeField] private Button btnCréerRelais;
     [SerializeField] private Button btnJoindreRelais;
     [SerializeField] private TMP_Text textJoinCode;
     [SerializeField ]private Canvas canvasRelayUI;
     [SerializeField] private Canvas canvasJoinCodeUI;
-    
     private void Awake()
     {
         btnCréerRelais.onClick.AddListener(CreateRelay);
@@ -31,6 +31,7 @@ public class Relay : MonoBehaviour
         canvasRelayUI = GetComponentInChildren<Canvas>();
         canvasJoinCodeUI.enabled = false;
         Cursor.visible = true;
+        QuantitéJoueurs = 2;
     }
 
     private void Update()
@@ -75,7 +76,6 @@ public class Relay : MonoBehaviour
             Debug.Log(e);
         }
     }
-
     
     private async void JoinRelay()
     {
