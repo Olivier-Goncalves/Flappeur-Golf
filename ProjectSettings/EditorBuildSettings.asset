@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Solo.unity
     guid: bea9ad9a2ee3ec148bf65d6e5cf732e9
   - enabled: 1
-    path: Assets/Scenes/Test.unity
+    path: Assets/Scenes/Trou1.unity
     guid: 7dcacf559c9c20145b054723b3af6358
   - enabled: 1
     path: Assets/Scenes/Trou2.unity

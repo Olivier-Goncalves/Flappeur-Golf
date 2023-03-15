@@ -6,7 +6,7 @@ using System.Net.Mime;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
-// Fait par: Louis-FÃ©lix Bouvrette
+// Fait par: Louis-Félix Bouvrette
 [RequireComponent(typeof(Rigidbody))]
 public class Jump : MonoBehaviour
 {
