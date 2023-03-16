@@ -156,6 +156,7 @@ GameObject:
   - component: {fileID: -4178898529213669319}
   - component: {fileID: 6344149692449878338}
   - component: {fileID: -452874575353283874}
+  - component: {fileID: 9212121593928504374}
   m_Layer: 0
   m_Name: "JoueurR\xE9seau"
   m_TagString: Player
@@ -381,6 +382,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawn: {x: 0, y: 2, z: 0}
+--- !u!114 &9212121593928504374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2588718603704621836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7b0f3108269be741b359fbd0a568372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2810827429770359955
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Jump : MonoBehaviour
 {
+    
     [SerializeField] private Material green;
     [SerializeField] private float jumpStrength = 100;
     [SerializeField] TMP_Text text;
@@ -20,7 +21,8 @@ public class Jump : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
-        
+        _rigidbody.useGravity = false;
+
     }
 
     void Update()

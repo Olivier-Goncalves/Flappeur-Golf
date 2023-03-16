@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1107,6 +1107,63 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1001 &333890203
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5841365167247044647, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841365167247044647, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -210.79729
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841365167247044647, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 47
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841365167247044647, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 287
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841365167247044647, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841365167247044647, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841365167247044647, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841365167247044647, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841365167247044647, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841365167247044647, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841365167247044647, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841365167247044648, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+      propertyPath: m_Name
+      value: JoueurLocal
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
 --- !u!43 &353087464
 Mesh:
   m_ObjectHideFlags: 0
@@ -1568,7 +1625,7 @@ PrefabInstance:
       objectReference: {fileID: 284914610}
     - target: {fileID: 1405003776172227948, guid: f41ede7ba51c5eb4a81b50d808fba043, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1405003776172227948, guid: f41ede7ba51c5eb4a81b50d808fba043, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3114,7 +3171,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1061073058
 Mesh:
@@ -4713,7 +4770,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-36810
+  m_Name: pb_Mesh-33092
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5697,7 +5754,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-5328
+  m_Name: pb_Mesh-33048
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
