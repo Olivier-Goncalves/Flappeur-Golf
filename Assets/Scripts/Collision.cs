@@ -13,6 +13,8 @@ public class Collision : MonoBehaviour
 
     private static int TrouLayer = 8;
 
+    private static int ondeLayer = 14;
+
     private bool isDissolving = false;
     private bool isSolving = false;
 
@@ -23,9 +25,12 @@ public class Collision : MonoBehaviour
     private Jump jumpComponent;
 
     [SerializeField] private Vector3 respawn;
+
+    private Rigidbody _rigidbody;
     
     private void Awake()
     {
+        _rigidbody = GetComponent<Rigidbody>();
         material = GetComponent<Renderer>().material;
         jumpComponent = GetComponent<Jump>();
     }
@@ -93,6 +98,12 @@ public class Collision : MonoBehaviour
             transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
             isDissolving = true;
             jumpComponent.enabled = false;
+        }
+        else if (collidedLayer == ondeLayer)
+        {
+            Vector3 force = collision.transform.rotation.eulerAngles / 2;
+            _rigidbody.AddRelativeForce(force);
+            Debug.Log(force);
         }
     }
     private void OnCollisionExit(UnityEngine.Collision other)
