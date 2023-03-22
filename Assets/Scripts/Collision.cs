@@ -25,6 +25,10 @@ public class Collision : MonoBehaviour
     private Jump jumpComponent;
 
     [SerializeField] private Vector3 respawn;
+    [SerializeField] private AudioSource deathSFX;
+    [SerializeField] private AudioSource finNiveauSFX;
+    [SerializeField] private AudioSource respawnSFX;
+
 
     private Rigidbody _rigidbody;
     
@@ -75,15 +79,17 @@ public class Collision : MonoBehaviour
         }
         else if (collidedLayer == AcidZoneLayer)
         {
+            deathSFX.Play();
             material.SetColor("_DissolveColor", material.GetColor("_AcidDissolveColor"));
             transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
             isDissolving = true;
             jumpComponent.enabled = false;
-
+            
         }
         else if (collidedLayer == TrouLayer)
         {
+            finNiveauSFX.Play();
             material.SetColor("_DissolveColor", Color.red);
             transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
@@ -93,6 +99,7 @@ public class Collision : MonoBehaviour
         }
         else if (collidedLayer == layerBouleDeFeu)
         {
+            deathSFX.Play();
             material.SetColor("_DissolveColor", material.GetColor("_FireDissolveColor"));
             transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
@@ -113,6 +120,7 @@ public class Collision : MonoBehaviour
 
     private void Ressusciter()
     {
+        respawnSFX.Play();
         transform.position = respawn;
         transform.rotation = Quaternion.Euler(0, -90, 0);
         isSolving = true;

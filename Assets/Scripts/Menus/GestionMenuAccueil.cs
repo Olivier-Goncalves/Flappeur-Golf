@@ -10,7 +10,7 @@ public class GestionMenuAccueil : MonoBehaviour
 {
     [SerializeField] private Button boutonMultijoueur;
     [SerializeField] private Button boutonSolo;
-    
+
 
     private void Awake()
     {
