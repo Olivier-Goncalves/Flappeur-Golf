@@ -2,12 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a9a88dae-875d-42e9-9798-3f27cddd4a1f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../Materials/TPs/New Material 4.mat" beforeDir="false" afterPath="$PROJECT_DIR$/../Materials/TPs/New Material 4.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Prefabs/LFC2.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Prefabs/LFC2.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Prefabs/LFC3.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Prefabs/LFC3.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scenes/Test.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Scenes/Test.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Scenes/Trou1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Scenes/Trou1.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GestionTrou.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GestionTrou.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ParametreJoueur.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ParametreJoueur.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scenes/Trou2.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scenes/Trou2.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Scripts.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Scripts.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jump.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Jump.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sound Effects/FinNiveau2.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sound Effects/FinNiveau2.wav.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../ProjectSettings/Packages/com.unity.learn.iet-framework/Settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../ProjectSettings/Packages/com.unity.learn.iet-framework/Settings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../ProjectSettings/Packages/com.unity.probuilder/Settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../ProjectSettings/Packages/com.unity.probuilder/Settings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../../ProjectSettings/TagManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,6 +24,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Jump.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ParametreJoueur.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -25,21 +35,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "C:\\Users\\Felis\\AppData\\Roaming\\JetBrains\\Rider2022.3\\resharper-host\\DecompilerCache",
-      "C:\\Users\\Felis\\AppData\\Roaming\\JetBrains\\Rider2022.3\\resharper-host\\SourcesCache",
-      "C:\\Users\\Felis\\AppData\\Local\\Symbols\\src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\Felis\\AppData\\Roaming\\JetBrains\\Rider2022.3\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\Felis\\AppData\\Roaming\\JetBrains\\Rider2022.3\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\Felis\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -50,6 +60,8 @@
       <updated>1678290928700</updated>
       <workItem from="1678290933031" duration="5000" />
       <workItem from="1678292494308" duration="767000" />
+      <workItem from="1679442707870" duration="11000" />
+      <workItem from="1679494024249" duration="4000" />
     </task>
     <servers />
   </component>
