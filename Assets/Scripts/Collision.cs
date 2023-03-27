@@ -81,30 +81,21 @@ public class Collision : MonoBehaviour
         {
             deathSFX.Play();
             material.SetColor("_DissolveColor", material.GetColor("_AcidDissolveColor"));
-            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            isDissolving = true;
-            jumpComponent.enabled = false;
-            
+            Détruire();
+
         }
         else if (collidedLayer == TrouLayer)
         {
             finNiveauSFX.Play();
             material.SetColor("_DissolveColor", Color.red);
-            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            isDissolving = true;
-            jumpComponent.enabled = false;
-            
+            Détruire();
+
         }
         else if (collidedLayer == layerBouleDeFeu)
         {
             deathSFX.Play();
             material.SetColor("_DissolveColor", material.GetColor("_FireDissolveColor"));
-            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            isDissolving = true;
-            jumpComponent.enabled = false;
+            Détruire();
         }
         else if (collidedLayer == ondeLayer)
         {
@@ -118,6 +109,12 @@ public class Collision : MonoBehaviour
         transform.gameObject.GetComponent<Rigidbody>().useGravity = true;
     }
 
+    public void ToucheLaser()
+    {
+        deathSFX.Play();
+        material.SetColor("_DissolveColor", material.GetColor("_LaserDissolveColor"));
+        Détruire();
+    }
     private void Ressusciter()
     {
         respawnSFX.Play();
@@ -125,5 +122,13 @@ public class Collision : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, -90, 0);
         isSolving = true;
         jumpComponent.enabled = true;
+    }
+
+    private void Détruire()
+    {
+        transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
+        isDissolving = true;
+        jumpComponent.enabled = false; 
     }
 }
