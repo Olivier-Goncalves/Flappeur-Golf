@@ -23,20 +23,26 @@ public class Laser : MonoBehaviour
     {
         laser.SetPosition(0, transform.position + Vecteur );
 
-        for (int i=0; i< bondMax; i++ )
+        int layerLaser = 1 << 11;
+        
+        
+        
+        
+        for (int i=0; i < bondMax; i++ )
         {
             Ray rayon = new Ray(position, direction);
+            
             RaycastHit touche;
             if(compteur < bondMax - 1)
                 compteur++;
-            if(Physics.Raycast(rayon , out touche , 300 ))
+            if(Physics.Raycast(rayon , out touche , 300))
             {
                 position = touche.point;
                 direction = Vector3.Reflect(direction, touche.normal);
                 laser.SetPosition(compteur, touche.point);
                 if (touche.transform.tag == "Player")
                 {
-                    touche.transform.GetComponent<Collision>().ToucheLaser();
+                    touche.transform.GetComponent<Collision>().CollisionLaser();
                 }
                 if (touche.transform.tag != "Mirror")
                 {

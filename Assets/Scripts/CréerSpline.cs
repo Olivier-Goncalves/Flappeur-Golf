@@ -9,6 +9,7 @@ using Matrix = MathNet.Numerics.LinearAlgebra.Complex.Matrix;
 // Fait par: Guillaume Flamand
 public class CréerSpline : MonoBehaviour
 {
+    [SerializeField] private float vitesse = 100;
     private Time horloge;
     private Vector2[] pointsSpline; 
     private List<Vector3> points = new();
@@ -31,6 +32,7 @@ public class CréerSpline : MonoBehaviour
         {
             points.Add(CréerPointSpline(i));
         }
+        transform.localPosition = points[current];
     }
     private Vector<double> CréerMatriceB(double y1, double y2, double y3) => Vector<double>.Build.Dense(new[] {y1, y2, y2, y3, 0, 0, 0, 0});
     private Matrix<double> CréerMatriceA(double x1, double x2, double x3)
@@ -54,11 +56,6 @@ public class CréerSpline : MonoBehaviour
             { 0, 0, 0, 0, x3*6f, 2, 0, 0} 
         });
     }
-    private void Start()
-    {
-        transform.localPosition = points[current];
-        
-    }
 
     private Vector3 CréerPointSpline(float x)
     {
@@ -68,25 +65,22 @@ public class CréerSpline : MonoBehaviour
 
     private void Update()
     {
-        {
-            if (current < points.Count)
-            {
-                transform.localPosition = Vector3.MoveTowards(transform.localPosition, points[current], Time.deltaTime * 200);
+        if (current < points.Count)
+        { 
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, points[current], Time.deltaTime * vitesse);
                 
-                if (transform.localPosition == points[current])
-                {
-                    current = inversé ? current - 1 : current + 1;
-                }
-            }
-            if (current == 0 && inversé)
-            {
-                inversé = false;
-            }
-            if (current == points.Count - 1)
-            {
-                inversé = true;
+            if (transform.localPosition == points[current])
+            { 
+                current = inversé ? current - 1 : current + 1;
             }
         }
-        
+        if (current == 0 && inversé)
+        { 
+            inversé = false;
+        }
+        if (current == points.Count - 1)
+        {
+            inversé = true;
+        }
     }
 }

@@ -23,6 +23,9 @@
         },
         {
             "m_Id": "5725e066950241e19060ffe8792a64e4"
+        },
+        {
+            "m_Id": "cd58b240aaf14ca68981ed572bbba6cb"
         }
     ],
     "m_Keywords": [],
@@ -777,6 +780,9 @@
         },
         {
             "m_Id": "5725e066950241e19060ffe8792a64e4"
+        },
+        {
+            "m_Id": "cd58b240aaf14ca68981ed572bbba6cb"
         }
     ]
 }
@@ -1833,6 +1839,35 @@
         "m_SerializableColors": []
     },
     "m_SerializedDescriptor": "SurfaceDescription.Specular"
+}
+
+{
+    "m_SGVersion": 3,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.ColorShaderProperty",
+    "m_ObjectId": "cd58b240aaf14ca68981ed572bbba6cb",
+    "m_Guid": {
+        "m_GuidSerialized": "1e79bf04-d4c4-4770-8153-3f9c00ace4d3"
+    },
+    "m_Name": "TrouDissolveColor",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "TrouDissolveColor",
+    "m_DefaultReferenceName": "_TrouDissolveColor",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 0.0
+    },
+    "isMainColor": false,
+    "m_ColorMode": 1
 }
 
 {

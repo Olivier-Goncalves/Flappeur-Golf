@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Fait pas Guillaume Flamand
 public class Gravité : MonoBehaviour
 {
     private int layeraccelere = 11;
@@ -12,7 +13,7 @@ public class Gravité : MonoBehaviour
     private Rigidbody _rigidbody;
     private void Awake()
     {
-        gravity = Physics.gravity / 2;
+        gravity = Physics.gravity / 4;
         _rigidbody = GetComponent<Rigidbody>();
     }
 
@@ -21,18 +22,18 @@ public class Gravité : MonoBehaviour
         _rigidbody.AddForce(gravity, ForceMode.Acceleration);
     }
     
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == layeraccelere)
+        int layer = other.gameObject.layer;
+        if (layer == layeraccelere)
         {
             gravity *= 10f;
         }
-        if (other.gameObject.layer == layerinverse)
+        if (layer == layerinverse)
         {
             gravity *= -6f;
         }
-        if (other.gameObject.layer == layeraccelereinverse)
+        if (layer == layeraccelereinverse)
         {
             gravity *= -12;
         }
@@ -41,6 +42,6 @@ public class Gravité : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        gravity = Physics.gravity / 2 ;
+        gravity = Physics.gravity / 4 ;
     }
 }

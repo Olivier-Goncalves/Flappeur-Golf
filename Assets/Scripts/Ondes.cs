@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+// Fait par Guillaume Flamand
 public class Ondes : MonoBehaviour
 {
     [SerializeField] private float amplitude = 0.1f;
@@ -52,12 +53,10 @@ public class Ondes : MonoBehaviour
                 sphere.transform.SetParent(Onde.transform);
                 sphere.AddComponent<SphereCollider>();
                 sphere.layer = layerOnde;
-                
             }
             
             Onde.transform.LookAt(transform.localToWorldMatrix.MultiplyPoint3x4(vertices[i]) + transform.rotation * normals[i]/4);
             Onde.transform.SetParent(transform);
-            
             
             ondes.Add(Onde);
         }
