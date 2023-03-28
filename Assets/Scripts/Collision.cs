@@ -10,11 +10,11 @@ public class Collision : MonoBehaviour
     [SerializeField] private GestionJeuSolo gestionnaireJeu;
     private static int StickyZoneLayer = 6;
 
-    private static int AcidZoneLayer = 7;
+    private const int AcidZoneLayer = 7;
 
-    private static int TrouLayer = 8;
+    private const int TrouLayer = 8;
 
-    private static int ondeLayer = 14;
+    private const int ondeLayer = 14;
 
     private bool isDissolving = false;
     private bool isSolving = false;
@@ -56,10 +56,9 @@ public class Collision : MonoBehaviour
                 Ressusciter();
             }
         }
-
         if (isSolving)
         {
-            material.SetColor("_DissolveColor", material.GetColor("_Color"));
+            ChangerCouleurApparition("_Color");
 
             alpha -= Time.deltaTime;
             material.SetFloat("_Alpha", alpha);
@@ -73,21 +72,12 @@ public class Collision : MonoBehaviour
     }
     private void OnCollisionEnter(UnityEngine.Collision collision)
     {
-        int collidedLayer = collision.contacts[0].otherCollider.gameObject.layer;
-
-        if (collidedLayer == StickyZoneLayer)
+        switch (collision.contacts[0].otherCollider.gameObject.layer)
         {
-            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
-        }
-        else if (collidedLayer == AcidZoneLayer)
-        {
-            deathSFX.Play();
-            material.SetColor("_DissolveColor", material.GetColor("_AcidDissolveColor"));
-            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            isDissolving = true;
-            jumpComponent.enabled = false;
+            case StickyZoneLayer:
+                transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
+                break;
             
         }
         else if (collidedLayer == TrouLayer)
@@ -95,21 +85,23 @@ public class Collision : MonoBehaviour
             finNiveauSFX.Play();
             jumpComponent.enabled = false;
             
-        }
-        else if (collidedLayer == layerBouleDeFeu)
-        {
-            deathSFX.Play();
-            material.SetColor("_DissolveColor", material.GetColor("_FireDissolveColor"));
-            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            isDissolving = true;
-            jumpComponent.enabled = false;
-        }
-        else if (collidedLayer == ondeLayer)
-        {
-            Vector3 force = collision.transform.rotation.eulerAngles / 2;
-            _rigidbody.AddRelativeForce(force);
-            Debug.Log(force);
+            case TrouLayer:
+                // ICI CA NE SE FAIT JAMAIS APPELLER PARCE QUE QUAND ON PREND LE TROU CA TELEPORTE TOUT DE SUITE
+                finNiveauSFX.Play();
+                ChangerCouleurApparition("_TrouDissolveColor");
+                D�truire();
+                break;
+            
+            case layerBouleDeFeu:
+                deathSFX.Play();
+                ChangerCouleurApparition("_FireDissolveColor");
+                D�truire();
+                break;
+            
+            case ondeLayer:
+                Vector3 force = collision.transform.rotation.eulerAngles / 2;
+                _rigidbody.AddRelativeForce(force);
+                break;
         }
     }
     private void OnCollisionExit(UnityEngine.Collision other)
@@ -117,6 +109,12 @@ public class Collision : MonoBehaviour
         transform.gameObject.GetComponent<Rigidbody>().useGravity = true;
     }
 
+    public void CollisionLaser()
+    {
+        deathSFX.Play();
+        ChangerCouleurApparition("_LaserDissolveColor");
+        D�truire();
+    }
     private void Ressusciter()
     {
         respawnSFX.Play();
@@ -125,4 +123,14 @@ public class Collision : MonoBehaviour
         isSolving = true;
         jumpComponent.enabled = true;
     }
+
+    private void D�truire()
+    {
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.velocity = Vector3.zero;
+        rb.useGravity = false;
+        isDissolving = true;
+        jumpComponent.enabled = false; 
+    }
+    private void ChangerCouleurApparition(string couleur) => material.SetColor("_DissolveColor", material.GetColor(couleur));
 }

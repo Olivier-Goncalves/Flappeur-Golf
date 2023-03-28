@@ -20,6 +20,12 @@
         },
         {
             "m_Id": "7d074300b7cb441cac2f99fa1f1dac4e"
+        },
+        {
+            "m_Id": "5725e066950241e19060ffe8792a64e4"
+        },
+        {
+            "m_Id": "cd58b240aaf14ca68981ed572bbba6cb"
         }
     ],
     "m_Keywords": [],
@@ -771,6 +777,12 @@
         },
         {
             "m_Id": "7d074300b7cb441cac2f99fa1f1dac4e"
+        },
+        {
+            "m_Id": "5725e066950241e19060ffe8792a64e4"
+        },
+        {
+            "m_Id": "cd58b240aaf14ca68981ed572bbba6cb"
         }
     ]
 }
@@ -812,6 +824,35 @@
     "m_Value": 75.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 3,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.ColorShaderProperty",
+    "m_ObjectId": "5725e066950241e19060ffe8792a64e4",
+    "m_Guid": {
+        "m_GuidSerialized": "507b0641-7e03-4803-b125-1523588ad3d7"
+    },
+    "m_Name": "LaserDissolveColor",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "LaserDissolveColor",
+    "m_DefaultReferenceName": "_LaserDissolveColor",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": {
+        "r": 0.4811320900917053,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.0
+    },
+    "isMainColor": false,
+    "m_ColorMode": 1
 }
 
 {
@@ -1798,6 +1839,35 @@
         "m_SerializableColors": []
     },
     "m_SerializedDescriptor": "SurfaceDescription.Specular"
+}
+
+{
+    "m_SGVersion": 3,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.ColorShaderProperty",
+    "m_ObjectId": "cd58b240aaf14ca68981ed572bbba6cb",
+    "m_Guid": {
+        "m_GuidSerialized": "1e79bf04-d4c4-4770-8153-3f9c00ace4d3"
+    },
+    "m_Name": "TrouDissolveColor",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "TrouDissolveColor",
+    "m_DefaultReferenceName": "_TrouDissolveColor",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 0.0
+    },
+    "isMainColor": false,
+    "m_ColorMode": 1
 }
 
 {
