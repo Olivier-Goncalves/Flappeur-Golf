@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 using Unity.Netcode;
 using Unity.Collections;
 using Unity.Services.Authentication;
-using UnityEditor.PackageManager;
 
 // Fait par: Louis-Félix Clément
 public class GestionMenuMultijoueur : NetworkBehaviour

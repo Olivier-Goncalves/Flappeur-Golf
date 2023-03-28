@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Mirror
+  - Spawn
+  - SoloControlleur
   layers:
   - Default
   - TransparentFX

@@ -7,6 +7,7 @@ using UnityEngine;
 // Fait par: Guillaume Flamand
 public class Collision : MonoBehaviour
 {
+    [SerializeField] private GestionJeuSolo gestionnaireJeu;
     private static int StickyZoneLayer = 6;
 
     private static int AcidZoneLayer = 7;
@@ -29,6 +30,7 @@ public class Collision : MonoBehaviour
     [SerializeField] private AudioSource finNiveauSFX;
     [SerializeField] private AudioSource respawnSFX;
 
+    private Transform transformComp;
 
     private Rigidbody _rigidbody;
     
@@ -37,6 +39,7 @@ public class Collision : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         material = GetComponent<Renderer>().material;
         jumpComponent = GetComponent<Jump>();
+        transformComp = GetComponent < Transform>();
     }
     
     private const int layerBouleDeFeu = 9;
@@ -90,10 +93,6 @@ public class Collision : MonoBehaviour
         else if (collidedLayer == TrouLayer)
         {
             finNiveauSFX.Play();
-            material.SetColor("_DissolveColor", Color.red);
-            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            isDissolving = true;
             jumpComponent.enabled = false;
             
         }
@@ -121,7 +120,7 @@ public class Collision : MonoBehaviour
     private void Ressusciter()
     {
         respawnSFX.Play();
-        transform.position = respawn;
+        gestionnaireJeu.Ressusciter(gestionnaireJeu.index);
         transform.rotation = Quaternion.Euler(0, -90, 0);
         isSolving = true;
         jumpComponent.enabled = true;

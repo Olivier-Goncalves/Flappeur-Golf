@@ -7,6 +7,7 @@ using UnityEngine.UI;
 // Fait par: Olivier Gonçalves
 public class GestionBoutonNiveau : MonoBehaviour
 {
+    [SerializeField] Canvas canvas;
     private void Awake()
     {
         GetComponent<Button>().onClick.AddListener((() => GenererScene(int.Parse(gameObject.name))));
@@ -14,6 +15,10 @@ public class GestionBoutonNiveau : MonoBehaviour
 
     private void GenererScene(int index)
     {
-        SceneManager.LoadScene($"Trou{index}");
+        //SceneManager.LoadScene($"TrouSolo");
+        //GameObject.FindGameObjectsWithTag("SoloControlleur")[0].GetComponent<GestionJeuSolo>().Ressusciter(index);
+        GameObject.Find("GameManagerSolo").GetComponent<GestionJeuSolo>().Ressusciter(index);
+        canvas.enabled = false;
+        GetComponent<Button>().enabled = false;
     }
 }

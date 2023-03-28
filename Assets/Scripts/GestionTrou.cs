@@ -13,43 +13,22 @@ public class GestionTrou : MonoBehaviour
     [SerializeField] private TMP_Text textFélicitation;
     [SerializeField] private Button boutonMenu;
     [SerializeField] private Button prochainNiveau;
-    private Canvas canvas;
-    private GameObject camera;
-    private void Awake()
-    {
-        canvas = GetComponentInChildren<Canvas>();
-        camera = new GameObject("Camera");
-        camera.AddComponent<Camera>();
-        camera.transform.position = new Vector3(0, 40, 0);
-        camera.GetComponent<Camera>().enabled = false;
-        boutonMenu.onClick.AddListener(clickBoutonMenu);
-        prochainNiveau.onClick.AddListener(clickBoutonProchainNiveau);
-        
-    }
+    [SerializeField] private GestionJeuSolo gestionnaireJeu;
+    [SerializeField] private Canvas canvas;
+    
 
-    private void clickBoutonMenu()
-    {
-        SceneManager.LoadScene("Solo");
-    }
-    private void clickBoutonProchainNiveau()
-    {
-        SceneManager.LoadScene("Trou1");
-    }
+   
     private void OnCollisionEnter(UnityEngine.Collision collision)
     {
         if(collision.gameObject.layer==10){
-        Debug.Log("Trou Atteint");
-        textFélicitation.enabled = true;
-        canvas.enabled = true;
-        collision.gameObject.GetComponent<Jump>().enabled = false;
-        collision.gameObject.GetComponent<MouseControl>().enabled = false;
-        collision.gameObject.GetComponent<MouseControl>().enabled = false;
-        
-        collision.gameObject.GetComponentInChildren<Camera>().enabled = false;
-        camera.GetComponent<Camera>().enabled = true;
+            Debug.Log("Trou Atteint"); 
+            canvas.enabled = true;
+            textFélicitation.enabled = true;
+            prochainNiveau.enabled = true;
+            boutonMenu.enabled = true;
+            collision.gameObject.GetComponent<Jump>().enabled = false;
+            collision.gameObject.GetComponent<MouseControl>().enabled = true;
+            collision.gameObject.GetComponentInChildren<Camera>().enabled = true;
         }
     }
-    
-    
-    
 }
