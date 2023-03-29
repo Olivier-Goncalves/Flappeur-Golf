@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,37 +6,41 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 using Unity.Collections;
+using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
+using Unity.Netcode.Components;
 using Unity.Services.Authentication;
 
-// Fait par: Louis-Félix Clément
+// Fait par: Louis-Fï¿½lix Clï¿½ment
 public class GestionMenuMultijoueur : NetworkBehaviour
 {
     [SerializeField] private Button boutonRetour;
     [SerializeField] private Button boutonCommencer;
-    [SerializeField] private Transform[] PointsDépart;
+    [SerializeField] private GameObject joueur;
     public int index { get; set; }
     private GameObject[] allPlayers;
     private GameObject playerServer;
 
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-        boutonRetour.onClick.AddListener(GénérerScèneRetour);   
-        boutonCommencer.onClick.AddListener(DémarrerPartieClientRpc);
-        allPlayers = GameObject.FindGameObjectsWithTag("Player");
-        playerServer = allPlayers[0];
-    }
-    [ClientRpc]
-    public void DémarrerPartieClientRpc()
+    private void Awake()
     {
         
-        // = PointsDépart[0].position;
-        // index++;
-        Debug.Log("Client RPC Appelé");
-        gameObject.transform.position = PointsDépart[0].position;
+        boutonRetour.onClick.AddListener(GenererSceneRetour);
+        boutonCommencer.onClick.AddListener(TeleporterClientRpc);
     }
+    
+    
 
-    private void GénérerScèneRetour()
+
+    [ClientRpc]
+    private void TeleporterClientRpc()
+    {
+        foreach (var client in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            client.GetComponent<TeleporterJeu>().Teleporter(index);
+        }
+
+        index++;
+    }
+    private void GenererSceneRetour()
     {
         SceneManager.LoadScene("MenuAccueil");
         if (IsHost)
@@ -44,6 +49,4 @@ public class GestionMenuMultijoueur : NetworkBehaviour
         }
         Cursor.visible = true;
     }
-
-    
 }

@@ -61,7 +61,7 @@ public class Ondes : MonoBehaviour
             ondes.Add(Onde);
         }
     }
-
+    
     private void Update()
     {
         for (int i = 0; i < ondes.Count; ++i)

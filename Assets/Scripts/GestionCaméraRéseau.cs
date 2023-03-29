@@ -9,8 +9,12 @@ public class GestionCaméraRéseau : NetworkBehaviour
     {
         if (!IsOwner)
         {
-            Destroy(gameObject);
+            GetComponent<Camera>().enabled = false;
             GetComponent<AudioListener>().enabled = false;
+        }
+        else
+        {
+            GetComponent<Camera>().enabled = true;
         }
     }
 }

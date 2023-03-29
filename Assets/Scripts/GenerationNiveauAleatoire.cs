@@ -37,10 +37,9 @@ public class GenerationNiveauAleatoire : MonoBehaviour
             temp = GameObject.CreatePrimitive(PrimitiveType.Cube);
             temp.transform.localScale = new Vector3(4, 5, 2);
             temp.transform.position = new Vector3(Random.Range(vertices[0].x, vertices[1].x), 1, Random.Range(vertices[0].z, vertices[3].z));
-            
         }
     }
-
+    
     private float GenererPositionSelonPlancher()
     {
         float nombre = 0;
@@ -52,6 +51,4 @@ public class GenerationNiveauAleatoire : MonoBehaviour
         
         return nombre;
     }
-
-    
 }

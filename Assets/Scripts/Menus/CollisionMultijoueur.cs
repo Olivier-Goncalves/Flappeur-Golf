@@ -1,12 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
-// Fait par: Guillaume Flamand
-public class Collision : MonoBehaviour
+﻿using UnityEngine;
+
+public class CollisionMultijoueur : MonoBehaviour
 {
-    [SerializeField] private GestionJeuSolo gestionnaireJeu;
+    
     private static int StickyZoneLayer = 6;
     
     private static int AcidZoneLayer = 7;
@@ -111,7 +107,6 @@ public class Collision : MonoBehaviour
     {
         respawnSFX.Play();
         transform.position = respawn;
-        gestionnaireJeu.Ressusciter(gestionnaireJeu.index);
         transform.rotation = Quaternion.Euler(0, -90, 0);
         isSolving = true;
         jumpComponent.enabled = true;
@@ -120,7 +115,7 @@ public class Collision : MonoBehaviour
     {
         deathSFX.Play();
         ChangerCouleurApparition("_LaserDissolveColor");
-        Détruire(); 
+        Détruire();
     }
     private void Détruire()
     {
