@@ -17,17 +17,19 @@ public class CollisionMultijoueur : MonoBehaviour
     [SerializeField] private AudioSource deathSFX;
     [SerializeField] private AudioSource finNiveauSFX;
     [SerializeField] private AudioSource respawnSFX;
+    
 
     private Transform transformComp;
 
     private Rigidbody _rigidbody;
-
+    private GestionJeuMultijoueur gestionnaireJeu;
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
         material = GetComponent<Renderer>().material;
         jumpComponent = GetComponent<Jump>();
         transformComp = GetComponent < Transform>();
+        gestionnaireJeu = GameObject.Find("GestionnaireJeu").GetComponent<GestionJeuMultijoueur>();
     }
 
     private const int layerBouleDeFeu = 9;
@@ -77,11 +79,12 @@ public class CollisionMultijoueur : MonoBehaviour
         else if (collidedLayer == TrouLayer)
         {
             finNiveauSFX.Play();
-            material.SetColor("_DissolveColor", Color.red);
+            //material.SetColor("_DissolveColor", Color.red);
             transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            isDissolving = true;
+            //isDissolving = true;
             jumpComponent.enabled = false;
+            gestionnaireJeu.ArriverTrou();
         }
         else if (collidedLayer == layerBouleDeFeu)
         {

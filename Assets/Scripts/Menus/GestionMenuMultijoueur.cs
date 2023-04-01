@@ -16,30 +16,20 @@ public class GestionMenuMultijoueur : NetworkBehaviour
     [SerializeField] private Button boutonRetour;
     [SerializeField] private Button boutonCommencer;
     [SerializeField] private GameObject joueur;
+    [SerializeField] private GestionJeuMultijoueur gestionnaireJeu;
     public int index { get; set; }
-    private GameObject[] allPlayers;
-    private GameObject playerServer;
 
     private void Awake()
     {
-        
         boutonRetour.onClick.AddListener(GenererSceneRetour);
-        boutonCommencer.onClick.AddListener(TeleporterClientRpc);
-    }
-    
-    
-
-
-    [ClientRpc]
-    private void TeleporterClientRpc()
-    {
-        foreach (var client in GameObject.FindGameObjectsWithTag("Player"))
+        boutonCommencer.onClick.AddListener(() =>
         {
-            client.GetComponent<TeleporterJeu>().Teleporter(index);
-        }
-
-        index++;
+            gestionnaireJeu.TeleporterClientRpc();
+            boutonCommencer.gameObject.GetComponentInParent<Canvas>().enabled = false;
+            gestionnaireJeu.CommencerNiveau();
+        });
     }
+    
     private void GenererSceneRetour()
     {
         SceneManager.LoadScene("MenuAccueil");
@@ -48,5 +38,13 @@ public class GestionMenuMultijoueur : NetworkBehaviour
             NetworkManager.Singleton.Shutdown();
         }
         Cursor.visible = true;
+    }
+    public void AfficherPositionArrivée(int positionArrivée)
+    {
+        Debug.Log("AfficherPositionArrivée");
+    }
+    public void JouerDécompte()
+    {
+        Debug.Log("Joue le décompte");
     }
 }

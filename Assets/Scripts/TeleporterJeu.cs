@@ -17,14 +17,9 @@ public class TeleporterJeu : NetworkBehaviour
 
     public void Teleporter(int index)
     {
-        GameObject[] joueurs = GameObject.FindGameObjectsWithTag("Player");
-        foreach (var joueur in joueurs)
+        if (IsOwner)
         {
-            if (IsOwner)
-            {
-                joueur.transform.position = spawns[index].position;
-            }
+            transform.position = spawns[index].position;
         }
-
     }
 }
