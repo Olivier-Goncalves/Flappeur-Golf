@@ -36,17 +36,27 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     
     public void ArriverTrou()
     {
-        indexNiveau++;
-        AppellerTeleporterServerRpc(indexNiveau);
+        GererArriverTrouServerRpc();
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void AppellerTeleporterServerRpc(int index)
+    private void GererArriverTrouServerRpc()
     {
-        TeleporterClientRpc(index);
-        ActiverJoueursClientRpc();
+        AjusterPositionJoueurClientRpc(positionArrivé + 1);
+        if (positionArrivé == nbJoueurs)
+        {
+            indexNiveau++;
+            TeleporterClientRpc(indexNiveau);
+            ActiverJoueursClientRpc();
+            AjusterPositionJoueurClientRpc(0);
+        }
     }
-    
+    [ClientRpc]
+    private void AjusterPositionJoueurClientRpc(int ajout)
+    {
+        positionArrivé = ajout;
+        Debug.Log("position: " + positionArrivé);
+    }
     
     [ClientRpc]
     private void AfficherClassementClientRpc()
