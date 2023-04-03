@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 // Fait par: Louis-Félix Clément
-public class ParametreJoueur : MonoBehaviour
+public class ParametreJoueur : NetworkBehaviour
 {
     void Update()
     {
@@ -18,6 +21,15 @@ public class ParametreJoueur : MonoBehaviour
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Confined;
             }
+        }
+    }
+
+    public void ActiverJoueur()
+    {
+        if (IsOwner)
+        {
+            GetComponent<Jump>().enabled = true;
+            GetComponent<Rigidbody>().useGravity = true;
         }
     }
 }

@@ -24,9 +24,8 @@ public class GestionMenuMultijoueur : NetworkBehaviour
         boutonRetour.onClick.AddListener(GenererSceneRetour);
         boutonCommencer.onClick.AddListener(() =>
         {
-            gestionnaireJeu.TeleporterClientRpc();
             boutonCommencer.gameObject.GetComponentInParent<Canvas>().enabled = false;
-            gestionnaireJeu.CommencerNiveau();
+            gestionnaireJeu.CommencerPartie();
         });
     }
     

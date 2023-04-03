@@ -423,6 +423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43e8d462cc6be274d9bb4c9f66221030, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gestionnaireJeu: {fileID: 0}
   respawn: {x: 0, y: 0, z: 0}
   deathSFX: {fileID: 2502836235372106554}
   finNiveauSFX: {fileID: 47489929464579616}

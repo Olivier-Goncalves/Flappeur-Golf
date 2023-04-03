@@ -1,19 +1,29 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO.Pipes;
 using Unity.Netcode;
 using UnityEngine;
 
 public class GestionJeuMultijoueur : NetworkBehaviour
 {
     public Transform[] spawns;
-    private int positionArrivé = 0;
-    private int indexNiveau = 0;
+    public int positionArrivé = 0;
+    public int indexNiveau = 0;
     [SerializeField] GestionMenuMultijoueur gestionnaireMenus;
-
+    public int nbJoueurs;
+   
+    
+    public void CommencerPartie()
+    {
+        nbJoueurs = NetworkManager.ConnectedClientsList.Count;
+        CommencerNiveau();
+    }
+    
     public void CommencerNiveau()
     {
         PlayTimer();
-        TeleporterClientRpc();
+        TeleporterClientRpc(indexNiveau);
         // Jouer Décompte
         gestionnaireMenus.JouerDécompte();
         ActiverJoueursClientRpc();
@@ -23,16 +33,21 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     {
         Debug.Log("Pars le Timer de 5 secondes");
     }
-
+    
     public void ArriverTrou()
     {
-        gestionnaireMenus.AfficherPositionArrivée(positionArrivé);
-        if(positionArrivé + 1 == NetworkManager.ConnectedClientsList.Count)
-        {
-            AfficherClassementClientRpc();
-            CommencerNiveau();
-        }
+        indexNiveau++;
+        AppellerTeleporterServerRpc(indexNiveau);
     }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void AppellerTeleporterServerRpc(int index)
+    {
+        TeleporterClientRpc(index);
+        ActiverJoueursClientRpc();
+    }
+    
+    
     [ClientRpc]
     private void AfficherClassementClientRpc()
     {
@@ -40,25 +55,29 @@ public class GestionJeuMultijoueur : NetworkBehaviour
         PlayTimer();
         Debug.Log("Cache Classement sur tous les clients");
     }
+    
     [ClientRpc]
-    public void TeleporterClientRpc()
+    public void TeleporterClientRpc(int index)
     {
         foreach (var client in GameObject.FindGameObjectsWithTag("Player"))
         {
-            client.GetComponent<TeleporterJeu>().Teleporter(indexNiveau);
+            client.GetComponent<TeleporterJeu>().Teleporter(index);
         }
-        indexNiveau++;
+
+        GameObject.Find("GestionnaireJeu").GetComponent<GestionJeuMultijoueur>().indexNiveau = index;
     }
+    
     [ClientRpc]
     private void ActiverJoueursClientRpc()
     {
         foreach(var client in GameObject.FindGameObjectsWithTag("Player"))
         {
-            if (IsOwner)
-            {
-                client.GetComponent<Jump>().enabled = true;
-                client.GetComponent<Rigidbody>().useGravity = true;
-            }
+            client.GetComponent<ParametreJoueur>().ActiverJoueur();
         }
+    }
+    
+    public void Ressusciter(Transform joueur)
+    {
+        joueur.position = spawns[indexNiveau].position;
     }
 }

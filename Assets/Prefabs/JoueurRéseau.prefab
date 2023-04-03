@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1349754582871468648}
   - component: {fileID: 2807531632512087694}
   - component: {fileID: 6568693781122826262}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Nombre de Sauts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 723750050561668686}
   - component: {fileID: 3955675982731326390}
   - component: {fileID: 4832982741263751388}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: "JoueurR\xE9seau"
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -811,7 +811,7 @@ GameObject:
   - component: {fileID: 6097501884449496516}
   - component: {fileID: 4628810917725019466}
   - component: {fileID: 8259893503888930764}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -910,7 +910,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5655992060055337298}
   - component: {fileID: 2664116554128322099}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1053,7 +1053,7 @@ GameObject:
   - component: {fileID: 6720607142944072511}
   - component: {fileID: 5724856644029710546}
   - component: {fileID: 1096781491347586289}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Camera Joueur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
