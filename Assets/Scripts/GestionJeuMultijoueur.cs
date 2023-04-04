@@ -4,16 +4,75 @@ using System.Collections.Generic;
 using System.IO.Pipes;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
+
 
 public class GestionJeuMultijoueur : NetworkBehaviour
 {
+    // Variables Logique jeu
     public Transform[] spawns;
     public int positionArrivé = 0;
     public int indexNiveau = 0;
-    [SerializeField] GestionMenuMultijoueur gestionnaireMenus;
     public int nbJoueurs;
-   
-    
+    private bool timerOn = false;
+    private float timeLeft = 5;
+    // Variables Menus
+    [SerializeField] private Button boutonRetour;
+    [SerializeField] private Button boutonCommencer;
+    [SerializeField] private Canvas canvaArriver;
+    [SerializeField] private Image fondTimer;
+    [SerializeField] private Image fondAffichagePosition;
+    [SerializeField] private TMP_Text timer;
+    [SerializeField] private TMP_Text affichagePosition;
+
+
+    // ------------------------------------------ DEBUT SECTION MENUS ---------------------------------------------------- //
+    private void Awake()
+    {
+        boutonRetour.onClick.AddListener(GenererSceneRetour);
+        boutonCommencer.onClick.AddListener(() =>
+        {
+            boutonCommencer.gameObject.GetComponentInParent<Canvas>().enabled = false;
+            CommencerPartie();
+        });
+    }
+
+    private void GenererSceneRetour()
+    {
+        SceneManager.LoadScene("MenuAccueil");
+        if (IsHost)
+        {
+            NetworkManager.Singleton.Shutdown();
+        }
+        Cursor.visible = true;
+    }
+    public void AfficherPositionArrivée(int positionArrivée)
+    {
+        Debug.Log("AfficherPositionArrivée");
+    }
+    public void JouerDécompte()
+    {
+        Debug.Log("Joue le décompte");
+    }
+    // --------------------------------------------- SECTION MENUS ------------------------------------------------- // 
+    private void Update()
+    {
+        if (timerOn)
+        {
+            timeLeft -= Time.deltaTime;
+            timer.text = Mathf.RoundToInt(timeLeft).ToString();
+            if(timeLeft <= 0)
+            {
+                timerOn = false;
+                timeLeft = 5;
+                timer.enabled = false;
+                fondTimer.enabled = false;
+                ActiverJoueursClientRpc(true);
+            }
+        }
+    }
     public void CommencerPartie()
     {
         nbJoueurs = NetworkManager.ConnectedClientsList.Count;
@@ -25,13 +84,17 @@ public class GestionJeuMultijoueur : NetworkBehaviour
         PlayTimer();
         TeleporterClientRpc(indexNiveau);
         // Jouer Décompte
-        gestionnaireMenus.JouerDécompte();
-        ActiverJoueursClientRpc();
+        JouerDécompte();
+        ActiverJoueursClientRpc(true);
     }
     
     private void PlayTimer()
     {
         Debug.Log("Pars le Timer de 5 secondes");
+        timerOn = true;
+        timer.enabled = true;
+        fondTimer.enabled = true;
+        ActiverJoueursClientRpc(false);
     }
     
     public void ArriverTrou()
@@ -47,7 +110,7 @@ public class GestionJeuMultijoueur : NetworkBehaviour
         {
             indexNiveau++;
             TeleporterClientRpc(indexNiveau);
-            ActiverJoueursClientRpc();
+            ActiverJoueursClientRpc(true);
             AjusterPositionJoueurClientRpc(0);
         }
     }
@@ -78,11 +141,11 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     }
     
     [ClientRpc]
-    private void ActiverJoueursClientRpc()
+    private void ActiverJoueursClientRpc(bool estActif)
     {
         foreach(var client in GameObject.FindGameObjectsWithTag("Player"))
         {
-            client.GetComponent<ParametreJoueur>().ActiverJoueur();
+            client.GetComponent<ParametreJoueur>().ActiverJoueur(estActif);
         }
     }
     

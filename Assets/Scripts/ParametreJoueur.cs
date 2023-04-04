@@ -24,12 +24,12 @@ public class ParametreJoueur : NetworkBehaviour
         }
     }
 
-    public void ActiverJoueur()
+    public void ActiverJoueur(bool estActif)
     {
         if (IsOwner)
         {
-            GetComponent<Jump>().enabled = true;
-            GetComponent<Rigidbody>().useGravity = true;
+            GetComponent<Jump>().enabled = estActif;
+            GetComponent<Rigidbody>().useGravity = estActif;
         }
     }
 }
