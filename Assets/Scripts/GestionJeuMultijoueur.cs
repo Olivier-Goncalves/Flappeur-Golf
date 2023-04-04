@@ -69,7 +69,8 @@ public class GestionJeuMultijoueur : NetworkBehaviour
                 timeLeft = 5;
                 timer.enabled = false;
                 fondTimer.enabled = false;
-                ActiverJoueursClientRpc(true);
+                if(IsHost)
+                    ActiverJoueursClientRpc(true);
             }
         }
     }
@@ -82,10 +83,11 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     public void CommencerNiveau()
     {
         PlayTimer();
+        // WaitForSeconds wait = new WaitForSeconds(5);
         TeleporterClientRpc(indexNiveau);
         // Jouer Décompte
         JouerDécompte();
-        ActiverJoueursClientRpc(true);
+        // ActiverJoueursClientRpc(true);
     }
     
     private void PlayTimer()
@@ -95,6 +97,14 @@ public class GestionJeuMultijoueur : NetworkBehaviour
         timer.enabled = true;
         fondTimer.enabled = true;
         ActiverJoueursClientRpc(false);
+        AfficherTimerClientRpc(true);
+    }
+    [ClientRpc]
+    private void AfficherTimerClientRpc(bool afficher)
+    {
+        timer.enabled = afficher;
+        fondTimer.enabled = afficher;
+        timerOn = true;
     }
     
     public void ArriverTrou()
@@ -109,8 +119,7 @@ public class GestionJeuMultijoueur : NetworkBehaviour
         if (positionArrivé == nbJoueurs)
         {
             indexNiveau++;
-            TeleporterClientRpc(indexNiveau);
-            ActiverJoueursClientRpc(true);
+            CommencerNiveau();
             AjusterPositionJoueurClientRpc(0);
         }
     }
