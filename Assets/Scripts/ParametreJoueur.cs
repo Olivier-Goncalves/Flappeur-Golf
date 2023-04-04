@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,6 +8,14 @@ using UnityEngine;
 // Fait par: Louis-Félix Clément
 public class ParametreJoueur : NetworkBehaviour
 {
+    private Jump jumpComponent;
+    private Rigidbody rigidbodyComponent;
+    private void Awake()
+    {
+        jumpComponent = GetComponent<Jump>();
+        rigidbodyComponent = GetComponent<Rigidbody>();
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -28,8 +37,8 @@ public class ParametreJoueur : NetworkBehaviour
     {
         if (IsOwner)
         {
-            GetComponent<Jump>().enabled = estActif;
-            GetComponent<Rigidbody>().useGravity = estActif;
+            jumpComponent.enabled = estActif;
+            rigidbodyComponent.useGravity = estActif;
         }
     }
 }

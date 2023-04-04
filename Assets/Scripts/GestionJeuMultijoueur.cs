@@ -7,17 +7,20 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Rendering;
 
 
 public class GestionJeuMultijoueur : NetworkBehaviour
 {
     // Variables Logique jeu
     public Transform[] spawns;
-    public int positionArrivé = 0;
-    public int indexNiveau = 0;
-    public int nbJoueurs;
+    private int positionArrivé = 0;
+    private int indexNiveau = 0;
+    private int nbJoueurs;
     private bool timerOn = false;
     private float timeLeft = 5;
+    private bool montrerClassement = false;
+    private bool décompte = false;
     // Variables Menus
     [SerializeField] private Button boutonRetour;
     [SerializeField] private Button boutonCommencer;
@@ -26,6 +29,7 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     [SerializeField] private Image fondAffichagePosition;
     [SerializeField] private TMP_Text timer;
     [SerializeField] private TMP_Text affichagePosition;
+    [SerializeField] private Canvas canvasClassement;
 
 
     // ------------------------------------------ DEBUT SECTION MENUS ---------------------------------------------------- //
@@ -52,9 +56,11 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     {
         Debug.Log("AfficherPositionArrivée");
     }
-    public void JouerDécompte()
+    public void JouerDécompte(bool jouer)
     {
         Debug.Log("Joue le décompte");
+        timer.enabled = jouer;
+        fondTimer.enabled = jouer;
     }
     // --------------------------------------------- SECTION MENUS ------------------------------------------------- // 
     private void Update()
@@ -67,10 +73,19 @@ public class GestionJeuMultijoueur : NetworkBehaviour
             {
                 timerOn = false;
                 timeLeft = 5;
-                timer.enabled = false;
-                fondTimer.enabled = false;
-                if(IsHost)
+                if (IsHost && !montrerClassement)
+                {
+                    timer.enabled = false;
+                    fondTimer.enabled = false;
                     ActiverJoueursClientRpc(true);
+                }
+                
+                if (montrerClassement)
+                {
+                    canvasClassement.enabled = false;
+                    montrerClassement = false;
+                    PlayTimer();
+                }
             }
         }
     }
@@ -86,7 +101,6 @@ public class GestionJeuMultijoueur : NetworkBehaviour
         // WaitForSeconds wait = new WaitForSeconds(5);
         TeleporterClientRpc(indexNiveau);
         // Jouer Décompte
-        JouerDécompte();
         // ActiverJoueursClientRpc(true);
     }
     
@@ -118,6 +132,8 @@ public class GestionJeuMultijoueur : NetworkBehaviour
         AjusterPositionJoueurClientRpc(positionArrivé + 1);
         if (positionArrivé == nbJoueurs)
         {
+            AfficherClassementClientRpc();
+            
             indexNiveau++;
             CommencerNiveau();
             AjusterPositionJoueurClientRpc(0);
@@ -134,7 +150,9 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     private void AfficherClassementClientRpc()
     {
         Debug.Log("Affiche Classement sur tous les clients");
-        PlayTimer();
+        montrerClassement = true;
+        timerOn = true;
+        canvasClassement.enabled = true;
         Debug.Log("Cache Classement sur tous les clients");
     }
     
