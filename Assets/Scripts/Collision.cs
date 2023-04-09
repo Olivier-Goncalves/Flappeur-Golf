@@ -98,7 +98,7 @@ public class Collision : MonoBehaviour
         }
         else if (collidedLayer == ondeLayer)
         {
-            Vector3 force = collision.transform.rotation.eulerAngles / 2;
+            Vector3 force = collision.transform.rotation.eulerAngles / 3;
             _rigidbody.AddRelativeForce(force);
             Debug.Log(force);
         }
