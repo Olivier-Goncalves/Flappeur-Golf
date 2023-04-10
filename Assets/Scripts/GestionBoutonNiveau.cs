@@ -8,17 +8,19 @@ using UnityEngine.UI;
 public class GestionBoutonNiveau : MonoBehaviour
 {
     [SerializeField] Canvas canvas;
+
     private void Awake()
     {
-        GetComponent<Button>().onClick.AddListener((() => GenererScene(int.Parse(gameObject.name))));
+        GetComponent<Button>().onClick.AddListener(() =>
+        {
+            if (!GameObject.Find("GameManagerSolo").GetComponent<GestionJeuSolo>().gameOn)
+                GenererScene(int.Parse(gameObject.name));
+        });
     }
 
     private void GenererScene(int index)
     {
-        //SceneManager.LoadScene($"TrouSolo");
-        //GameObject.FindGameObjectsWithTag("SoloControlleur")[0].GetComponent<GestionJeuSolo>().Ressusciter(index);
         GameObject.Find("GameManagerSolo").GetComponent<GestionJeuSolo>().Ressusciter(index);
         canvas.enabled = false;
-        GetComponent<Button>().enabled = false;
     }
 }

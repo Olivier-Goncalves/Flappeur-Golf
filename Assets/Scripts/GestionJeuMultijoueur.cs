@@ -20,7 +20,6 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     private bool timerOn = false;
     private float timeLeft = 5;
     private bool montrerClassement = false;
-    private bool décompte = false;
     // Variables Menus
     [SerializeField] private Button boutonRetour;
     [SerializeField] private Button boutonCommencer;

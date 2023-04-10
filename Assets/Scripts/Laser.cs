@@ -23,7 +23,7 @@ public class Laser : MonoBehaviour
     {
         laser.SetPosition(0, transform.position + Vecteur );
 
-        int layerLaser = 1 << 11;
+        //int layerLaser = 1 << 11;
         
         
         

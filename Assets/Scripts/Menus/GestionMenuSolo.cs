@@ -14,7 +14,4 @@ public class GestionMenuSolo : MonoBehaviour
         GameObject.Find("Retour").GetComponent<Button>().onClick.AddListener(() => { canvas.enabled = true; });
         btnRetour.onClick.AddListener(()=> { SceneManager.LoadScene("Solo"); });
     }
-
-    
-
 }
