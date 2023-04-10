@@ -1,34 +1,30 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Shapes2D;
-using Unity.VisualScripting;
-using UnityEditor.UI;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 public class Corridors : MonoBehaviour
 {
     [SerializeField] private Vector3 positionDepart;
-    [SerializeField] private int longueurCorridor = 14;
-
-    [SerializeField] private int nombreDeCorridor = 5;
-    
+    [SerializeField] private int longueurCorridor = 20;
+    [SerializeField] private int nombreDeCorridor = 15;
     [SerializeField] private GameObject plancher;
     [SerializeField] private GameObject mur;
     [SerializeField] private GameObject joueur;
     [SerializeField] private GameObject lanceurOndes;
     [SerializeField] private GameObject lanceurBouleDeFeu;
-    
-    List<Vector3> positionsPlanchers = new List<Vector3>();
-    List<Vector3> positionPotentiellesChambres = new List<Vector3>();
-    
+    [SerializeField] private GameObject laser;
+    [SerializeField] private GameObject zoneInverseGravité;
+    [SerializeField] private GameObject zoneAccelereGRavité;
+    [SerializeField] private GameObject zoneAccelereEtInverseGravité;
+    [SerializeField] private GameObject drapeau;
     [SerializeField] private Material premiereChambre;
     [SerializeField] private Material derniereChambre;
-
-    [SerializeField] private GameObject drapeau;
     
-    private static List<Chambre> chambres = new List<Chambre>();
+    List<Vector3> positionsPlanchers = new();
+    List<Vector3> positionPotentiellesChambres = new();
+    
+    private List<Chambre> chambres = new();
 
     private GameObject parent;
 
@@ -39,11 +35,10 @@ public class Corridors : MonoBehaviour
         parent = new GameObject();
         parent.name = "Niveau Aléatoire";
         spawn = new GameObject();
-        CommencerGenerationProcedurale();
+        CréerNiveau();
         Instantiate(joueur, spawn.transform.position, transform.rotation);
     }
-
-
+    
     public void Recommencer()
     {
         Destroy(parent);
@@ -53,43 +48,35 @@ public class Corridors : MonoBehaviour
         parent = new GameObject();
         parent.name = "Niveau Aléatoire";
         spawn = new GameObject();
-        CommencerGenerationProcedurale();
+        CréerNiveau();
     }
-    public void CommencerGenerationProcedurale()
+    private void CréerNiveau()
     {
         CréerCorridors();
         
         List<Vector3> positionChambres = CreerChambres();
         
-        List<Vector3> culsDeSacs = TrouverCulsDeSacs();
-
-        CreerChambresAuxCulsDeSacs(culsDeSacs, positionChambres);
-
         positionsPlanchers = positionsPlanchers.Union(positionChambres).Distinct().ToList();
-
 
         int indiceChambrePlusLoin = TrouverIndiceChambreLaPlusLoin(transform.TransformPoint(chambres[0].positions[0]));
         int indiceChambre0 = TrouverIndiceChambreLaPlusLoin(transform.TransformPoint(chambres[indiceChambrePlusLoin].positions[0]));
-        
-        Debug.Log(chambres[0].positions.Count);
-        
+
         for(int i = 0; i < chambres.Count; ++i)
         {
             GameObject chambre = new GameObject();
             chambre.name = "Chambre #" + i;
 
-           
             for (int j = 0; j < chambres[i].positions.Count; ++j)
             {
+                GameObject nouveauPlancher = Instantiate(plancher, chambres[i].positions[j], transform.rotation); 
+                nouveauPlancher.transform.SetParent(chambre.transform);
+                GameObject nouveauPlafond = Instantiate(plancher, chambres[i].positions[j] + new Vector3(0,mur.transform.localScale.y/2.0f,0), transform.rotation);
+                nouveauPlafond.transform.SetParent(chambre.transform);
                 
                 if (i == indiceChambre0)
                 {
-                    GameObject nouveauPlancher = Instantiate(plancher, chambres[i].positions[j], transform.rotation);
+                    nouveauPlancher.GetComponent<Renderer>().material = premiereChambre; 
                     
-                    //nouveauPlancher.GetComponent<Renderer>().material = premiereChambre; 
-                    
-                    nouveauPlancher.transform.SetParent(chambre.transform);
-
                     if (j == 85)
                     {
                         spawn.transform.position = chambres[i].positions[j] + new Vector3(0,0.5f,0);
@@ -98,10 +85,7 @@ public class Corridors : MonoBehaviour
                 }
                 else if (i == indiceChambrePlusLoin)
                 {
-                    GameObject nouveauPlancher = Instantiate(plancher, chambres[i].positions[j], transform.rotation);
-                    
-                    //nouveauPlancher.GetComponent<Renderer>().material = derniereChambre; 
-                    nouveauPlancher.transform.SetParent(chambre.transform);
+                    nouveauPlancher.GetComponent<Renderer>().material = derniereChambre; 
 
                     if (j == 60)
                     {
@@ -111,49 +95,34 @@ public class Corridors : MonoBehaviour
                 }
                 else
                 {
-                    GameObject nouveauPlancher = Instantiate(plancher, chambres[i].positions[j], transform.rotation); 
-                    nouveauPlancher.transform.SetParent(chambre.transform);
-
                     if (j == 20 || j == 45 || j == 100 || j == 75)
                     {
                         GameObject bdf = Instantiate(lanceurBouleDeFeu, chambres[i].positions[j] + new Vector3(0,0.5f,0), transform.rotation);
                         bdf.transform.rotation = Quaternion.Euler(0,UnityEngine.Random.Range(0,2) == 0 ? -90 : 90,0);
                         bdf.transform.SetParent(chambre.transform);
+                        GameObject nouveauLaser = Instantiate(laser, chambres[i].positions[j] + new Vector3(0, 0.5f, 0), transform.rotation);
+                        nouveauLaser.transform.rotation = Quaternion.Euler(0,UnityEngine.Random.Range(0,2) == 0 ? -90 : 90,0);
+                        nouveauLaser.transform.SetParent(chambre.transform);
                     }
                 }
-                GameObject nouveauPlafond = Instantiate(plancher, chambres[i].positions[j] + new Vector3(0,mur.transform.localScale.y/2.0f,0), transform.rotation);
-                nouveauPlafond.transform.SetParent(chambre.transform);
             }
             chambre.transform.SetParent(parent.transform);
         }
         
-        
         List<Vector3> positionsMurs = TrouverMursDansDirection(positionsPlanchers);
         GameObject murs = new GameObject();
         murs.name = "Murs";
-        for (int i = 0; i < positionsMurs.Count; ++i)
+        foreach (var position in positionsMurs)
         {
-            GameObject nouveauMur = Instantiate(mur, transform.TransformPoint(positionsMurs[i]), transform.rotation);
+            GameObject nouveauMur = Instantiate(mur, transform.TransformPoint(position), transform.rotation);
             nouveauMur.transform.SetParent(murs.transform);
         }
         murs.transform.SetParent(parent.transform);
     }
-    
-    
-    private void CreerChambresAuxCulsDeSacs(List<Vector3> culsDeSacs, List<Vector3> planchersChambres)
-    {
-        foreach (var position in culsDeSacs)
-        {
-            if (!planchersChambres.Contains(position))
-            {
-                var chambre = CreerChambre(position);
-                planchersChambres = planchersChambres.Union(chambre).Distinct().ToList();
-            }
-        }
-    }
-
     private int TrouverIndiceChambreLaPlusLoin(Vector3 repere)
     {
+        // Pour le calcul de la distance, je prend toujouors le premier bloc de la pièce. En effet, la piece est constitué de 120 blocs, pour le plancher, donc pour que ca soit plus simple, je calcule toujuors avec le bloc à l'indice 0.
+        
         float distance = 0;
         int indice = 0;
         
@@ -168,28 +137,6 @@ public class Corridors : MonoBehaviour
         }
         return indice;
     }
-    
-    private List<Vector3> TrouverCulsDeSacs()
-    {
-        List<Vector3> culsDeSacs = new List<Vector3>();
-        foreach (var position in positionsPlanchers)
-        {
-            int nbVoisins = 0;
-            foreach (var direction in Direction._directionsCardinales)
-            {
-                if (positionsPlanchers.Contains(position + direction))
-                {
-                    nbVoisins++;
-                }
-            }
-            if (nbVoisins == 1)
-            {
-                culsDeSacs.Add(position);
-            }
-        }
-        return culsDeSacs;
-    }
-    
     private void CréerCorridors()
     {
         Vector3 positionActuelle = positionDepart;
@@ -204,6 +151,7 @@ public class Corridors : MonoBehaviour
             positionActuelle = corridors[corridors.Count - 1];
             positionPotentiellesChambres.Add(positionActuelle);
             positionsPlanchers = positionsPlanchers.Union(corridors).Distinct().ToList();
+            
             foreach (var position in positionsPlanchers)
             {
                 GameObject nouveauPlancher = Instantiate(plancher, transform.TransformPoint(position), transform.rotation);
@@ -220,7 +168,7 @@ public class Corridors : MonoBehaviour
         List<Vector3> positionMurs = new List<Vector3>();
         foreach (var position in positionsPlanchers)
         {
-            foreach (var direction in Direction._directionsCardinales)
+            foreach (var direction in _directionsCardinales)
             {
                 Vector3 positionVoisin = position + direction;
                 if (!positionsPlanchers.Contains(positionVoisin))
@@ -243,32 +191,24 @@ public class Corridors : MonoBehaviour
         {
             List<Vector3> plancherChambre = CreerChambre(chambresACreer[i]);
             positionsChambres = positionsChambres.Union(plancherChambre).Distinct().ToList();
-
-            
         }
         return positionsChambres;
     }
-    private List<Vector3> CreerChambre(Vector3 position)
-    {
-        Vector3 positionActuelle = position;
-
-        List<Vector3> chemin = CreerPlancherChambre(positionActuelle); 
-        positionsPlanchers = positionsPlanchers.Union(chemin).Distinct().ToList();
-        return positionsPlanchers;
-    }
+    private List<Vector3> CreerChambre(Vector3 position) => positionsPlanchers = positionsPlanchers.Union(CreerPlancherChambre(position)).Distinct().ToList();
     
     private List<Vector3> CreerPlancherChambre(Vector3 positionDepart)
     {
         List<Vector3> chemin = new();
 
         chemin.Add(positionDepart);
+        
         Vector3 positionPrecedente = positionDepart;
 
-        List<Vector3> CheminPourCreerChambre = CréerCube();
+        List<Vector3> cheminPourCreerChambre = CréerCheminPlancherChambre();
         
-        for (int i = 0; i < CheminPourCreerChambre.Count; ++i)
+        for (int i = 0; i < cheminPourCreerChambre.Count; ++i)
         {
-            Vector3 nouvellePosition = positionPrecedente + CheminPourCreerChambre[i];
+            Vector3 nouvellePosition = positionPrecedente + cheminPourCreerChambre[i];
             chemin.Add(nouvellePosition);
             positionPrecedente = nouvellePosition;
         }
@@ -285,13 +225,12 @@ public class Corridors : MonoBehaviour
             pointsMonde.Add(transform.TransformPoint(point));
         }
 
-        bool isEqual = false;
+        bool estEgal = false;
         foreach (var chambre in chambres)
         {
-            isEqual = DeuxListesÉgales(chambre.positions, pointsMonde, isEqual);
+            estEgal = DeuxListesÉgales(chambre.positions, pointsMonde, estEgal);
         }
-
-        if (!isEqual)
+        if (!estEgal)
         {
             chambres.Add(new Chambre(pointsMonde));
         }
@@ -311,7 +250,7 @@ public class Corridors : MonoBehaviour
     private static List<Vector3> CorridorsAléatoires(Vector3 positionDepart, int longueurCorridor)
     {
         List<Vector3> corridor = new();
-        Vector3 direction = Direction.DirectionAleatoire();
+        Vector3 direction = DirectionAleatoire();
         Vector3 positionActuelle = positionDepart;
         
         corridor.Add(positionActuelle);
@@ -323,7 +262,7 @@ public class Corridors : MonoBehaviour
         return corridor;
     }
 
-    private static List<Vector3> CréerCube()
+    private static List<Vector3> CréerCheminPlancherChambre()
     {
         List<Vector3> chemin = new List<Vector3>();
         int x = 25;
@@ -335,7 +274,6 @@ public class Corridors : MonoBehaviour
             {
                 chemin.Add(new Vector3(0,0,5));
             }
-
             if (x != -20)
             {
                 chemin.Add(new Vector3(-5,0,-50));
@@ -344,23 +282,17 @@ public class Corridors : MonoBehaviour
         }
         return chemin;
     }
-
-    public class Direction
-   {
-        public static List<Vector3Int> _directionsCardinales = new List<Vector3Int>()
-        {
-          new (0, 0, 5),
-          new (5, 0, 0),
-          new (0, 0, -5),
-          new (-5, 0, 0)
-        };
-        public static Vector3Int DirectionAleatoire() =>
-            _directionsCardinales[UnityEngine.Random.Range(0, _directionsCardinales.Count)];
-    }
-
-    public class Chambre
+    private static List<Vector3Int> _directionsCardinales = new List<Vector3Int>()
     {
-        public List<Vector3> positions;
+        new (0, 0, 5), // Devant
+        new (5, 0, 0), // Droite
+        new (0, 0, -5), // Derrière
+        new (-5, 0, 0) // Gauche
+    };
+    private static Vector3Int DirectionAleatoire() => _directionsCardinales[UnityEngine.Random.Range(0, _directionsCardinales.Count)];
+    private class Chambre
+    {
+        public readonly List<Vector3> positions;
         public Chambre(List<Vector3> positions)
         {
             this.positions = positions;

@@ -21,7 +21,6 @@ public class Jump : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
-        _rigidbody.useGravity = false;
 
     }
 
