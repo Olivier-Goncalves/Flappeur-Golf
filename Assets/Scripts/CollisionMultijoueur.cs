@@ -1,6 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using Unity.Netcode;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class CollisionMultijoueur : MonoBehaviour
+public class CollisionMultijoueur : NetworkBehaviour
 {
     
     private static int StickyZoneLayer = 6;
@@ -17,23 +21,52 @@ public class CollisionMultijoueur : MonoBehaviour
     [SerializeField] private AudioSource deathSFX;
     [SerializeField] private AudioSource finNiveauSFX;
     [SerializeField] private AudioSource respawnSFX;
-
-    private Transform transformComp;
-
+    
     private Rigidbody _rigidbody;
+    private GestionJeuMultijoueur gestionnaireJeu;
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkDespawn();
+        AjusterCollisionsJoueursClientRpc();
+        AjusterCollisionJoueurLocal();
+    }
 
+    private void AjusterCollisionJoueurLocal()
+    {
+        var listeJoueurs = GameObject.FindGameObjectsWithTag("Player");
+        foreach (var joueur in listeJoueurs)
+        {
+            for (int i = 0; i < listeJoueurs.Length; i++)
+            {
+                if (!(joueur == listeJoueurs[i]))
+                {
+                    Physics.IgnoreCollision(joueur.GetComponent<Collider>(),listeJoueurs[i].GetComponent<Collider>());
+                }
+            }
+        }
+    }
+    [ClientRpc]
+    private void AjusterCollisionsJoueursClientRpc()
+    {
+        AjusterCollisionJoueurLocal();
+    }
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
         material = GetComponent<Renderer>().material;
         jumpComponent = GetComponent<Jump>();
-        transformComp = GetComponent < Transform>();
+        gestionnaireJeu = GameObject.Find("GestionnaireJeu").GetComponent<GestionJeuMultijoueur>();
+        
     }
+
+    
 
     private const int layerBouleDeFeu = 9;
     
     void Update()
     {
+
+        
         if (isDissolving)
         {
             alpha += Time.deltaTime;
@@ -54,6 +87,7 @@ public class CollisionMultijoueur : MonoBehaviour
                 isSolving = false;
                 alpha = -1.1f;
                 material.SetFloat("_Alpha", alpha);
+                jumpComponent.enabled = true;
             }
         }
     }
@@ -68,29 +102,30 @@ public class CollisionMultijoueur : MonoBehaviour
         else if (collidedLayer == AcidZoneLayer)
         {
             deathSFX.Play();
+            jumpComponent.enabled = false;
             material.SetColor("_DissolveColor", material.GetColor("_AcidDissolveColor"));
             transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
             isDissolving = true;
-            jumpComponent.enabled = false;
         }
         else if (collidedLayer == TrouLayer)
         {
             finNiveauSFX.Play();
-            material.SetColor("_DissolveColor", Color.red);
+            //material.SetColor("_DissolveColor", Color.red);
+            jumpComponent.enabled = false;
             transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            isDissolving = true;
-            jumpComponent.enabled = false;
+            //isDissolving = true;
+            gestionnaireJeu.ArriverTrou();
         }
         else if (collidedLayer == layerBouleDeFeu)
         {
             deathSFX.Play();
+            jumpComponent.enabled = false;
             material.SetColor("_DissolveColor", material.GetColor("_FireDissolveColor"));
             transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
             isDissolving = true;
-            jumpComponent.enabled = false;
         }
         else if (collidedLayer == ondeLayer)
         {
@@ -106,10 +141,9 @@ public class CollisionMultijoueur : MonoBehaviour
     private void Ressusciter()
     {
         respawnSFX.Play();
-        transform.position = respawn;
+        gestionnaireJeu.Ressusciter(transform);
         transform.rotation = Quaternion.Euler(0, -90, 0);
         isSolving = true;
-        jumpComponent.enabled = true;
     }
     public void CollisionLaser()
     {

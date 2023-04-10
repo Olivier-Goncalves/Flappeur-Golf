@@ -265,13 +265,32 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1382990864}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 335.60342, y: 957.7715, z: -1001.7055}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1382990866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1382990864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d9c973e470988438d12ec4753be244, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joueur: {fileID: 5841365167247044648, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+  materielGreen: {fileID: 2100000, guid: 51707e5c919219f4e96e71ceb7446a28, type: 2}
+  drapeau: {fileID: 5004983613363395092, guid: 52e1ed85bba435e47b5bfbdab8b9bece, type: 3}
+  spawnerBouleDeFeu: {fileID: 4505538425031287349, guid: 36001cfe4f94b3f42a18f75d7271b8a2, type: 3}
+  spawnerOndes: {fileID: 218833260306100948, guid: 1535683be1b7d0e48bf3bd7d8d18f1d1, type: 3}
+  acid: {fileID: 2100000, guid: b98bdcb5b6027a64986365d7ff0358d8, type: 2}
+  sticky: {fileID: 2100000, guid: 9b2859f032d7ce14fa9de47b9fe224be, type: 2}
 --- !u!1 &1893284300
 GameObject:
   m_ObjectHideFlags: 0
