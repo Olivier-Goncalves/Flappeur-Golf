@@ -13,13 +13,14 @@ public class MouseControl : MonoBehaviour
 {
     [SerializeField] private float sensitivité = 1;
     [SerializeField] private Transform cameraJoueur;
-    [SerializeField] private GestionJeuSolo gestionnaireJeu;
+    //[SerializeField] private GestionJeuSolo gestionnaireJeu;
     private float camDistance;
     private Vector2 distanceCameraMinMax = new Vector2(0.4f, 7f);
     private Vector3 directionCamera;
     private float x;
     private float y;
     private float coussin = 0.2f;
+    public bool pause;
     private void Start()
     {
         directionCamera = cameraJoueur.transform.localPosition.normalized;
@@ -28,7 +29,7 @@ public class MouseControl : MonoBehaviour
     
     void Update()
     {
-        if (!gestionnaireJeu.pause)
+        if (!pause)
         {
             x += sensitivité * Input.GetAxis("Mouse X");
             y -= sensitivité * Input.GetAxis("Mouse Y");
@@ -52,4 +53,5 @@ public class MouseControl : MonoBehaviour
         }
         cameraJoueur.localPosition = directionCamera * camDistance;
     }
+    
 }

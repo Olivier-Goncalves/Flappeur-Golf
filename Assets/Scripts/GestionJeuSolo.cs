@@ -55,13 +55,13 @@ public class GestionJeuSolo : MonoBehaviour
                 canvasMenuPause.enabled = true;
                 joueur.GetComponent<Jump>().enabled = false;
                 //joueur.GetComponent<MouseControl>().enabled = false;
-                pause = true;
+                ChangerPause(true);
                 Cursor.visible = true;
             }
             else
             {
                 canvasMenuPause.enabled = false;
-                pause = false;
+                ChangerPause(false);
                 joueur.GetComponent<Jump>().enabled = true;
                 //joueur.GetComponent<MouseControl>().enabled = true;   
             }
@@ -117,7 +117,7 @@ public class GestionJeuSolo : MonoBehaviour
     {
         ActiverJoueur(true);
         canvasMenuPause.enabled = false;
-        pause = false;
+        ChangerPause(false);
         gameOn = true;
     }
     public void Ressusciter(int indexPosition)
@@ -127,7 +127,8 @@ public class GestionJeuSolo : MonoBehaviour
         joueur.transform.position = spawns[indexPosition - 1].position;
         ActiverJoueur(true);
         gameOn = true;
-        pause = false;
+        ChangerPause(false);
+
     }
     public void ActiverMenuArriverTrou(bool actif)
     {
@@ -146,6 +147,11 @@ public class GestionJeuSolo : MonoBehaviour
     public void ReinitialiserCompteurSaut()
     {
         joueur.GetComponent<Jump>().nbSauts = 0;
+    }
+    private void ChangerPause(bool estEnPause)
+    {
+        pause = estEnPause;
+        joueur.GetComponent<MouseControl>().pause = estEnPause;
     }
 
 }
