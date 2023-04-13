@@ -20,9 +20,7 @@ public class Collision : MonoBehaviour
     [SerializeField] private AudioSource deathSFX;
     [SerializeField] private AudioSource finNiveauSFX;
     [SerializeField] private AudioSource respawnSFX;
-
     private Transform transformComp;
-
     private Rigidbody _rigidbody;
     private Jump jumpComponent;
 
@@ -33,7 +31,7 @@ public class Collision : MonoBehaviour
         transformComp = GetComponent < Transform>();
         jumpComponent = GetComponent<Jump>();
     }
-
+    
     private const int layerBouleDeFeu = 9;
     
     void Update()

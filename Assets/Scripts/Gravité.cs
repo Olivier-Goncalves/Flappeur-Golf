@@ -15,6 +15,7 @@ public class Gravité : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        gravity = Physics.gravity;
     }
     
     private void OnTriggerEnter(Collider other)
@@ -39,10 +40,8 @@ public class Gravité : MonoBehaviour
             isInZone = true;
             _rigidbody = GetComponent<Rigidbody>();
             _rigidbody.useGravity = false;
-            
             gravity *= -12;
         }
-        
     }
 
     private void FixedUpdate()
@@ -55,7 +54,7 @@ public class Gravité : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        gravity = Physics.gravity / 3;
+        gravity = Physics.gravity;
         _rigidbody.useGravity = true;
     }
 }

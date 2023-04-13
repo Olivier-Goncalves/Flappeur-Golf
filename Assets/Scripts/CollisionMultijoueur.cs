@@ -112,11 +112,11 @@ public class CollisionMultijoueur : NetworkBehaviour
         {
             finNiveauSFX.Play();
             //material.SetColor("_DissolveColor", Color.red);
-            jumpComponent.enabled = false;
             transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
             //isDissolving = true;
             gestionnaireJeu.ArriverTrou();
+            jumpComponent.enabled = false;
         }
         else if (collidedLayer == layerBouleDeFeu)
         {

@@ -31,7 +31,7 @@ public class Relay : MonoBehaviour
         canvasRelayUI = GetComponentInChildren<Canvas>();
         canvasJoinCodeUI.enabled = false;
         Cursor.visible = true;
-        QuantitéJoueurs = 3;
+        QuantitéJoueurs = 8;
     }
 
     private void Update()

@@ -61,7 +61,7 @@ public class GestionJeuMultijoueur : NetworkBehaviour
         timer.enabled = jouer;
         fondTimer.enabled = jouer;
     }
-    // --------------------------------------------- SECTION MENUS ------------------------------------------------- // 
+    // --------------------------------------------- FIN SECTION MENUS ------------------------------------------------- // 
     private void Update()
     {
         if (timerOn)
@@ -74,6 +74,7 @@ public class GestionJeuMultijoueur : NetworkBehaviour
                 timeLeft = 5;
                 if (IsHost && !montrerClassement)
                 {
+                    AfficherTimerClientRpc(false);
                     timer.enabled = false;
                     fondTimer.enabled = false;
                     ActiverJoueursClientRpc(true);
@@ -85,8 +86,11 @@ public class GestionJeuMultijoueur : NetworkBehaviour
                     montrerClassement = false;
                     PlayTimer();
                 }
+                
+                timerOn = false;    
             }
         }
+        Debug.Log(timerOn);
     }
     public void CommencerPartie()
     {
@@ -97,7 +101,6 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     public void CommencerNiveau()
     {
         PlayTimer();
-        // WaitForSeconds wait = new WaitForSeconds(5);
         TeleporterClientRpc(indexNiveau);
         // Jouer Décompte
         // ActiverJoueursClientRpc(true);
@@ -123,16 +126,21 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     public void ArriverTrou()
     {
         GererArriverTrouServerRpc();
+        foreach(var client in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            client.GetComponent<ParametreJoueur>().ActiverJoueur(false);
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]
     private void GererArriverTrouServerRpc()
     {
         AjusterPositionJoueurClientRpc(positionArrivé + 1);
+        timerOn = false;
         if (positionArrivé == nbJoueurs)
         {
+            Debug.Log("Le if est appellé");
             AfficherClassementClientRpc();
-            
             indexNiveau++;
             CommencerNiveau();
             AjusterPositionJoueurClientRpc(0);

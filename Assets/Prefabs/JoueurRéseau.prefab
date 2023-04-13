@@ -296,7 +296,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   "sensitivit\xE9": 1
-  camera: {fileID: 1818135770144367072}
+  cameraJoueur: {fileID: 1818135770144367072}
+  pause: 0
 --- !u!114 &1494186610
 MonoBehaviour:
   m_ObjectHideFlags: 0
