@@ -16,7 +16,7 @@ public class Jump : MonoBehaviour
     [SerializeField] TMP_Text text;
     private Rigidbody _rigidbody;
     public int nbSauts = 0;
-    private bool isOnGreen = false;
+    public bool isOnGreen = false;
 
     private void Awake()
     {

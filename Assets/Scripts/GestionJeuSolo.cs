@@ -108,6 +108,7 @@ public class GestionJeuSolo : MonoBehaviour
     }
     private void clickBoutonProchainNiveau()
     {
+        joueur.GetComponent<Jump>().isOnGreen = false;
         ChangerNiveau();
         ActiverMenuArriverTrou(false);
         ActiverJoueur(true);
@@ -122,6 +123,9 @@ public class GestionJeuSolo : MonoBehaviour
     }
     public void Ressusciter(int indexPosition)
     {
+
+        joueur.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        joueur.GetComponent<Rigidbody>().useGravity = true;
         ReinitialiserCompteurSaut();
         index = indexPosition;
         joueur.transform.position = spawns[indexPosition - 1].position;
