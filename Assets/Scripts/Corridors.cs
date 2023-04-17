@@ -7,6 +7,7 @@ using System.Linq;
 using Shapes2D;
 using UnityEngine;
 
+// Fait par Guillaume Flamand
 public class Corridors : MonoBehaviour
 {
     [SerializeField] private Vector3 positionDepart;
@@ -38,9 +39,8 @@ public class Corridors : MonoBehaviour
     {
         parent = new GameObject("Niveau Aléatoire");
         spawn = new GameObject("Spawn");
-        spawn.transform.SetParent(transform);
+        spawn.transform.SetParent(parent.transform);
         CréerNiveau();
-        Instantiate(joueur, spawn.transform.position, transform.rotation);
     }
     
     public void Recommencer()
@@ -87,7 +87,8 @@ public class Corridors : MonoBehaviour
 
                     if (j == 60)
                     {
-                        GameObject trou = Instantiate(drapeau, chambres[i][j], transform.rotation);
+                        GameObject trou = Instantiate(drapeau, chambres[i][j] + new Vector3(0,0.25f,0), transform.rotation);
+                        trou.name = "Trou";
                         trou.transform.SetParent(parent.transform);
                     }
                 }
@@ -102,20 +103,27 @@ public class Corridors : MonoBehaviour
                         nouveauLaser.transform.rotation = Quaternion.Euler(0,UnityEngine.Random.Range(0,2) == 0 ? -90 : 45,0);
                         nouveauLaser.transform.SetParent(chambre.transform);
 
-                        GameObject zone = new GameObject();
+                        GameObject zone;
                         switch (UnityEngine.Random.Range(0, 4))
                         {
                             case 0:
                                 zone = Instantiate(zoneInverseGravité,chambres[i][j], transform.rotation);
+                                zone.transform.SetParent(parent.transform);
                                 break;
                             case 1:
                                 zone = Instantiate(zoneAccelereGRavité,chambres[i][j], transform.rotation);
+                                zone.transform.SetParent(parent.transform);
                                 break;
                             case 2:
                                 zone = Instantiate(zoneAccelereEtInverseGravité,chambres[i][j], transform.rotation);
+                                zone.transform.SetParent(parent.transform);
                                 break;
                         }
-                        zone.transform.SetParent(transform);
+                    }
+
+                    if (j == 5)
+                    {
+                        GameObject onde = Instantiate(lanceurOndes, chambres[i][j] + new Vector3(0,4f,0), transform.rotation);
                     }
                 }
             }
@@ -123,6 +131,9 @@ public class Corridors : MonoBehaviour
         }
         InstancierCorridors();
         InstancierMurs();
+        
+        GameObject player = Instantiate(joueur, spawn.transform.position, transform.rotation);
+        player.transform.SetParent(parent.transform);
     }
 
     private void InstancierMurs()
@@ -174,8 +185,6 @@ public class Corridors : MonoBehaviour
     {
         Vector3 positionActuelle = positionDepart;
         positionPotentiellesChambres.Add(positionActuelle);
-
-        GameObject planchersCorridors = new GameObject("Planchers corridors");
         
         for (int i = 0; i < nombreDeCorridor; ++i)
         {

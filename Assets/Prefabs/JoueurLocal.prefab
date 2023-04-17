@@ -504,6 +504,7 @@ MonoBehaviour:
   jumpStrength: 100
   text: {fileID: 3461608710537392516}
   nbSauts: 0
+  isOnGreen: 0
 --- !u!54 &5841365167247044646
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -519,7 +520,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &5841365167247044641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -534,6 +535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "sensitivit\xE9": 1
   cameraJoueur: {fileID: 5841365167851889600}
+  pause: 0
 --- !u!114 &-3182200702577882433
 MonoBehaviour:
   m_ObjectHideFlags: 0

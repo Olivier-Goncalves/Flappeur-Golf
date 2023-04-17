@@ -97,10 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dd050e316999174c927c921a1be2901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amplitude: 0.1
-  "fr\xE9quenceAngulaire": 0.0005
-  k: 25
-  longueurOnde: 0.2
+  amplitude: 0.7
+  "fr\xE9quenceAngulaire": 0.05
+  k: 3
+  longueurOnde: 5
   color: {r: 1, g: 0, b: 0, a: 0}
 --- !u!135 &292991768280395704
 SphereCollider:

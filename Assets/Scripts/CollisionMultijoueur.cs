@@ -129,7 +129,7 @@ public class CollisionMultijoueur : NetworkBehaviour
         }
         else if (collidedLayer == ondeLayer)
         {
-            Vector3 force = collision.transform.rotation.eulerAngles / 2;
+            Vector3 force = collision.transform.parent.rotation.eulerAngles * 2;
             _rigidbody.AddRelativeForce(force);
             Debug.Log(force);
         }
