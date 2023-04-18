@@ -80,10 +80,10 @@ public class Collision : MonoBehaviour
         }
         else if (collidedLayer == TrouLayer)
         {
+            finNiveauSFX.Play();
             Sauvegarde.CréerSauvegarde(TimeSpan.FromSeconds(Timer.timeRemaining).ToString(@"mm\:ss\:ff"));
             gestionnaireJeu.ReinitialiserCompteurSaut();
             jumpComponent.enabled = true;
-            finNiveauSFX.Play();
             material.SetColor("_DissolveColor", Color.red);
             DesactiverAcceleration();
             //isDissolving = true;

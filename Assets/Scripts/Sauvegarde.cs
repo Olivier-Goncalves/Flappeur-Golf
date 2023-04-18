@@ -43,7 +43,7 @@ public class Sauvegarde : MonoBehaviour
         File.WriteAllLines(Path, liste.ToArray());
     }
 
-    private static string GetAncienNombreFlap(char[] ligne)
+    public static string GetAncienNombreFlap(char[] ligne)
     {
         string nbFlap = "";
         int compteur = 2;
@@ -57,7 +57,7 @@ public class Sauvegarde : MonoBehaviour
         return nbFlap;
     }
 
-    private static string GetAncienTemps(char[] ligne)
+    public static string GetAncienTemps(char[] ligne)
     {
         string temps = "";
         for (int i = indices[0]; i < ligne.Length; ++i)
