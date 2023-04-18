@@ -80,6 +80,7 @@ public class Collision : MonoBehaviour
         }
         else if (collidedLayer == TrouLayer)
         {
+            Sauvegarde.CréerSauvegarde(TimeSpan.FromSeconds(Timer.timeRemaining).ToString(@"mm\:ss\:ff"));
             gestionnaireJeu.ReinitialiserCompteurSaut();
             jumpComponent.enabled = true;
             finNiveauSFX.Play();
@@ -88,6 +89,7 @@ public class Collision : MonoBehaviour
             //isDissolving = true;
             gestionnaireJeu.ActiverMenuArriverTrou(true);
             gestionnaireJeu.ActiverJoueur(false);
+            
         }
         else if (collidedLayer == layerBouleDeFeu)
         {

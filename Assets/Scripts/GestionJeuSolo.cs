@@ -25,11 +25,12 @@ public class GestionJeuSolo : MonoBehaviour
     // Menu Nombre de Sauts
     [SerializeField] private TMP_Text nbCoupsTexte;
     // volume slider
-    [SerializeField] private Slider volumeSlider;
+    [SerializeField] private Canvas canvasVolumeSlider;
     public bool pause { get; set; }
     public bool gameOn {  get; private set; }
     private int[,] CoupsParTrou;
 
+    public static int niveauActuel;
     private void Awake()
     {
         gameOn = false;
@@ -59,6 +60,7 @@ public class GestionJeuSolo : MonoBehaviour
                 //joueur.GetComponent<MouseControl>().enabled = false;
                 ChangerPause(true);
                 Cursor.visible = true;
+                canvasVolumeSlider.gameObject.SetActive(true);
             }
             else
             {
@@ -66,12 +68,14 @@ public class GestionJeuSolo : MonoBehaviour
                 ChangerPause(false);
                 joueur.GetComponent<Jump>().enabled = true;
                 //joueur.GetComponent<MouseControl>().enabled = true;   
+                canvasVolumeSlider.gameObject.SetActive(false);
             }
         }
         if (!gameOn)
         {
             canvasMenuPause.enabled = false;
             AfficherCoupsParTrou(false);
+            canvasVolumeSlider.gameObject.SetActive(false);
         }
         else
         {
@@ -93,6 +97,7 @@ public class GestionJeuSolo : MonoBehaviour
     {
         if (index < spawns.Length)
         {
+            niveauActuel++;
             index++;
             Ressusciter(index);
         }
@@ -152,7 +157,7 @@ public class GestionJeuSolo : MonoBehaviour
     }
     public void ReinitialiserCompteurSaut()
     {
-        joueur.GetComponent<Jump>().nbSauts = 0;
+        Jump.nbSauts = 0;
     }
     private void ChangerPause(bool estEnPause)
     {

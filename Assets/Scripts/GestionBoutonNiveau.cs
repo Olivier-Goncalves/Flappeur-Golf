@@ -14,7 +14,11 @@ public class GestionBoutonNiveau : MonoBehaviour
         GetComponent<Button>().onClick.AddListener(() =>
         {
             if (!GameObject.Find("GameManagerSolo").GetComponent<GestionJeuSolo>().gameOn)
+            {
                 GenererScene(int.Parse(gameObject.name));
+                GestionJeuSolo.niveauActuel = int.Parse(gameObject.name);
+            }
+                
         });
     }
 

@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Shapes2D;
-using UnityEngine;
 
 // Fait par Guillaume Flamand
 public class Corridors : MonoBehaviour
@@ -304,7 +302,6 @@ public class Corridors : MonoBehaviour
     {
         List<Vector3> chemin = new List<Vector3>();
         int x = 25;
-        int z = -25;
 
         while (x > -25)
         {
