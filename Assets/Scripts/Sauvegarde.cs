@@ -9,37 +9,30 @@ using UnityEngine;
 public class Sauvegarde : MonoBehaviour
 {
     private const string Path = "Assets/Sauvegarde Joueur Solo/Sauvegarde.txt";
-    private static int[] indices = new[] { 5, 6, 8, 9, 11, 12 };
     
     public static void CréerSauvegarde(string temps)
     {
         List<string> liste = File.ReadAllLines(Path).ToList();
-        int numeroNiveau = GestionJeuSolo.niveauActuel;
+        int indiceNiveau = GestionJeuSolo.niveauActuel - 1;
         
-        char[] ligne = liste[numeroNiveau - 1].ToCharArray();
+        char[] ligne = liste[indiceNiveau].ToCharArray();
 
         string ancienNbFlaps = GetAncienNombreFlap(ligne);
         string ancienTemps = GetAncienTemps(ligne);
         
-        
-        
-        Debug.Log(ancienTemps);
-        Debug.Log(ancienNbFlaps);
-        
-        if (Jump.nbSauts < int.Parse(ancienNbFlaps) && ComparerTemps(ancienTemps, temps))
+        if (Jump.nbSauts < int.Parse(GetAncienNombreFlap(ligne)) && TempsMeilleur(ancienTemps, temps))
         {
             Debug.Log("Meilleur temps");
-            liste[GestionJeuSolo.niveauActuel - 1] = $"{GestionJeuSolo.niveauActuel} {Jump.nbSauts} {temps}";
+            liste[indiceNiveau] = $"{GestionJeuSolo.niveauActuel} {Jump.nbSauts} {temps}";
         }
         else if (Jump.nbSauts < int.Parse(ancienNbFlaps))
         {
-            liste[GestionJeuSolo.niveauActuel - 1] = $"{GestionJeuSolo.niveauActuel} {Jump.nbSauts} {ancienTemps}";
+            liste[indiceNiveau] = $"{GestionJeuSolo.niveauActuel} {Jump.nbSauts} {ancienTemps}";
         }
-        else if (ComparerTemps(ancienTemps, temps))
+        else if (TempsMeilleur(ancienTemps, temps))
         {
-            liste[GestionJeuSolo.niveauActuel - 1] = $"{GestionJeuSolo.niveauActuel} {ancienNbFlaps} {temps}";
+            liste[indiceNiveau] = $"{GestionJeuSolo.niveauActuel} {ancienNbFlaps} {temps}";
         }
-        
         File.WriteAllLines(Path, liste.ToArray());
     }
 
@@ -49,10 +42,8 @@ public class Sauvegarde : MonoBehaviour
         int compteur = 2;
         while (ligne[compteur] != ' ')
         {
-            //Debug.Log(ligne[compteur]);
             nbFlap += ligne[compteur];
             compteur++;
-            
         }
         return nbFlap;
     }
@@ -60,20 +51,17 @@ public class Sauvegarde : MonoBehaviour
     public static string GetAncienTemps(char[] ligne)
     {
         string temps = "";
-        for (int i = indices[0]; i < ligne.Length; ++i)
+        for (int i = ligne.Length - 8; i < ligne.Length; ++i)
         {
             temps += ligne[i];
         }
         return temps;
     }
 
-    
-    private static bool ComparerTemps(string ancienTemps, string nouveauTemps)
+    private static bool TempsMeilleur(string ancienTemps, string nouveauTemps)
     {
         return FormatterTemps(nouveauTemps) < FormatterTemps(ancienTemps);
     }
-    
-
     
     private static int FormatterTemps(string temps)
     {
@@ -81,7 +69,7 @@ public class Sauvegarde : MonoBehaviour
         int deuxiemeChiffre = int.Parse(temps[3].ToString() + temps[4].ToString());
         int troisiemeChiffre = int.Parse(temps[6].ToString() + temps[7].ToString());
 
+        // Temps en millisecondes
         return premierChiffre * 60000 + deuxiemeChiffre * 1000 + troisiemeChiffre;
     }
-    
 }

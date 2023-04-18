@@ -30,7 +30,7 @@ public class GestionJeuSolo : MonoBehaviour
     public bool gameOn {  get; private set; }
     private int[,] CoupsParTrou;
 
-    public static int niveauActuel;
+    public static int niveauActuel = 1;
     private void Awake()
     {
         gameOn = false;
