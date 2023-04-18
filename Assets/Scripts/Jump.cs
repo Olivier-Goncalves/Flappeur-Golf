@@ -29,6 +29,7 @@ public class Jump : MonoBehaviour
         Vector3 velocity = _rigidbody.velocity;
         if (JoueurSaute() && isOnGreen)
         {
+            flapSFX.Play();
             _rigidbody.velocity = velocity / 1.5f - new Vector3(0, 0, velocity.z / 2);
             _rigidbody.AddRelativeForce(new Vector3(0, 0, jumpStrength * 12));
             nbSauts++;

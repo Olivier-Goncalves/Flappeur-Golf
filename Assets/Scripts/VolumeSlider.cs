@@ -1,11 +1,15 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class VolumeSlider : MonoBehaviour
 {
     [SerializeField] private Slider volumeSlider;
+
+    private void Awake()
+    {
+        volumeSlider.onValueChanged.AddListener(ChangeVolume);
+    }
+
     private void Start()
     {
         if (!PlayerPrefs.HasKey("volume"))
@@ -18,9 +22,9 @@ public class VolumeSlider : MonoBehaviour
             Load();
         }
     }
-    public void ChangeVolume()
+    public void ChangeVolume(float valeur)
     {
-        AudioListener.volume = volumeSlider.value;
+        AudioListener.volume = valeur;
     }
     public void Load()
     {
