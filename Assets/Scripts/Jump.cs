@@ -43,7 +43,7 @@ public class Jump : MonoBehaviour
             text.text = nbSauts.ToString();
     }
 
-    private bool JoueurSaute() => Input.GetMouseButtonDown(0) || Input.GetKeyUp(KeyCode.Space);
+    private bool JoueurSaute() => Input.GetKeyUp(KeyCode.Space);
     private void OnCollisionEnter(UnityEngine.Collision collision)
     {
         // Si il est sur le green
