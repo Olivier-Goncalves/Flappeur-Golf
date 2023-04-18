@@ -24,6 +24,8 @@ public class GestionJeuSolo : MonoBehaviour
     [SerializeField] private Button btnMenuPause;
     // Menu Nombre de Sauts
     [SerializeField] private TMP_Text nbCoupsTexte;
+    // volume slider
+    [SerializeField] private Slider volumeSlider;
     public bool pause { get; set; }
     public bool gameOn {  get; private set; }
     private int[,] CoupsParTrou;
@@ -132,7 +134,7 @@ public class GestionJeuSolo : MonoBehaviour
         ActiverJoueur(true);
         gameOn = true;
         ChangerPause(false);
-
+        
     }
     public void ActiverMenuArriverTrou(bool actif)
     {

@@ -19,7 +19,7 @@ public class Collision : MonoBehaviour
     [SerializeField] private Vector3 respawn;
     [SerializeField] private AudioSource deathSFX;
     [SerializeField] private AudioSource finNiveauSFX;
-    [SerializeField] private AudioSource respawnSFX;
+    [SerializeField] public AudioSource respawnSFX;
     private Transform transformComp;
     private Rigidbody _rigidbody;
     private Jump jumpComponent;
