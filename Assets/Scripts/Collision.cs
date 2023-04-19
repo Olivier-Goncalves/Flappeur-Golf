@@ -45,21 +45,9 @@ public class Collision : MonoBehaviour
             {
                 isDissolving = false;
                 isSolving = true;
-                if (GestionJeuSolo.estNiveauAleatoire)
-                {
-                    GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    GetComponent<Rigidbody>().useGravity = true;
-                    Jump.nbSauts = 0;
-                    transform.position = GameObject.Find("Spawn").transform.position;
-                    transform.gameObject.SetActive(true);
-                    GetComponent<Jump>().enabled = true;
-                    GetComponent<MouseControl>().enabled = true;
-                    GetComponentInChildren<Camera>().enabled = true;
-                }
-                else
-                {
-                    gestionnaireJeu.Ressusciter(gestionnaireJeu.index);
-                }
+                
+                gestionnaireJeu.Ressusciter();
+                
                 
                 respawnSFX.Play();
             }
@@ -95,18 +83,29 @@ public class Collision : MonoBehaviour
         }
         else if (collidedLayer == TrouLayer)
         {
+            
             finNiveauSFX.Play();
             Sauvegarde.CréerSauvegarde(TimeSpan.FromSeconds(Timer.timeRemaining).ToString(@"mm\:ss\:ff"));
             gestionnaireJeu.ReinitialiserCompteurSaut();
             jumpComponent.enabled = true;
             material.SetColor("_DissolveColor", Color.red);
             DesactiverAcceleration();  
+            
+            if (GestionJeuSolo.niveauActuel == 10)
+            {
+                Debug.Log("entrer dans trou");
+                GameObject.Find("Generateur").GetComponent<Corridors>().boutonRecommencer.GetComponentInParent<Canvas>()
+                    .enabled = true;
+                GameObject.Find("Generateur").GetComponent<Corridors>().boutonRecommencer.enabled = true;
+                GameObject.Find("Generateur").GetComponent<Corridors>().fond.enabled = true;
+            }
+            else
+            {
+                gestionnaireJeu.ActiverMenuArriverTrou(true);
+                gestionnaireJeu.ActiverJoueur(false);
+            }
             //isDissolving = true;
-            gestionnaireJeu.ActiverMenuArriverTrou(true);
-            gestionnaireJeu.ActiverJoueur(false);
-            
-          
-            
+           
         }
         else if (collidedLayer == layerBouleDeFeu)
         {

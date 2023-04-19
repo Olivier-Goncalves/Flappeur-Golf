@@ -15,17 +15,18 @@ public class GestionBoutonNiveau : MonoBehaviour
         {
             if (!GameObject.Find("GameManagerSolo").GetComponent<GestionJeuSolo>().gameOn)
             {
-                GenererScene(int.Parse(gameObject.name));
                 GestionJeuSolo.niveauActuel = int.Parse(gameObject.name);
-                GestionJeuSolo.estNiveauAleatoire = false;
-            }
-                
+                Spawns.spawnActuel = Spawns.spawns[GestionJeuSolo.niveauActuel - 1];
+                GenererScene();
+                Debug.Log(Spawns.spawns[GestionJeuSolo.niveauActuel - 1]);
+                Debug.Log("Spawn actuel = " +  Spawns.spawnActuel);
+            } 
         });
     }
 
-    private void GenererScene(int index)
+    private void GenererScene()
     {
-        GameObject.Find("GameManagerSolo").GetComponent<GestionJeuSolo>().Ressusciter(index);
+        GameObject.Find("GameManagerSolo").GetComponent<GestionJeuSolo>().Ressusciter();
         canvas.enabled = false;
     }
 }

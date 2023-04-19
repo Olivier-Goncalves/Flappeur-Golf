@@ -8,9 +8,7 @@ using UnityEngine.SceneManagement;
 // Fait par Olivier Gonçalves
 public class GestionJeuSolo : MonoBehaviour
 {
-    public static bool estNiveauAleatoire = false;
     public int index { get; set; }
-    [SerializeField] private List<Transform> spawns;
     [SerializeField] private GameObject joueur;
     //Menu Arrive Trou
     [SerializeField] private Canvas canvasMenuArrive;
@@ -95,11 +93,11 @@ public class GestionJeuSolo : MonoBehaviour
     }
     public void ChangerNiveau()
     {
-        if (index < spawns.Count)
+        if (index < Spawns.spawns.Count)
         {
             niveauActuel++;
-            index++;
-            Ressusciter(index);
+            Spawns.spawnActuel = Spawns.spawns[niveauActuel - 1];
+            Ressusciter();
         }
 
         ActiverJoueur(true);
@@ -129,13 +127,12 @@ public class GestionJeuSolo : MonoBehaviour
         ChangerPause(false);
         gameOn = true;
     }
-    public void Ressusciter(int indexPosition)
+    public void Ressusciter()
     {
         joueur.GetComponent<Rigidbody>().velocity = Vector3.zero;
         joueur.GetComponent<Rigidbody>().useGravity = true;
         ReinitialiserCompteurSaut();
-        index = indexPosition;
-        joueur.transform.position = spawns[indexPosition - 1].position;
+        joueur.transform.position = Spawns.spawnActuel;
         ActiverJoueur(true);
         gameOn = true;
         ChangerPause(false);

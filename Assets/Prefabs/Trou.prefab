@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5004983613363395089}
   - component: {fileID: 5004983613363395094}
   - component: {fileID: 5004983613363395095}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Trou
   m_TagString: Untagged
   m_Icon: {fileID: 0}

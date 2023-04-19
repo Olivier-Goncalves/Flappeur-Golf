@@ -21,6 +21,7 @@ public class Sauvegarde : MonoBehaviour
         string ancienTemps = GetAncienTemps(ligne);
 
         liste[indiceNiveau] = GestionJeuSolo.niveauActuel + " ";
+        
         if (Jump.nbSauts < ancienNbFlaps && TempsMeilleur(ancienTemps, temps))
         {
             liste[indiceNiveau] += Jump.nbSauts + " " + temps;
@@ -33,13 +34,17 @@ public class Sauvegarde : MonoBehaviour
         {
             liste[indiceNiveau] += ancienNbFlaps + " " + temps;
         }
+        else
+        {
+            liste[indiceNiveau] += ancienNbFlaps + " " + ancienTemps;
+        }
         File.WriteAllLines(Path, liste.ToArray());
     }
 
     public static string GetAncienNombreFlap(char[] ligne)
     {
         string nbFlap = "";
-        int compteur = 2;
+        int compteur = GestionJeuSolo.niveauActuel == 10 ? 3 : 2;
         while (ligne[compteur] != ' ')
         {
             nbFlap += ligne[compteur];

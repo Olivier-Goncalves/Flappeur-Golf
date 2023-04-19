@@ -4,6 +4,9 @@ using UnityEngine;
 using System;
 using System.Linq;
 using Shapes2D;
+using Unity.VisualScripting;
+using UnityEngine.InputSystem.HID;
+using UnityEngine.UI;
 
 // Fait par Guillaume Flamand
 public class Corridors : MonoBehaviour
@@ -29,17 +32,50 @@ public class Corridors : MonoBehaviour
     private List<Vector3> positionsPlanchers = new();
 
     private GameObject parent;
-
-    private GameObject spawn;
+    public Button boutonGenerer;
+    public Button boutonRecommencer;
+    public RawImage fond;
+    public RawImage fondDébut;
+    
     private void Awake()
     {
-        GestionJeuSolo.estNiveauAleatoire = true;
-        parent = new GameObject("Niveau Aléatoire");
-        spawn = new GameObject("Spawn");
+        fondDébut.enabled = true;
+        GestionJeuSolo.niveauActuel = 10;
+        boutonRecommencer.onClick.AddListener(() =>
+        {
+            Recommencer();
+            boutonRecommencer.GetComponentInParent<Canvas>().enabled = false;
+            boutonRecommencer.enabled = false;
+            fond.enabled = false;
+        });
+        boutonRecommencer.enabled = false;
+        boutonRecommencer.GetComponentInParent<Canvas>().enabled = false;
+        
+        
+        boutonGenerer.onClick.AddListener(() =>
+        {
+            parent = new GameObject("Niveau Aléatoire");
+            CréerNiveau();
+            boutonGenerer.GetComponentInParent<Canvas>().enabled = false;
+            boutonGenerer.enabled = false;
+            fondDébut.enabled = false;
+            fond.enabled = false;
+        });
+    }
+    public void Recommencer()
+    {
+        Destroy(parent);
+        positionsPlanchers = new List<Vector3>();
+        positionPotentiellesChambres = new List<Vector3>();
+        parent = new GameObject();
+        parent.name = "Niveau Aléatoire";
+        chambres = new List<List<Vector3>>();
         CréerNiveau();
     }
+    
     private void CréerNiveau()
     {
+        Debug.Log("Créer niveau appleé");
         CréerCorridors();
         CreerChambres();
         
@@ -61,7 +97,7 @@ public class Corridors : MonoBehaviour
                 {
                     if (j == 85)
                     {
-                        spawn.transform.position = chambres[i][j] + new Vector3(0,0.5f,0);
+                        //Spawns.spawnActuel = chambres[i][j] + new Vector3(0,0.5f,0);
                     }
                 }
                 else if (i == indiceChambrePlusLoin)
@@ -71,6 +107,7 @@ public class Corridors : MonoBehaviour
                         GameObject trou = Instantiate(drapeau, chambres[i][j] + new Vector3(0,0.25f,0), transform.rotation);
                         trou.name = "Trou";
                         trou.transform.SetParent(parent.transform);
+                        Spawns.spawnActuel = chambres[i][j] + new Vector3(5,0.5f,0);
                     }
                 }
                 else
@@ -89,15 +126,15 @@ public class Corridors : MonoBehaviour
                         {
                             case 0:
                                 zone = Instantiate(zoneInverseGravité,chambres[i][j], transform.rotation);
-                                zone.transform.SetParent(parent.transform);
+                                zone.transform.SetParent(chambre.transform);
                                 break;
                             case 1:
                                 zone = Instantiate(zoneAccelereGravité,chambres[i][j], transform.rotation);
-                                zone.transform.SetParent(parent.transform);
+                                zone.transform.SetParent(chambre.transform);
                                 break;
                             case 2:
                                 zone = Instantiate(zoneAccelereEtInverseGravité,chambres[i][j], transform.rotation);
-                                zone.transform.SetParent(parent.transform);
+                                zone.transform.SetParent(chambre.transform);
                                 break;
                         }
                     }
@@ -112,10 +149,8 @@ public class Corridors : MonoBehaviour
         }
         InstancierCorridors();
         InstancierMurs();
-        
-        GameObject player = Instantiate(joueur, spawn.transform.position, transform.rotation);
-        player.transform.SetParent(parent.transform);
-        
+
+        GameObject.Find("JoueurLocal").transform.position = Spawns.spawnActuel;
     }
 
     private void InstancierMurs()
