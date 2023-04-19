@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class GestionJeuSolo : MonoBehaviour
 {
     public int index { get; set; }
-    [SerializeField]private Transform[] spawns;
+    [SerializeField] private List<Transform> spawns;
     [SerializeField] private GameObject joueur;
     //Menu Arrive Trou
     [SerializeField] private Canvas canvasMenuArrive;
@@ -41,11 +41,11 @@ public class GestionJeuSolo : MonoBehaviour
         btnMenuPause.onClick.AddListener(clickBoutonMenu);
         CoupsParTrou = new int[,] 
         {
-            {30,35,40 },
-            {65,70,75 },
-            {60,65,70 },
-            {60,65,70 },
-            {65,70,75 }
+            {30,35,40},
+            {65,70,75},
+            {60,65,70},
+            {60,65,70},
+            {65,70,75}
         };
     }
 
@@ -89,13 +89,12 @@ public class GestionJeuSolo : MonoBehaviour
         { 
             nbCoupsTexte.text = $"{CoupsParTrou[index - 1,0]}         {CoupsParTrou[index - 1, 1]}         {CoupsParTrou[index - 1, 2]}";
         }
-        
-            nbCoupsTexte.GetComponentInParent<Canvas>().enabled = actif;
+        nbCoupsTexte.GetComponentInParent<Canvas>().enabled = actif;
         
     }
     public void ChangerNiveau()
     {
-        if (index < spawns.Length)
+        if (index < spawns.Count)
         {
             niveauActuel++;
             index++;
@@ -123,6 +122,7 @@ public class GestionJeuSolo : MonoBehaviour
     }
     private void clickBoutonRetourPartie()
     {
+        canvasVolumeSlider.gameObject.SetActive(true);
         ActiverJoueur(true);
         canvasMenuPause.enabled = false;
         ChangerPause(false);
@@ -130,7 +130,6 @@ public class GestionJeuSolo : MonoBehaviour
     }
     public void Ressusciter(int indexPosition)
     {
-
         joueur.GetComponent<Rigidbody>().velocity = Vector3.zero;
         joueur.GetComponent<Rigidbody>().useGravity = true;
         ReinitialiserCompteurSaut();
@@ -139,7 +138,6 @@ public class GestionJeuSolo : MonoBehaviour
         ActiverJoueur(true);
         gameOn = true;
         ChangerPause(false);
-        
     }
     public void ActiverMenuArriverTrou(bool actif)
     {

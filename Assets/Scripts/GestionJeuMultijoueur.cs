@@ -13,7 +13,7 @@ using UnityEngine.Rendering;
 public class GestionJeuMultijoueur : NetworkBehaviour
 {
     // Variables Logique jeu
-    public Transform[] spawns;
+    public List<Transform> spawns;
     private int positionArrivé = 0;
     private int indexNiveau = 0;
     private int nbJoueurs;

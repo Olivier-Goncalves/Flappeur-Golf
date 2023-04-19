@@ -18,11 +18,9 @@ public class Corridors : MonoBehaviour
     [SerializeField] private GameObject lanceurBouleDeFeu;
     [SerializeField] private GameObject laser;
     [SerializeField] private GameObject zoneInverseGravité;
-    [SerializeField] private GameObject zoneAccelereGRavité;
+    [SerializeField] private GameObject zoneAccelereGravité;
     [SerializeField] private GameObject zoneAccelereEtInverseGravité;
     [SerializeField] private GameObject drapeau;
-    [SerializeField] private Material premiereChambre;
-    [SerializeField] private Material derniereChambre;
     
     List<Vector3> positionPotentiellesChambres = new();
     
@@ -38,17 +36,6 @@ public class Corridors : MonoBehaviour
         parent = new GameObject("Niveau Aléatoire");
         spawn = new GameObject("Spawn");
         spawn.transform.SetParent(parent.transform);
-        CréerNiveau();
-    }
-    
-    public void Recommencer()
-    {
-        Destroy(parent);
-        positionPotentiellesChambres = new List<Vector3>();
-        chambres = new List<List<Vector3>>();
-        parent = new GameObject("Niveau Aléatoire");
-        spawn = new GameObject("Spawn");
-        spawn.transform.SetParent(transform);
         CréerNiveau();
     }
     private void CréerNiveau()
@@ -72,8 +59,6 @@ public class Corridors : MonoBehaviour
                 
                 if (i == indiceChambre0)
                 {
-                    nouveauPlancher.GetComponent<Renderer>().material = premiereChambre; 
-                    
                     if (j == 85)
                     {
                         spawn.transform.position = chambres[i][j] + new Vector3(0,0.5f,0);
@@ -81,8 +66,6 @@ public class Corridors : MonoBehaviour
                 }
                 else if (i == indiceChambrePlusLoin)
                 {
-                    nouveauPlancher.GetComponent<Renderer>().material = derniereChambre; 
-
                     if (j == 60)
                     {
                         GameObject trou = Instantiate(drapeau, chambres[i][j] + new Vector3(0,0.25f,0), transform.rotation);
@@ -109,7 +92,7 @@ public class Corridors : MonoBehaviour
                                 zone.transform.SetParent(parent.transform);
                                 break;
                             case 1:
-                                zone = Instantiate(zoneAccelereGRavité,chambres[i][j], transform.rotation);
+                                zone = Instantiate(zoneAccelereGravité,chambres[i][j], transform.rotation);
                                 zone.transform.SetParent(parent.transform);
                                 break;
                             case 2:
@@ -118,10 +101,10 @@ public class Corridors : MonoBehaviour
                                 break;
                         }
                     }
-
                     if (j == 5)
                     {
                         GameObject onde = Instantiate(lanceurOndes, chambres[i][j] + new Vector3(0,4f,0), transform.rotation);
+                        onde.transform.SetParent(chambre.transform);
                     }
                 }
             }
@@ -132,6 +115,7 @@ public class Corridors : MonoBehaviour
         
         GameObject player = Instantiate(joueur, spawn.transform.position, transform.rotation);
         player.transform.SetParent(parent.transform);
+        
     }
 
     private void InstancierMurs()
@@ -297,7 +281,6 @@ public class Corridors : MonoBehaviour
         }
         return corridor;
     }
-
     private static List<Vector3> CréerCheminPlancherChambre()
     {
         List<Vector3> chemin = new List<Vector3>();
