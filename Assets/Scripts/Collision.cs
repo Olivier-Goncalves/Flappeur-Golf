@@ -46,6 +46,7 @@ public class Collision : MonoBehaviour
                 isDissolving = false;
                 isSolving = true;
                 gestionnaireJeu.Ressusciter(gestionnaireJeu.index);
+                respawnSFX.Play();
             }
         }
         if (isSolving)
