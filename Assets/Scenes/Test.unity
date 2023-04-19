@@ -379,11 +379,9 @@ MonoBehaviour:
   lanceurBouleDeFeu: {fileID: 4505538425031287349, guid: 36001cfe4f94b3f42a18f75d7271b8a2, type: 3}
   laser: {fileID: 4210717250828663770, guid: a626c87afa66c3d4cbe01b2dd58241d8, type: 3}
   "zoneInverseGravit\xE9": {fileID: 1882395680968925435, guid: f25c433cf8c14c543803ce0c588ba239, type: 3}
-  "zoneAccelereGRavit\xE9": {fileID: 6032433694512159342, guid: 2a0eae46f36b5d24ea254efef6d1fcf9, type: 3}
+  "zoneAccelereGravit\xE9": {fileID: 6032433694512159342, guid: 2a0eae46f36b5d24ea254efef6d1fcf9, type: 3}
   "zoneAccelereEtInverseGravit\xE9": {fileID: 876517677340668161, guid: 2495b0ac20dff9140a11966ac3adc36f, type: 3}
   drapeau: {fileID: 5004983613363395092, guid: 52e1ed85bba435e47b5bfbdab8b9bece, type: 3}
-  premiereChambre: {fileID: 2100000, guid: b98bdcb5b6027a64986365d7ff0358d8, type: 2}
-  derniereChambre: {fileID: 2100000, guid: 1c39017bb5078dd45a5ca4bc2507d631, type: 2}
 --- !u!4 &2076504208
 Transform:
   m_ObjectHideFlags: 0

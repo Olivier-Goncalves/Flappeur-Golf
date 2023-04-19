@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class TeleporterJeu : NetworkBehaviour
 {
-    private Transform[] spawns;
+    private List<Transform> spawns;
 
     private void Awake()
     {

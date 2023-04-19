@@ -17,6 +17,7 @@ public class GestionBoutonNiveau : MonoBehaviour
             {
                 GenererScene(int.Parse(gameObject.name));
                 GestionJeuSolo.niveauActuel = int.Parse(gameObject.name);
+                GestionJeuSolo.estNiveauAleatoire = false;
             }
                 
         });

@@ -9,29 +9,29 @@ using UnityEngine;
 public class Sauvegarde : MonoBehaviour
 {
     private const string Path = "Assets/Sauvegarde Joueur Solo/Sauvegarde.txt";
-    
     public static void CréerSauvegarde(string temps)
     {
         List<string> liste = File.ReadAllLines(Path).ToList();
+        
         int indiceNiveau = GestionJeuSolo.niveauActuel - 1;
         
         char[] ligne = liste[indiceNiveau].ToCharArray();
 
-        string ancienNbFlaps = GetAncienNombreFlap(ligne);
+        int ancienNbFlaps = int.Parse(GetAncienNombreFlap(ligne));
         string ancienTemps = GetAncienTemps(ligne);
-        
-        if (Jump.nbSauts < int.Parse(GetAncienNombreFlap(ligne)) && TempsMeilleur(ancienTemps, temps))
+
+        liste[indiceNiveau] = GestionJeuSolo.niveauActuel + " ";
+        if (Jump.nbSauts < ancienNbFlaps && TempsMeilleur(ancienTemps, temps))
         {
-            Debug.Log("Meilleur temps");
-            liste[indiceNiveau] = $"{GestionJeuSolo.niveauActuel} {Jump.nbSauts} {temps}";
+            liste[indiceNiveau] += Jump.nbSauts + " " + temps;
         }
-        else if (Jump.nbSauts < int.Parse(ancienNbFlaps))
+        else if (Jump.nbSauts < ancienNbFlaps)
         {
-            liste[indiceNiveau] = $"{GestionJeuSolo.niveauActuel} {Jump.nbSauts} {ancienTemps}";
+            liste[indiceNiveau] += Jump.nbSauts + " " + ancienTemps;
         }
         else if (TempsMeilleur(ancienTemps, temps))
         {
-            liste[indiceNiveau] = $"{GestionJeuSolo.niveauActuel} {ancienNbFlaps} {temps}";
+            liste[indiceNiveau] += ancienNbFlaps + " " + temps;
         }
         File.WriteAllLines(Path, liste.ToArray());
     }
@@ -58,11 +58,7 @@ public class Sauvegarde : MonoBehaviour
         return temps;
     }
 
-    private static bool TempsMeilleur(string ancienTemps, string nouveauTemps)
-    {
-        return FormatterTemps(nouveauTemps) < FormatterTemps(ancienTemps);
-    }
-    
+    private static bool TempsMeilleur(string ancienTemps, string nouveauTemps) => FormatterTemps(nouveauTemps) < FormatterTemps(ancienTemps);
     private static int FormatterTemps(string temps)
     {
         int premierChiffre = int.Parse(temps[0].ToString() + temps[1].ToString());
