@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 // Fait par Olivier Gonçalves
 public class GestionJeuSolo : MonoBehaviour
 {
+    public static bool estNiveauAleatoire = false;
     public int index { get; set; }
     [SerializeField] private List<Transform> spawns;
     [SerializeField] private GameObject joueur;

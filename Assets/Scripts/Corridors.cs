@@ -33,9 +33,9 @@ public class Corridors : MonoBehaviour
     private GameObject spawn;
     private void Awake()
     {
+        GestionJeuSolo.estNiveauAleatoire = true;
         parent = new GameObject("Niveau Aléatoire");
         spawn = new GameObject("Spawn");
-        spawn.transform.SetParent(parent.transform);
         CréerNiveau();
     }
     private void CréerNiveau()

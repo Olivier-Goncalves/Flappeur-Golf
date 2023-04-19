@@ -45,7 +45,22 @@ public class Collision : MonoBehaviour
             {
                 isDissolving = false;
                 isSolving = true;
-                gestionnaireJeu.Ressusciter(gestionnaireJeu.index);
+                if (GestionJeuSolo.estNiveauAleatoire)
+                {
+                    GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    GetComponent<Rigidbody>().useGravity = true;
+                    Jump.nbSauts = 0;
+                    transform.position = GameObject.Find("Spawn").transform.position;
+                    transform.gameObject.SetActive(true);
+                    GetComponent<Jump>().enabled = true;
+                    GetComponent<MouseControl>().enabled = true;
+                    GetComponentInChildren<Camera>().enabled = true;
+                }
+                else
+                {
+                    gestionnaireJeu.Ressusciter(gestionnaireJeu.index);
+                }
+                
                 respawnSFX.Play();
             }
         }
@@ -73,7 +88,6 @@ public class Collision : MonoBehaviour
         }
         else if (collidedLayer == AcidZoneLayer)
         {
-            gestionnaireJeu.ReinitialiserCompteurSaut();
             deathSFX.Play();
             material.SetColor("_DissolveColor", material.GetColor("_AcidDissolveColor"));
             DesactiverAcceleration();
@@ -91,14 +105,15 @@ public class Collision : MonoBehaviour
             gestionnaireJeu.ActiverMenuArriverTrou(true);
             gestionnaireJeu.ActiverJoueur(false);
             
+          
+            
         }
         else if (collidedLayer == layerBouleDeFeu)
         {
-            gestionnaireJeu.ReinitialiserCompteurSaut();
             deathSFX.Play();
             material.SetColor("_DissolveColor", material.GetColor("_FireDissolveColor"));
             DesactiverAcceleration();
-            isDissolving = true;
+            Détruire();
         }
         else if (collidedLayer == ondeLayer)
         {
