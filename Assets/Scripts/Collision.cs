@@ -86,7 +86,7 @@ public class Collision : MonoBehaviour
             gestionnaireJeu.ReinitialiserCompteurSaut();
             jumpComponent.enabled = true;
             material.SetColor("_DissolveColor", Color.red);
-            DesactiverAcceleration();
+            DesactiverAcceleration();  
             //isDissolving = true;
             gestionnaireJeu.ActiverMenuArriverTrou(true);
             gestionnaireJeu.ActiverJoueur(false);

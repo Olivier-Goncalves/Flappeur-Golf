@@ -30,6 +30,9 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     [SerializeField] private TMP_Text affichagePosition;
     [SerializeField] private Canvas canvasClassement;
 
+    // [SerializeField]
+    // private AudioSource musique;
+
 
     // ------------------------------------------ DEBUT SECTION MENUS ---------------------------------------------------- //
     private void Awake()
@@ -40,6 +43,7 @@ public class GestionJeuMultijoueur : NetworkBehaviour
             boutonCommencer.gameObject.GetComponentInParent<Canvas>().enabled = false;
             CommencerPartie();
         });
+        // musique.Play();
     }
 
     private void GenererSceneRetour()
@@ -79,18 +83,16 @@ public class GestionJeuMultijoueur : NetworkBehaviour
                     fondTimer.enabled = false;
                     ActiverJoueursClientRpc(true);
                 }
-                
                 if (montrerClassement)
                 {
                     canvasClassement.enabled = false;
                     montrerClassement = false;
                     PlayTimer();
                 }
-                
-                timerOn = false;    
             }
         }
-        Debug.Log(timerOn);
+        Debug.Log("timer: " + timerOn);
+        Debug.Log("classement: " + montrerClassement);
     }
     public void CommencerPartie()
     {

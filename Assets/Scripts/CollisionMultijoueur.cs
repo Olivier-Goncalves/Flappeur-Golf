@@ -79,6 +79,7 @@ public class CollisionMultijoueur : NetworkBehaviour
         }
         if (isSolving)
         {
+            jumpComponent.enabled = false;
             material.SetColor("_DissolveColor", material.GetColor("_Color"));
             alpha -= Time.deltaTime;
             material.SetFloat("_Alpha", alpha);
@@ -102,11 +103,11 @@ public class CollisionMultijoueur : NetworkBehaviour
         else if (collidedLayer == AcidZoneLayer)
         {
             deathSFX.Play();
-            jumpComponent.enabled = false;
             material.SetColor("_DissolveColor", material.GetColor("_AcidDissolveColor"));
             transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
             isDissolving = true;
+            jumpComponent.enabled = false;
         }
         else if (collidedLayer == TrouLayer)
         {
