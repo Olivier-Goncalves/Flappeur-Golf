@@ -86,7 +86,7 @@ public class Collision : MonoBehaviour
             
             finNiveauSFX.Play();
             Sauvegarde.CréerSauvegarde(TimeSpan.FromSeconds(Timer.timeRemaining).ToString(@"mm\:ss\:ff"));
-            gestionnaireJeu.ReinitialiserCompteurSaut();
+            // gestionnaireJeu.ReinitialiserCompteurSaut();
             jumpComponent.enabled = true;
             material.SetColor("_DissolveColor", Color.red);
             DesactiverAcceleration();  
