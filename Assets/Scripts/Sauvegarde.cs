@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -21,14 +22,15 @@ public class Sauvegarde : MonoBehaviour
         string ancienTemps = GetAncienTemps(ligne);
 
         liste[indiceNiveau] = GestionJeuSolo.niveauActuel + " ";
-        
-        if (Jump.nbSauts < ancienNbFlaps && TempsMeilleur(ancienTemps, temps))
+
+        int nbSautActuel = GameObject.Find("JoueurLocal").GetComponent<Jump>().nbSauts;
+        if (nbSautActuel < ancienNbFlaps && TempsMeilleur(ancienTemps, temps))
         {
-            liste[indiceNiveau] += Jump.nbSauts + " " + temps;
+            liste[indiceNiveau] += nbSautActuel + " " + temps;
         }
-        else if (Jump.nbSauts < ancienNbFlaps)
+        else if (nbSautActuel < ancienNbFlaps)
         {
-            liste[indiceNiveau] += Jump.nbSauts + " " + ancienTemps;
+            liste[indiceNiveau] += nbSautActuel + " " + ancienTemps;
         }
         else if (TempsMeilleur(ancienTemps, temps))
         {
@@ -55,7 +57,7 @@ public class Sauvegarde : MonoBehaviour
 
     public static string GetAncienTemps(char[] ligne)
     {
-        string temps = "";
+        string temps = String.Empty;
         for (int i = ligne.Length - 8; i < ligne.Length; ++i)
         {
             temps += ligne[i];

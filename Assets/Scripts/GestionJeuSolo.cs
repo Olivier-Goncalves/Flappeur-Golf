@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Shapes2D;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -153,7 +154,7 @@ public class GestionJeuSolo : MonoBehaviour
     }
     public void ReinitialiserCompteurSaut()
     {
-        Jump.nbSauts = 0;
+        GameObject.Find("JoueurLocal").GetComponent<Jump>().nbSauts = 0;
     }
     private void ChangerPause(bool estEnPause)
     {

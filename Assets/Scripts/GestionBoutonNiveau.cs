@@ -18,8 +18,6 @@ public class GestionBoutonNiveau : MonoBehaviour
                 GestionJeuSolo.niveauActuel = int.Parse(gameObject.name);
                 Spawns.spawnActuel = Spawns.spawns[GestionJeuSolo.niveauActuel - 1];
                 GenererScene();
-                Debug.Log(Spawns.spawns[GestionJeuSolo.niveauActuel - 1]);
-                Debug.Log("Spawn actuel = " +  Spawns.spawnActuel);
             } 
         });
     }

@@ -627,7 +627,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2a3bdbadfb0c3f42be9680764e0f720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeRemaining: 0
   timeText: {fileID: 7621344671109111759}
 --- !u!1 &5841365167247044648
 GameObject:
@@ -651,6 +650,7 @@ GameObject:
   - component: {fileID: 2502836235372106554}
   - component: {fileID: 47489929464579616}
   - component: {fileID: 5845607294640918528}
+  - component: {fileID: 8534366455362785766}
   m_Layer: 10
   m_Name: JoueurLocal
   m_TagString: Player
@@ -755,7 +755,6 @@ MonoBehaviour:
   green: {fileID: 2100000, guid: 51707e5c919219f4e96e71ceb7446a28, type: 2}
   jumpStrength: 100
   text: {fileID: 3461608710537392516}
-  nbSauts: 0
   isOnGreen: 0
 --- !u!54 &5841365167247044646
 Rigidbody:
@@ -1209,6 +1208,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8534366455362785766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5841365167247044648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06344cc43c617c54b88983c1186e37df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5841365167851889601
 GameObject:
   m_ObjectHideFlags: 0

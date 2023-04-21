@@ -51,7 +51,6 @@ public class Corridors : MonoBehaviour
         boutonRecommencer.enabled = false;
         boutonRecommencer.GetComponentInParent<Canvas>().enabled = false;
         
-        
         boutonGenerer.onClick.AddListener(() =>
         {
             parent = new GameObject("Niveau Aléatoire");
@@ -97,7 +96,7 @@ public class Corridors : MonoBehaviour
                 {
                     if (j == 85)
                     {
-                        //Spawns.spawnActuel = chambres[i][j] + new Vector3(0,0.5f,0);
+                        Spawns.spawnActuel = chambres[i][j] + new Vector3(0,0.5f,0);
                     }
                 }
                 else if (i == indiceChambrePlusLoin)
@@ -107,7 +106,6 @@ public class Corridors : MonoBehaviour
                         GameObject trou = Instantiate(drapeau, chambres[i][j] + new Vector3(0,0.25f,0), transform.rotation);
                         trou.name = "Trou";
                         trou.transform.SetParent(parent.transform);
-                        Spawns.spawnActuel = chambres[i][j] + new Vector3(5,0.5f,0);
                     }
                 }
                 else

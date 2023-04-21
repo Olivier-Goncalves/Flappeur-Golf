@@ -7,10 +7,19 @@ using UnityEngine;
 public class SpawnBouleDeFeu : MonoBehaviour
 {
     [SerializeField] private GameObject bouleDeFeu;
-
-    private void Awake()
+    private void Start()
     {
-        GameObject boule = Instantiate(bouleDeFeu, transform.position, quaternion.identity);
+        Transform[] childs = transform.GetComponentsInChildren<Transform>();
+        Transform transformToSpawn = transform;
+        foreach (var transform in childs)
+        {
+            if (transform.gameObject.name == "positionSpawn")
+            {
+                transformToSpawn = transform;
+            }
+        }
+        GameObject boule = Instantiate(bouleDeFeu, transformToSpawn.position, quaternion.identity);
+        
         boule.transform.SetParent(transform);
     }
 }
