@@ -7,7 +7,7 @@ using UnityEngine;
 public class CouleurJoueur : NetworkBehaviour
 {
     private Material material;
-    private Color[] colors = new[]
+    public static Color[] colors = new[]
     {
         Color.blue, Color.black, Color.red, Color.green, Color.cyan, Color.magenta, Color.yellow, Color.gray,
         Color.white

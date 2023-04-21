@@ -22,7 +22,7 @@ public class TeleporterJeu : NetworkBehaviour
         {
             transform.position = spawns[index].position;
             GetComponent<Rigidbody>().velocity = Vector3.zero;
-            Debug.Log("Téléporter est appellé avec l'index: " + index);
+            // Debug.Log("Téléporter est appellé avec l'index: " + index);
         }
     }
 }
