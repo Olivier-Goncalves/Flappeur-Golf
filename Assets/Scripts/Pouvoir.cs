@@ -11,14 +11,14 @@ public class Pouvoir : MonoBehaviour
     {
         if (other.gameObject.layer == pouvoirLayer)
         {
-            GetComponent<Jump>().jumpStrength = UnityEngine.Random.Range(0, 2) == 0 ? 50 : 150;
+            GetComponent<Jump>().jumpStrength = UnityEngine.Random.Range(0, 2) == 0 ? 25 : 150;
             Destroy(other.gameObject);
         }
     }
     private void Update()
     {
         elapsedTime += Time.deltaTime;
-        if (elapsedTime > 30)
+        if (elapsedTime > 7.5f)
         {
             elapsedTime = 0;
             GetComponent<Jump>().jumpStrength = 100;
