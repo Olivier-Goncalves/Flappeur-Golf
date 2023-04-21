@@ -1,28 +1,24 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO.Pipes;
 using System.Linq;
+using System.Text;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-using Unity.PlasticSCM.Editor.WebApi;
-using UnityEditor;
-using UnityEngine.Rendering;
 
 
 public class GestionJeuMultijoueur : NetworkBehaviour
 {
     // Variables Logique jeu
     public List<Transform> spawns;
-    private int positionArrivé = 0;
-    private int indexNiveau = 0;
+    private int positionArrivé;
+    private int indexNiveau;
     private int nbJoueurs;
-    private bool timerOn = false;
+    private bool timerOn;
     private NetworkVariable<float> timeLeft;
-    private bool montrerClassement = false;
+
+    private bool montrerClassement;
     // Variables Menus
     [SerializeField] private Button boutonRetour;
     [SerializeField] private Button boutonCommencer;
@@ -37,22 +33,12 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     private Dictionary<int, int> pointsJoueurs;
     // [SerializeField]
     // private AudioSource musique;
-    public static string[] couleurs = new[]
+    private static string[] couleurs = new[]
     {
         "bleu", "noir", "rouge", "vert", "cyan", "magenta", "jaune", "gris",
         "blanc", "orange"
     };
-    private NetworkList<int> classement;
-    private NetworkList<int> points;
-    private bool gameOn = false;
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-        // classement = new NetworkList<int>(new int[]{1,2});
-        // classement.Add(1);
-        // classement.OnListChanged += (previous) => 
-            // {Debug.Log($"La liste était [{previous.Value}] et maintenant elle est [{classement[previous.Index]}]"); };
-    }
+    private bool gameOn;
 
     // ------------------------------------------ DEBUT SECTION MENUS ---------------------------------------------------- //
     private void Awake()
@@ -72,8 +58,8 @@ public class GestionJeuMultijoueur : NetworkBehaviour
         };
         
 
-        classement = new NetworkList<int>(new int[10]);
-        points = new NetworkList<int>(new int[10]);
+        // classement = new NetworkList<int>(new int[10]);
+        // points = new NetworkList<int>(new int[10]);
         timeLeft = new NetworkVariable<float>(5);
         boutonRetour.onClick.AddListener(GenererSceneRetour);
         boutonCommencer.onClick.AddListener(() =>
@@ -101,63 +87,52 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     // --------------------------------------------- FIN SECTION MENUS ------------------------------------------------- // 
     private void Update()
     {
-        // if (gameOn && IsHost)
-        // {
-        //     classement.Add(2);
-        //     var attendre = new WaitForSeconds(5f);
-        //     
-        // }
-        if (timerOn && IsHost)
+        if (timerOn)
         {
-            timeLeft.Value -= Time.deltaTime;
-            timer.text = Mathf.RoundToInt(timeLeft.Value).ToString();
-            if(timeLeft.Value <= 0)
+            if (IsHost)
             {
-                // timerOn = false;
-                timeLeft.Value = 5;
-                if (!montrerClassement)
+                timeLeft.Value -= Time.deltaTime;
+                if(timeLeft.Value <= 0)
                 {
-                    AfficherTimerClientRpc(false);
-                    timer.enabled = false;
-                    fondTimer.enabled = false;
-                    ActiverJoueursClientRpc(true);
-                    timerOn = false;
-                }
-                else
-                {
-                    AfficherClassementClientRpc(false,classementTexte.text);
-                    PlayTimer();
+                    timeLeft.Value = 5;
+                    if (!montrerClassement)
+                    {
+                        PlayTimer(false);
+                    }
+                    else
+                    {
+                        AfficherClassementClientRpc(false,classementTexte.text);
+                        PlayTimer(true);
+                    }
                 }
             }
+            
+            timer.text = Mathf.RoundToInt(timeLeft.Value).ToString();
+            
         }
-        // Debug.Log("timer: " + timerOn);
-        // Debug.Log("classement: " + montrerClassement);
-        // Debug.Log(timeLeft.Value);
-        // Debug.Log($"classement[0]: {classement[9]}, classement[1]: {classement[8]} ");
-        // Debug.Log($"[0, {pointsJoueurs[0]}], [1, {pointsJoueurs[1]}]");
     }
-    public void CommencerPartie()
+    private void CommencerPartie()
     {
         gameOn = true;
         nbJoueurs = NetworkManager.ConnectedClientsList.Count;
         CommencerNiveau();
     }
     
-    public void CommencerNiveau()
+    private void CommencerNiveau()
     {
-        PlayTimer();
+        PlayTimer(true);
         TeleporterClientRpc(indexNiveau);
     }
     
-    private void PlayTimer()
+    private void PlayTimer(bool estActif)
     {
         // Debug.Log("Pars le Timer de 5 secondes");
         
-        timerOn = true;
-        timer.enabled = true;
-        fondTimer.enabled = true;
-        ActiverJoueursClientRpc(false);
-        AfficherTimerClientRpc(true);
+        timer.enabled = estActif;
+        fondTimer.enabled = estActif;
+        ActiverJoueursClientRpc(!estActif);
+        AfficherTimerClientRpc(estActif);
+        timerOn = estActif;
     }
     [ClientRpc]
     private void AfficherTimerClientRpc(bool afficher)
@@ -176,110 +151,71 @@ public class GestionJeuMultijoueur : NetworkBehaviour
         }
     }
 
-    private void AjusterClassement(int nouvellePosition, int joueurId)
-    {
-        // classement[nouvellePosition] = joueurId;
-        points[joueurId] += nbJoueurs - nouvellePosition;
-        pointsJoueurs[joueurId] += nbJoueurs - nouvellePosition;
-        Debug.Log(points[joueurId]);
-    }
     
     [ServerRpc(RequireOwnership = false)]
     private void GererArriverTrouServerRpc(int networkId)
     {
         AjusterClassement(positionArrivé, networkId);
         AjusterPositionJoueurClientRpc(positionArrivé + 1);
-        // timerOn = false;
         if (positionArrivé == nbJoueurs)
         {
             
             var mySortedList = pointsJoueurs.OrderBy(d => d.Value).ToList();
             var joueurIdEnOrdre = (from test in mySortedList select test.Key).Distinct().ToList();
-            classement = new NetworkList<int>(joueurIdEnOrdre.ToArray());
-            foreach (var element in classement)
+            foreach (var element in joueurIdEnOrdre)
             {
                 Debug.Log("element dans classement: "+element);
             }
-            classementTexte.text = $"points: {pointsJoueurs[joueurIdEnOrdre[9]]} -- Joueur {couleurs[joueurIdEnOrdre[9]]}\n" +
-                                   $"points: {pointsJoueurs[joueurIdEnOrdre[8]]} -- Joueur {couleurs[joueurIdEnOrdre[8]]}\n" +
-                                   $"{couleurs[2]}\n" +
-                                   $"{couleurs[3]}\n" +
-                                   $"{couleurs[4]}\n" +
-                                   $"{couleurs[5]}\n" +
-                                   $"{couleurs[6]}\n" +
-                                   $"{couleurs[7]}\n" +
-                                   $"{couleurs[8]}\n" +
-                                   $"{couleurs[9]}\n";
-                                   // // Debug.Log("Le if est appellé");
-                                   AfficherClassementClientRpc(true, classementTexte.text);
+
+            StringBuilder sb = new StringBuilder();
+            
+            for (int i = 0; i < nbJoueurs; i++)
+            {
+                var indexJoueur = joueurIdEnOrdre.Count - 1 - i;
+                sb.Append($"points: {pointsJoueurs[joueurIdEnOrdre[indexJoueur]]} -- Joueur {couleurs[joueurIdEnOrdre[indexJoueur]]}\n");
+            }
+            
+            classementTexte.text = sb.ToString();
+            AfficherClassementClientRpc(true, classementTexte.text);
             indexNiveau++;
             CommencerNiveau();
             AjusterPositionJoueurClientRpc(0);
         }
     }
+    private void AjusterClassement(int nouvellePosition, int joueurId)
+    {
+        pointsJoueurs[joueurId] += nbJoueurs - nouvellePosition;
+    }
     [ClientRpc]
     private void AjusterPositionJoueurClientRpc(int position)
     {
         positionArrivé = position;
-        // Debug.Log("position: " + positionArrivé);
     }
     
     [ClientRpc]
     private void AfficherClassementClientRpc(bool actif, string texteClassement)
     {
-        // Debug.Log("Affiche Classement sur tous les clients");
-        // var mySortedList = pointsJoueurs.Value.OrderBy(d => d.Value).ToList();
-        // var joueurIdEnOrdre = (from test in mySortedList select test.Key).Distinct().ToList();
-        // classement = new NetworkList<int>(joueurIdEnOrdre);
-        // var valeur = (from test in mySortedList select test.Value).Distinct().ToList();
-        // foreach (var pair in mySortedList)
-        // {
-        //     Debug.Log(pair);
-        // }
-        // Debug.Log("-------------------------------------------------------------");
-        // foreach (var element in valeur)
-        // {
-        //     Debug.Log("valeur: " + element);
-        // }
-        // Debug.Log("---------------------------------------------------------------------");
-        // foreach (var element in joueurIdEnOrdre)
-        // {
-        //     Debug.Log("joueurId: " + element);
-        // }
-        
-        // classementTexte.text = $"points: {pointsJoueurs.Value[joueurIdEnOrdre[9]]} -- Joueur {couleurs[joueurIdEnOrdre[9]]}\n" +
-        //                        $"points: {pointsJoueurs.Value[joueurIdEnOrdre[8]]} -- Joueur {couleurs[joueurIdEnOrdre[8]]}\n" +
-        //                        $"{couleurs[2]}\n" +
-        //                        $"{couleurs[3]}\n" +
-        //                        $"{couleurs[4]}\n" +
-        //                        $"{couleurs[5]}\n" +
-        //                        $"{couleurs[6]}\n" +
-        //                        $"{couleurs[7]}\n" +
-        //                        $"{couleurs[8]}\n" +
-        //                        $"{couleurs[9]}\n";
         classementTexte.text = texteClassement;
         montrerClassement = actif;
         timerOn = actif;
         canvasClassement.enabled = actif;
-        // Debug.Log("Cache Classement sur tous les clients");
-        
     }
     
     [ClientRpc]
-    public void TeleporterClientRpc(int index)
+    private void TeleporterClientRpc(int index)
     {
         foreach (var client in GameObject.FindGameObjectsWithTag("Player"))
         {
             client.GetComponent<TeleporterJeu>().Teleporter(index);
         }
-
         GameObject.Find("GestionnaireJeu").GetComponent<GestionJeuMultijoueur>().indexNiveau = index;
     }
     
     [ClientRpc]
     private void ActiverJoueursClientRpc(bool estActif)
     {
-        foreach(var client in GameObject.FindGameObjectsWithTag("Player"))
+        var objetsAvecTag = GameObject.FindGameObjectsWithTag("Player");
+        foreach(var client in objetsAvecTag)
         {
             client.GetComponent<ParametreJoueur>().ActiverJoueur(estActif);
         }
