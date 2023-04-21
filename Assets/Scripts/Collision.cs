@@ -16,24 +16,22 @@ public class Collision : MonoBehaviour
     private bool isSolving = false;
     private float alpha = -1.1f;
     private Material material;
-    private Jump jumpComponent;
     [SerializeField] private Vector3 respawn;
     [SerializeField] private AudioSource deathSFX;
     [SerializeField] private AudioSource finNiveauSFX;
-    [SerializeField] private AudioSource respawnSFX;
-
+    [SerializeField] public AudioSource respawnSFX;
     private Transform transformComp;
-
     private Rigidbody _rigidbody;
+    private Jump jumpComponent;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
         material = GetComponent<Renderer>().material;
-        jumpComponent = GetComponent<Jump>();
         transformComp = GetComponent < Transform>();
+        jumpComponent = GetComponent<Jump>();
     }
-
+    
     private const int layerBouleDeFeu = 9;
     
     void Update()
@@ -42,14 +40,21 @@ public class Collision : MonoBehaviour
         {
             alpha += Time.deltaTime;
             material.SetFloat("_Alpha", alpha);
+            jumpComponent.enabled = false;
             if (alpha >= 1f)    
             {
                 isDissolving = false;
-                Ressusciter();
+                isSolving = true;
+                
+                gestionnaireJeu.Ressusciter();
+                
+                
+                respawnSFX.Play();
             }
         }
         if (isSolving)
         {
+            jumpComponent.enabled = false;
             material.SetColor("_DissolveColor", material.GetColor("_Color"));
             alpha -= Time.deltaTime;
             material.SetFloat("_Alpha", alpha);
@@ -58,6 +63,7 @@ public class Collision : MonoBehaviour
                 isSolving = false;
                 alpha = -1.1f;
                 material.SetFloat("_Alpha", alpha);
+                jumpComponent.enabled = true;
             }
         }
     }
@@ -66,39 +72,51 @@ public class Collision : MonoBehaviour
         int collidedLayer = collision.contacts[0].otherCollider.gameObject.layer;
         if (collidedLayer == StickyZoneLayer)
         {
-            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
+            DesactiverAcceleration();
         }
         else if (collidedLayer == AcidZoneLayer)
         {
             deathSFX.Play();
             material.SetColor("_DissolveColor", material.GetColor("_AcidDissolveColor"));
-            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            isDissolving = true;
-            jumpComponent.enabled = false;
+            DesactiverAcceleration();
+            Détruire();
         }
         else if (collidedLayer == TrouLayer)
         {
+            
             finNiveauSFX.Play();
+            Sauvegarde.CréerSauvegarde(TimeSpan.FromSeconds(Timer.timeRemaining).ToString(@"mm\:ss\:ff"));
+            // gestionnaireJeu.ReinitialiserCompteurSaut();
+            jumpComponent.enabled = true;
             material.SetColor("_DissolveColor", Color.red);
-            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            isDissolving = true;
-            jumpComponent.enabled = false;
+            DesactiverAcceleration();  
+            
+            if (GestionJeuSolo.niveauActuel == 10)
+            {
+                Debug.Log("entrer dans trou");
+                GameObject.Find("Generateur").GetComponent<Corridors>().boutonRecommencer.GetComponentInParent<Canvas>()
+                    .enabled = true;
+                GameObject.Find("Generateur").GetComponent<Corridors>().boutonRecommencer.enabled = true;
+                GameObject.Find("Generateur").GetComponent<Corridors>().fond.enabled = true;
+            }
+            else
+            {
+                gestionnaireJeu.ActiverMenuArriverTrou(true);
+                gestionnaireJeu.ActiverJoueur(false);
+            }
+            //isDissolving = true;
+           
         }
         else if (collidedLayer == layerBouleDeFeu)
         {
             deathSFX.Play();
             material.SetColor("_DissolveColor", material.GetColor("_FireDissolveColor"));
-            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            isDissolving = true;
-            jumpComponent.enabled = false;
+            DesactiverAcceleration();
+            Détruire();
         }
         else if (collidedLayer == ondeLayer)
         {
-            Vector3 force = collision.transform.rotation.eulerAngles / 2;
+            Vector3 force = collision.transform.parent.rotation.eulerAngles * 2;
             _rigidbody.AddRelativeForce(force);
             Debug.Log(force);
         }
@@ -107,15 +125,11 @@ public class Collision : MonoBehaviour
     {
         transform.gameObject.GetComponent<Rigidbody>().useGravity = true;
     }
-    private void Ressusciter()
-    {
-        respawnSFX.Play();
-        transform.position = respawn;
-        gestionnaireJeu.Ressusciter(gestionnaireJeu.index);
-        transform.rotation = Quaternion.Euler(0, -90, 0);
-        isSolving = true;
-        jumpComponent.enabled = true;
-    }
+    //private void Ressusciter()
+    //{
+    //    respawnSFX.Play();
+    //    gestionnaireJeu.Ressusciter(gestionnaireJeu.index);
+    //}
     public void CollisionLaser()
     {
         deathSFX.Play();
@@ -128,7 +142,11 @@ public class Collision : MonoBehaviour
         rb.velocity = Vector3.zero;
         rb.useGravity = false;
         isDissolving = true;
-        jumpComponent.enabled = false; 
+    }
+    private void DesactiverAcceleration()
+    {
+        transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
     }
     private void ChangerCouleurApparition(string couleur) => material.SetColor("_DissolveColor", material.GetColor(couleur));
 }

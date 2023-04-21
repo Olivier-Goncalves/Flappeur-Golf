@@ -11,15 +11,11 @@ public class Gravité : MonoBehaviour
     private int layeraccelereinverse = 13;
     private Vector3 gravity;
     private Rigidbody _rigidbody;
+    private bool isInZone = false;
     private void Awake()
     {
-        gravity = Physics.gravity / 4;
         _rigidbody = GetComponent<Rigidbody>();
-    }
-
-    private void FixedUpdate()
-    {
-        _rigidbody.AddForce(gravity, ForceMode.Acceleration);
+        gravity = Physics.gravity;
     }
     
     private void OnTriggerEnter(Collider other)
@@ -27,21 +23,38 @@ public class Gravité : MonoBehaviour
         int layer = other.gameObject.layer;
         if (layer == layeraccelere)
         {
+            isInZone = true;
+            _rigidbody = GetComponent<Rigidbody>();
+            _rigidbody.useGravity = false;
             gravity *= 10f;
         }
         if (layer == layerinverse)
         {
+            isInZone = true;
+            _rigidbody = GetComponent<Rigidbody>();
+            _rigidbody.useGravity = false;
             gravity *= -6f;
         }
         if (layer == layeraccelereinverse)
         {
+            isInZone = true;
+            _rigidbody = GetComponent<Rigidbody>();
+            _rigidbody.useGravity = false;
             gravity *= -12;
         }
-        
+    }
+
+    private void FixedUpdate()
+    {
+        if (isInZone)
+        {
+            _rigidbody.AddForce(gravity, ForceMode.Acceleration);
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        gravity = Physics.gravity / 4 ;
+        gravity = Physics.gravity;
+        _rigidbody.useGravity = true;
     }
 }

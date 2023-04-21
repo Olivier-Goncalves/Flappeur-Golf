@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MathNet.Numerics.LinearAlgebra.Complex;
 using Shapes2D;
 using Unity.Netcode;
 using Unity.Netcode.Components;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 public class TeleporterJeu : NetworkBehaviour
 {
-    private Transform[] spawns;
+    private List<Transform> spawns;
 
     private void Awake()
     {
@@ -17,14 +18,11 @@ public class TeleporterJeu : NetworkBehaviour
 
     public void Teleporter(int index)
     {
-        GameObject[] joueurs = GameObject.FindGameObjectsWithTag("Player");
-        foreach (var joueur in joueurs)
+        if (IsOwner)
         {
-            if (IsOwner)
-            {
-                joueur.transform.position = spawns[index].position;
-            }
+            transform.position = spawns[index].position;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            Debug.Log("Téléporter est appellé avec l'index: " + index);
         }
-
     }
 }

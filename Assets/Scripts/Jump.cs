@@ -12,16 +12,15 @@ public class Jump : MonoBehaviour
 {
     [SerializeField] private AudioSource flapSFX;
     [SerializeField] private Material green;
-    [SerializeField] private float jumpStrength = 100;
+    public float jumpStrength = 100;
     [SerializeField] TMP_Text text;
     private Rigidbody _rigidbody;
     public int nbSauts = 0;
-    private bool isOnGreen = false;
+    public bool isOnGreen = false;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
-        _rigidbody.useGravity = false;
 
     }
 
@@ -30,6 +29,7 @@ public class Jump : MonoBehaviour
         Vector3 velocity = _rigidbody.velocity;
         if (JoueurSaute() && isOnGreen)
         {
+            flapSFX.Play();
             _rigidbody.velocity = velocity / 1.5f - new Vector3(0, 0, velocity.z / 2);
             _rigidbody.AddRelativeForce(new Vector3(0, 0, jumpStrength * 12));
             nbSauts++;
@@ -44,7 +44,7 @@ public class Jump : MonoBehaviour
             text.text = nbSauts.ToString();
     }
 
-    private bool JoueurSaute() => Input.GetMouseButtonDown(0) || Input.GetKeyUp(KeyCode.Space);
+    private bool JoueurSaute() => Input.GetKeyUp(KeyCode.Space);
     private void OnCollisionEnter(UnityEngine.Collision collision)
     {
         // Si il est sur le green

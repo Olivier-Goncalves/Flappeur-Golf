@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5867034476020357579}
+  - component: {fileID: 4726972571627988847}
   m_Layer: 0
   m_Name: SpawnerBouleDeFeu
   m_TagString: Untagged
@@ -34,6 +35,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4726972571627988847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4505538425031287349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b2d6fe5d98dc8e44bcef0ce396cbe7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bouleDeFeu: {fileID: 3931727785586166534, guid: 1e42aaef6f7c26f4a94cc3071fdc8ea2, type: 3}
 --- !u!1 &7119182722109346837
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,7 +140,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2615332341638890453}
-  - component: {fileID: 2943078108694757343}
   m_Layer: 0
   m_Name: positionSpawn
   m_TagString: Untagged
@@ -149,19 +162,6 @@ Transform:
   m_Father: {fileID: 5867034476020357579}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2943078108694757343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8510914198899562827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b2d6fe5d98dc8e44bcef0ce396cbe7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bouleDeFeu: {fileID: 3931727785586166534, guid: 1e42aaef6f7c26f4a94cc3071fdc8ea2, type: 3}
 --- !u!1 &8581508666655616905
 GameObject:
   m_ObjectHideFlags: 0

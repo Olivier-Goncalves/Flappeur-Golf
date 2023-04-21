@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Shapes2D;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -9,7 +10,6 @@ using UnityEngine.SceneManagement;
 public class GestionJeuSolo : MonoBehaviour
 {
     public int index { get; set; }
-    [SerializeField]private Transform[] spawns;
     [SerializeField] private GameObject joueur;
     //Menu Arrive Trou
     [SerializeField] private Canvas canvasMenuArrive;
@@ -22,94 +22,144 @@ public class GestionJeuSolo : MonoBehaviour
     [SerializeField] private Canvas canvasMenuPause;
     [SerializeField] private Button btnRetourPartie;
     [SerializeField] private Button btnMenuPause;
-    private bool pause = false;
-    private bool gameOn = false;
+    // Menu Nombre de Sauts
+    [SerializeField] private TMP_Text nbCoupsTexte;
+    // volume slider
+    [SerializeField] private Canvas canvasVolumeSlider;
+    public bool pause { get; set; }
+    public bool gameOn {  get; private set; }
+    private int[,] CoupsParTrou;
 
+    public static int niveauActuel = 1;
     private void Awake()
     {
+        gameOn = false;
         index = 1;
         boutonMenuTrou.onClick.AddListener(clickBoutonMenu);
         prochainNiveauTrou.onClick.AddListener(clickBoutonProchainNiveau);
         btnRetourPartie.onClick.AddListener(clickBoutonRetourPartie);
         btnMenuPause.onClick.AddListener(clickBoutonMenu);
+        CoupsParTrou = new int[,] 
+        {
+            {30,35,40},
+            {65,70,75},
+            {60,65,70},
+            {60,65,70},
+            {65,70,75}
+        };
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
         {
             if (!pause && gameOn)
             {
                 canvasMenuPause.enabled = true;
                 joueur.GetComponent<Jump>().enabled = false;
-                pause = true;
-                
+                //joueur.GetComponent<MouseControl>().enabled = false;
+                ChangerPause(true);
+                Cursor.visible = true;
+                canvasVolumeSlider.gameObject.SetActive(true);
             }
             else
             {
                 canvasMenuPause.enabled = false;
-                pause = false;
+                ChangerPause(false);
+                joueur.GetComponent<Jump>().enabled = true;
+                //joueur.GetComponent<MouseControl>().enabled = true;   
+                canvasVolumeSlider.gameObject.SetActive(false);
             }
         }
         if (!gameOn)
         {
             canvasMenuPause.enabled = false;
+            AfficherCoupsParTrou(false);
+            canvasVolumeSlider.gameObject.SetActive(false);
         }
+        else
+        {
+            AfficherCoupsParTrou(true);
+        }
+    }
+
+    public void AfficherCoupsParTrou(bool actif)
+    {
+        if (actif)
+        { 
+            nbCoupsTexte.text = $"{CoupsParTrou[index - 1,0]}         {CoupsParTrou[index - 1, 1]}         {CoupsParTrou[index - 1, 2]}";
+        }
+        nbCoupsTexte.GetComponentInParent<Canvas>().enabled = actif;
+        
     }
     public void ChangerNiveau()
     {
-        if(index < spawns.Length)
-            joueur.transform.position = spawns[index++].position;
-        ActiverJoueur();
+        if (index < Spawns.spawns.Count)
+        {
+            niveauActuel++;
+            Spawns.spawnActuel = Spawns.spawns[niveauActuel - 1];
+            Ressusciter();
+        }
+
+        ActiverJoueur(true);
         gameOn = true;
     }
     private void clickBoutonMenu()
     {
         canvasMenuPrincipal.enabled = true;
-        DesactiverMenuArriverTrou();
-        DesactiverJoueur();
+        ActiverMenuArriverTrou(false);
+        ActiverJoueur(false);
         gameOn = false;
         
     }
     private void clickBoutonProchainNiveau()
     {
+        joueur.GetComponent<Jump>().isOnGreen = false;
         ChangerNiveau();
-        ActiverJoueur();
-        DesactiverMenuArriverTrou();
+        ActiverMenuArriverTrou(false);
+        ActiverJoueur(true);
         gameOn = true;
     }
     private void clickBoutonRetourPartie()
     {
-        ActiverJoueur();
+        canvasVolumeSlider.gameObject.SetActive(true);
+        ActiverJoueur(true);
         canvasMenuPause.enabled = false;
+        ChangerPause(false);
         gameOn = true;
     }
-    public void Ressusciter(int indexPosition)
+    public void Ressusciter()
     {
-        index = indexPosition;
-        joueur.transform.position = spawns[indexPosition - 1].position;
-        ActiverJoueur();
+        joueur.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        joueur.GetComponent<Rigidbody>().useGravity = true;
+        ReinitialiserCompteurSaut();
+        joueur.transform.position = Spawns.spawnActuel;
+        ActiverJoueur(true);
         gameOn = true;
+        ChangerPause(false);
     }
-    private void DesactiverMenuArriverTrou()
+    public void ActiverMenuArriverTrou(bool actif)
     {
-        textFélicitation.enabled = false;
-        boutonMenuTrou.enabled = false;
-        prochainNiveauTrou.enabled = false;
-        canvasMenuArrive.enabled = false;
+        boutonMenuTrou.enabled = actif;
+        prochainNiveauTrou.enabled = actif;
+        canvasMenuArrive.enabled = actif;
+        joueur.GetComponent<Jump>().enabled = false;
     }
-    private void ActiverJoueur()
+    public void ActiverJoueur(bool actif)
     {
-        joueur.SetActive(true);
-        joueur.GetComponent<Jump>().enabled = true;
-        joueur.GetComponent<MouseControl>().enabled = true;
-        joueur.GetComponentInChildren<Camera>().enabled = true;
+        joueur.SetActive(actif);
+        joueur.GetComponent<Jump>().enabled = actif;
+        joueur.GetComponent<MouseControl>().enabled = actif;
+        joueur.GetComponentInChildren<Camera>().enabled = actif;
     }
-    private void DesactiverJoueur()
+    public void ReinitialiserCompteurSaut()
     {
-        joueur.SetActive(false);
-        joueur.gameObject.GetComponent<Jump>().enabled = false;
-        joueur.gameObject.GetComponent<MouseControl>().enabled = false;
-        joueur.gameObject.GetComponentInChildren<Camera>().enabled = false;
+        GameObject.Find("JoueurLocal").GetComponent<Jump>().nbSauts = 0;
     }
+    private void ChangerPause(bool estEnPause)
+    {
+        pause = estEnPause;
+        joueur.GetComponent<MouseControl>().pause = estEnPause;
+    }
+
 }

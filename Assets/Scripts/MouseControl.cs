@@ -12,25 +12,30 @@ using UnityEngine.UI;
 public class MouseControl : MonoBehaviour
 {
     [SerializeField] private float sensitivité = 1;
-    [SerializeField] private Transform camera;
+    [SerializeField] private Transform cameraJoueur;
+    //[SerializeField] private GestionJeuSolo gestionnaireJeu;
     private float camDistance;
     private Vector2 distanceCameraMinMax = new Vector2(0.4f, 7f);
     private Vector3 directionCamera;
     private float x;
     private float y;
     private float coussin = 0.2f;
+    public bool pause;
     private void Start()
     {
-        directionCamera = camera.transform.localPosition.normalized;
+        directionCamera = cameraJoueur.transform.localPosition.normalized;
         camDistance = distanceCameraMinMax.y;
     }
     
     void Update()
     {
+        if (!pause)
+        {
+            x += sensitivité * Input.GetAxis("Mouse X");
+            y -= sensitivité * Input.GetAxis("Mouse Y");
+        }
         Cursor.lockState = CursorLockMode.Confined;
-        x += sensitivité * Input.GetAxis("Mouse X");
-        y -= sensitivité * Input.GetAxis("Mouse Y");
-        transform.eulerAngles =  new Vector3(y, x, 0f);
+        transform.eulerAngles = new Vector3(y, x, 0f);
         AjusterPositionCamera();
     }
     // source: https://www.youtube.com/watch?v=vpn8CbPpvlU
@@ -46,9 +51,7 @@ public class MouseControl : MonoBehaviour
         {
             camDistance = distanceCameraMinMax.y;
         }
-
-        camera.localPosition = directionCamera * camDistance;
+        cameraJoueur.localPosition = directionCamera * camDistance;
     }
-
     
 }
