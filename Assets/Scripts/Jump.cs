@@ -51,7 +51,7 @@ public class Jump : MonoBehaviour
         if (collision.gameObject.GetComponent<Renderer>().material.name == "green (Instance)")
         {
             isOnGreen = true;
-            Debug.Log("Is on green");
+            // Debug.Log("Is on green");
         }
     }
     private void OnCollisionExit(UnityEngine.Collision other)

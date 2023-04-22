@@ -116,7 +116,7 @@ public class CollisionMultijoueur : NetworkBehaviour
             transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
             //isDissolving = true;
-            gestionnaireJeu.ArriverTrou();
+            gestionnaireJeu.ArriverTrou((int)OwnerClientId);
             jumpComponent.enabled = false;
         }
         else if (collidedLayer == layerBouleDeFeu)
