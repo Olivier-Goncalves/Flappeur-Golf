@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.HID;
 using UnityEngine.UI;
 
 // Fait par Guillaume Flamand
-public class Corridors : MonoBehaviour
+public class NiveauProcédural : MonoBehaviour
 {
     [SerializeField] private Vector3 positionDepart;
     [SerializeField] private int longueurCorridor = 20;
@@ -74,7 +74,6 @@ public class Corridors : MonoBehaviour
     
     private void CréerNiveau()
     {
-        Debug.Log("Créer niveau appleé");
         CréerCorridors();
         CreerChambres();
         

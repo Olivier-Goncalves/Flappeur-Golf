@@ -94,10 +94,10 @@ public class Collision : MonoBehaviour
             if (GestionJeuSolo.niveauActuel == 10)
             {
                 Debug.Log("entrer dans trou");
-                GameObject.Find("Generateur").GetComponent<Corridors>().boutonRecommencer.GetComponentInParent<Canvas>()
+                GameObject.Find("Generateur").GetComponent<NiveauProcédural>().boutonRecommencer.GetComponentInParent<Canvas>()
                     .enabled = true;
-                GameObject.Find("Generateur").GetComponent<Corridors>().boutonRecommencer.enabled = true;
-                GameObject.Find("Generateur").GetComponent<Corridors>().fond.enabled = true;
+                GameObject.Find("Generateur").GetComponent<NiveauProcédural>().boutonRecommencer.enabled = true;
+                GameObject.Find("Generateur").GetComponent<NiveauProcédural>().fond.enabled = true;
             }
             else
             {
