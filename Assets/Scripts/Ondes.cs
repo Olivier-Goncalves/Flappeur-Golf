@@ -38,7 +38,7 @@ public class Ondes : MonoBehaviour
 
             for (float x = Onde.transform.position.z; x < Onde.transform.position.z + longueurOnde; x += longueurOnde / 20)
             {
-                points.Add(new Vector3(0,CalculerY(x, x),x));
+                points.Add(new Vector3(0,CalculerY(x, 0),x));
             }
             for (int j = 0; j < points.Count; ++j)
             {

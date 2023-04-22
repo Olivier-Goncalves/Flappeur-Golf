@@ -28,7 +28,18 @@ public class GestionJeuSolo : MonoBehaviour
     [SerializeField] private Canvas canvasVolumeSlider;
     public bool pause { get; set; }
     public bool gameOn {  get; private set; }
-    private int[,] CoupsParTrou;
+    public static int[,] CoupsParTrou = new int[,] 
+    {
+        {30,35,40},
+        {65,70,75},
+        {60,65,70},
+        {60,65,70},
+        {65,70,75},
+        {65,70,75},
+        {65,70,75},
+        {65,70,75},
+        {65,70,75},
+    };
 
     public static int niveauActuel = 1;
     private void Awake()
@@ -39,14 +50,6 @@ public class GestionJeuSolo : MonoBehaviour
         prochainNiveauTrou.onClick.AddListener(clickBoutonProchainNiveau);
         btnRetourPartie.onClick.AddListener(clickBoutonRetourPartie);
         btnMenuPause.onClick.AddListener(clickBoutonMenu);
-        CoupsParTrou = new int[,] 
-        {
-            {30,35,40},
-            {65,70,75},
-            {60,65,70},
-            {60,65,70},
-            {65,70,75}
-        };
     }
 
     private void Update()

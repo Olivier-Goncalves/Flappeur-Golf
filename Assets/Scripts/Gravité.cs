@@ -21,25 +21,21 @@ public class Gravité : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         int layer = other.gameObject.layer;
+        isInZone = true;
+        _rigidbody = GetComponent<Rigidbody>();
+        _rigidbody.useGravity = false;
+        
         if (layer == layeraccelere)
         {
-            isInZone = true;
-            _rigidbody = GetComponent<Rigidbody>();
-            _rigidbody.useGravity = false;
             gravity *= 10f;
         }
         if (layer == layerinverse)
         {
-            isInZone = true;
-            _rigidbody = GetComponent<Rigidbody>();
-            _rigidbody.useGravity = false;
             gravity *= -6f;
         }
         if (layer == layeraccelereinverse)
         {
-            isInZone = true;
-            _rigidbody = GetComponent<Rigidbody>();
-            _rigidbody.useGravity = false;
+            
             gravity *= -12;
         }
     }

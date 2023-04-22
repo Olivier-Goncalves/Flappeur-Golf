@@ -18,7 +18,7 @@ public class Pouvoir : MonoBehaviour
     private void Update()
     {
         elapsedTime += Time.deltaTime;
-        if (elapsedTime > 30)
+        if (elapsedTime >= 7.5f)
         {
             elapsedTime = 0;
             GetComponent<Jump>().jumpStrength = 100;
