@@ -15,7 +15,7 @@ public class SpawnBouleDeFeu : MonoBehaviour
         {
             if (transform.gameObject.name == "positionSpawn")
             {
-                transformToSpawn = transform;
+                transformToSpawn.position = transform.position;
             }
         }
         GameObject boule = Instantiate(bouleDeFeu, transformToSpawn.position, quaternion.identity);

@@ -18,7 +18,8 @@ public class CréerSpline : MonoBehaviour
     
     private bool inversé = false;
     private Vector<double> coefficients;
-    
+
+    private float elapsedTime;
     private void Awake()
     {
         pointsSpline = new[] {new Vector2(0, 0), new(20, UnityEngine.Random.Range(21,25)), new(35, UnityEngine.Random.Range(13,20))};
@@ -67,9 +68,10 @@ public class CréerSpline : MonoBehaviour
     {
         if (current < points.Count)
         { 
-            transform.localPosition = Vector3.MoveTowards(transform.localPosition, points[current], Time.deltaTime * vitesse);
-                
-            if (transform.localPosition == points[current])
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, points[current], vitesse);
+
+            elapsedTime += Time.deltaTime;
+            if (transform.localPosition == points[current] && elapsedTime >= 2)
             { 
                 current = inversé ? current - 1 : current + 1;
             }
