@@ -50,6 +50,13 @@ public class GestionJeuSolo : MonoBehaviour
         prochainNiveauTrou.onClick.AddListener(clickBoutonProchainNiveau);
         btnRetourPartie.onClick.AddListener(clickBoutonRetourPartie);
         btnMenuPause.onClick.AddListener(clickBoutonMenu);
+
+    }
+
+    private void Start()
+    {
+        Debug.Log($"Spawns: {Spawns.spawns[0]} , {Spawns.spawns[1]} , {Spawns.spawns[2]} , {Spawns.spawns[2]} , {Spawns.spawns[3]} , {Spawns.spawns[4]} , {Spawns.spawns[4]} , {Spawns.spawns[5]} , {Spawns.spawns[6]} ");
+        
     }
 
     private void Update()
@@ -157,7 +164,7 @@ public class GestionJeuSolo : MonoBehaviour
     }
     public void ReinitialiserCompteurSaut()
     {
-        GameObject.Find("JoueurLocal").GetComponent<Jump>().nbSauts = 0;
+        joueur.GetComponent<Jump>().nbSauts = 0;
     }
     private void ChangerPause(bool estEnPause)
     {

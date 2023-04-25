@@ -27,16 +27,16 @@ public class Gravité : MonoBehaviour
         
         if (layer == layeraccelere)
         {
-            gravity *= 10f;
+            gravity *= 2f;
         }
         if (layer == layerinverse)
         {
-            gravity *= -6f;
+            gravity *= -2f;
         }
         if (layer == layeraccelereinverse)
         {
             
-            gravity *= -12;
+            gravity *= -3f;
         }
     }
 
