@@ -185,6 +185,7 @@ Transform:
   - {fileID: 1818135770144367072}
   - {fileID: 5655992060055337298}
   - {fileID: 5281815879509483074}
+  - {fileID: 7399675732360509138}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -370,6 +371,7 @@ MonoBehaviour:
   deathSFX: {fileID: 6371976355265742302}
   finNiveauSFX: {fileID: 723750050561668686}
   respawnSFX: {fileID: 3955675982731326390}
+  fusil: {fileID: 0}
 --- !u!114 &-4178898529213669319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -815,7 +817,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   valeurRalenti: 0.5
-  tempsLimite: 10
+  temps: 0
 --- !u!1 &2810827429770359955
 GameObject:
   m_ObjectHideFlags: 0
@@ -917,6 +919,37 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!1 &6226873127095760488
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7399675732360509138}
+  m_Layer: 10
+  m_Name: EmplacementGun
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7399675732360509138
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6226873127095760488}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.532, y: 0.356, z: 0.264}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2588718603704621847}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6284059422133509798
 GameObject:
   m_ObjectHideFlags: 0

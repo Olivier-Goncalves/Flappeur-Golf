@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 926209532729736902}
   - component: {fileID: 8783516122954617550}
   - component: {fileID: 3123024059837360119}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3583908944762315741}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Exit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 331765664106086365}
   - component: {fileID: 3231400012896556978}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Canon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +189,7 @@ GameObject:
   - component: {fileID: 6813935350704496223}
   - component: {fileID: 6483126266826510840}
   - component: {fileID: 4155911892970383253}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

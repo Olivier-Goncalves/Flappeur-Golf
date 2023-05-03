@@ -12,6 +12,7 @@ public class CollisionMultijoueur : NetworkBehaviour
     private static int AcidZoneLayer = 7;
     private static int TrouLayer = 8;
     private static int ondeLayer = 14;
+    private static int fusilLayer = 16;
     private bool isDissolving = false;
     private bool isSolving = false;
     private float alpha = -1.1f;
@@ -21,6 +22,7 @@ public class CollisionMultijoueur : NetworkBehaviour
     [SerializeField] private AudioSource deathSFX;
     [SerializeField] private AudioSource finNiveauSFX;
     [SerializeField] private AudioSource respawnSFX;
+    [SerializeField] private GameObject fusil;
     
     private Rigidbody _rigidbody;
     private GestionJeuMultijoueur gestionnaireJeu;
