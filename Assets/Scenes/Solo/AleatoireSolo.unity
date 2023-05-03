@@ -703,8 +703,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   positionDepart: {x: 0, y: 0, z: 0}
-  longueurCorridor: 25
-  nombreDeCorridor: 15
+  longueurCorridor: 50
+  nombreDeCorridor: 50
   plancher: {fileID: 4047618615723812425, guid: ddb988396b37ab4459da3fa79c59826d, type: 3}
   mur: {fileID: 4881061931879636568, guid: 246886a0225a5e14dbc98e721e7581f7, type: 3}
   joueur: {fileID: 5841365167247044648, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}

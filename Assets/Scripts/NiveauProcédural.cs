@@ -30,6 +30,7 @@ public class NiveauProcédural : MonoBehaviour
     private List<List<Vector3>> chambres = new();
     private List<List<Vector3>> corridors = new();
     private List<Vector3> positionsPlanchers = new();
+    private static Vector3 directionCorridorPrécédent;
 
     private GameObject parent;
     public Button boutonGenerer;
@@ -264,7 +265,6 @@ public class NiveauProcédural : MonoBehaviour
         }
         AjouterPointsDuMonde(chemin);
     }
-
     private void AjouterPointsDuMonde(List<Vector3> points)
     {
         List<Vector3> pointsMonde = new List<Vector3>();
@@ -287,7 +287,6 @@ public class NiveauProcédural : MonoBehaviour
             }
         }
     }
-
     private bool DeuxListesÉgales(List<Vector3> liste1, List<Vector3> liste2, bool egales)
     {
         for (int i = 0; i < liste1.Count; ++i)
@@ -302,7 +301,16 @@ public class NiveauProcédural : MonoBehaviour
     private static List<Vector3> CorridorsAléatoires(Vector3 positionDepart, int longueurCorridor)
     {
         List<Vector3> corridor = new();
+        
         Vector3 direction = DirectionAleatoire();
+        if (directionCorridorPrécédent != Vector3.zero)
+        {
+            while (DirectionContraire(direction))
+            {
+                Debug.Log("Contraire");
+                direction = DirectionAleatoire();
+            }
+        }
         Vector3 positionActuelle = positionDepart;
         
         corridor.Add(positionActuelle);
@@ -311,7 +319,33 @@ public class NiveauProcédural : MonoBehaviour
             positionActuelle += direction;
             corridor.Add(positionActuelle);
         }
+
+        directionCorridorPrécédent = direction;
         return corridor;
+    }
+    private static bool DirectionContraire(Vector3 direction)
+    {
+        if (direction == _directionsCardinales[2] && directionCorridorPrécédent == _directionsCardinales[0])
+        {
+            // Direction précédente est devant et direction actuelle est derrière
+            return true;
+        }
+        if (direction == _directionsCardinales[0] && directionCorridorPrécédent == _directionsCardinales[2])
+        {
+            // Direction précédente est derrière et direction actuelle est devant 
+            return true;
+        }
+        if (direction == _directionsCardinales[3] && directionCorridorPrécédent == _directionsCardinales[1])
+        {
+            // Direction précédente est droite et direction actuelle est gauche
+            return true;
+        }
+        if (direction == _directionsCardinales[1] && directionCorridorPrécédent == _directionsCardinales[3])
+        {
+            // Direction précédente est gauche et direction actuelle est droite
+            return true;
+        }
+        return false;
     }
     private static List<Vector3> CréerCheminPlancherChambre()
     {
