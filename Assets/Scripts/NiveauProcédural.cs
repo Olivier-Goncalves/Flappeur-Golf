@@ -7,6 +7,8 @@ using Shapes2D;
 using Unity.VisualScripting;
 using UnityEngine.InputSystem.HID;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
 
 // Fait par Guillaume Flamand
 public class NiveauProcédural : MonoBehaviour
@@ -24,20 +26,29 @@ public class NiveauProcédural : MonoBehaviour
     [SerializeField] private GameObject zoneAccelereGravité;
     [SerializeField] private GameObject zoneAccelereEtInverseGravité;
     [SerializeField] private GameObject drapeau;
-    
+    [SerializeField] private Canvas menuPause;
     List<Vector3> positionPotentiellesChambres = new();
     
     private List<List<Vector3>> chambres = new();
     private List<List<Vector3>> corridors = new();
     private List<Vector3> positionsPlanchers = new();
     private static Vector3 directionCorridorPrécédent;
+    private bool pause;
 
     private GameObject parent;
     public Button boutonGenerer;
     public Button boutonRecommencer;
     public RawImage fond;
     public RawImage fondDébut;
-    
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            menuPause.enabled = !menuPause.enabled;
+        }
+    }
+
     private void Awake()
     {
         fondDébut.enabled = true;

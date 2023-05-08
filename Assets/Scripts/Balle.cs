@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class Balle : MonoBehaviour
@@ -11,7 +12,12 @@ public class Balle : MonoBehaviour
         time += Time.deltaTime;
         if (time >= 5)
         {
-            Destroy(gameObject);
+            despawnBulletServerRpc();
         }
+    }
+    [ServerRpc(RequireOwnership = false)]
+    private void despawnBulletServerRpc()
+    {
+        gameObject.GetComponent<NetworkObject>().Despawn();
     }
 }

@@ -67,8 +67,6 @@ public class CollisionMultijoueur : NetworkBehaviour
     
     void Update()
     {
-
-        
         if (isDissolving)
         {
             alpha += Time.deltaTime;

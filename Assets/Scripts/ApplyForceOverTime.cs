@@ -12,11 +12,11 @@ public class ApplyForceOverTime : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        forceToApplyInWorldSpace = transform.TransformPoint(forceToApply);
+        // forceToApplyInWorldSpace = rb.velocity.TransformPoint(forceToApply);
     }
 
     void Update()
     {
-        rb.AddForce(forceToApplyInWorldSpace * Time.deltaTime);
+        rb.AddRelativeForce(forceToApply * Time.deltaTime);
     }
 }
