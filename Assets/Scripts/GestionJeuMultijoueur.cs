@@ -162,10 +162,10 @@ public class GestionJeuMultijoueur : NetworkBehaviour
             
             var mySortedList = pointsJoueurs.OrderBy(d => d.Value).ToList();
             var joueurIdEnOrdre = (from test in mySortedList select test.Key).Distinct().ToList();
-            foreach (var element in joueurIdEnOrdre)
-            {
-                Debug.Log("element dans classement: "+element);
-            }
+            //foreach (var element in joueurIdEnOrdre)
+            //{
+            //    Debug.Log("element dans classement: "+element);
+            //}
 
             StringBuilder sb = new StringBuilder();
             
@@ -174,13 +174,30 @@ public class GestionJeuMultijoueur : NetworkBehaviour
                 var indexJoueur = joueurIdEnOrdre.Count - 1 - i;
                 sb.Append($"points: {pointsJoueurs[joueurIdEnOrdre[indexJoueur]]} -- Joueur {couleurs[joueurIdEnOrdre[indexJoueur]]}\n");
             }
-            
-            classementTexte.text = sb.ToString();
-            AfficherClassementClientRpc(true, classementTexte.text);
-            indexNiveau++;
-            CommencerNiveau();
-            AjusterPositionJoueurClientRpc(0);
+
+                classementTexte.text = sb.ToString();
+            if (indexNiveau < spawns.Count-1)
+            {
+                AfficherClassementClientRpc(true, classementTexte.text);
+                indexNiveau++;
+                CommencerNiveau();
+                AjusterPositionJoueurClientRpc(0);
+            }
+            else
+            {
+                FinPartieClientRpc();
+            }
         }
+    }
+    [ClientRpc]
+    private void FinPartieClientRpc()
+    {
+        Debug.Log("Fin Partie");
+        classementTexte.enabled = true;
+        canvasClassement.enabled = true;
+        boutonRetour.enabled = true;
+        boutonCommencer.enabled = false;
+        canvaArriver.enabled = true;
     }
     private void AjusterClassement(int nouvellePosition, int joueurId)
     {

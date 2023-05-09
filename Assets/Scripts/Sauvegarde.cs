@@ -44,7 +44,6 @@ public class Sauvegarde : MonoBehaviour
             listeMots[indiceNiveau] += ancienNbFlaps + " " + ancienTemps;
         }
 
-        fichierTexte.
         File.WriteAllLines(Path, liste.ToArray());
     }
 
