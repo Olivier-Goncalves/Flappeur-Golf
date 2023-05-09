@@ -40,9 +40,13 @@ public class Laser : MonoBehaviour
                 position = touche.point;
                 direction = Vector3.Reflect(direction, touche.normal);
                 laser.SetPosition(compteur, touche.point);
-                if (touche.transform.tag == "Player")
+                if (touche.transform.gameObject.name == "JoueurLocal")
                 {
                     touche.transform.GetComponent<Collision>().CollisionLaser();
+                }
+                else if(touche.transform.gameObject.name == "JoueurRéseau(Clone)")
+                {
+                    touche.transform.GetComponent<CollisionMultijoueur>().CollisionLaser();
                 }
                 if (touche.transform.tag != "Mirror")
                 {

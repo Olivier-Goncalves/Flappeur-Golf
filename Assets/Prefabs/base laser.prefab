@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6400496107581613837}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: base laser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 5954369174190409223}
   - component: {fileID: 8403311012925649712}
   - component: {fileID: 3834750511806888474}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

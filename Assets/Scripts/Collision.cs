@@ -74,7 +74,7 @@ public class Collision : MonoBehaviour
         {
             DesactiverAcceleration();
         }
-        else if (collidedLayer == AcidZoneLayer)
+        else if (collidedLayer == AcidZoneLayer || collidedLayer == 14)
         {
             deathSFX.Play();
             material.SetColor("_DissolveColor", material.GetColor("_AcidDissolveColor"));

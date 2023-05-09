@@ -100,7 +100,7 @@ public class CollisionMultijoueur : NetworkBehaviour
             transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
         }
-        else if (collidedLayer == AcidZoneLayer)
+        else if (collidedLayer == AcidZoneLayer || collidedLayer == 14)
         {
             deathSFX.Play();
             material.SetColor("_DissolveColor", material.GetColor("_AcidDissolveColor"));
