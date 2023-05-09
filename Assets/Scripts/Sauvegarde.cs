@@ -53,7 +53,7 @@ public class Sauvegarde : MonoBehaviour
     public static string GetAncienNombreFlap(char[] ligne)
     {
         string nbFlap = "";
-        int compteur = GestionJeuSolo.niveauActuel == 10 ? 2 : 1;
+        int compteur = GestionJeuSolo.niveauActuel == 10 ? 3 : 2;
         while (ligne[compteur] != ' ')
         {
             nbFlap += ligne[compteur];

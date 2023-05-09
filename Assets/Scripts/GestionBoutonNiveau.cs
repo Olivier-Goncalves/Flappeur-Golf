@@ -20,6 +20,7 @@ public class GestionBoutonNiveau : MonoBehaviour
     
     private void Awake()
     {
+        GestionJeuSolo.niveauActuel = 1;
         var fichierTexte = Resources.Load<TextAsset>("Sauvegarde");
         //Debug.Log(fichierTexte.text);
         List<string> listeMots = new List<string>(fichierTexte.text.Split('\n'));
@@ -39,6 +40,7 @@ public class GestionBoutonNiveau : MonoBehaviour
         }
         Debug.Log(line);
         //Debug.Log(numeroNiveau+ ": "+ligne[0]+ligne[1] + ligne[2]);
+        
         int ancienNombreFlap = int.Parse(Sauvegarde.GetAncienNombreFlap(ligne));
         Debug.Log(ancienNombreFlap);
         List<GameObject> enfants = GetAllChilds(gameObject);
