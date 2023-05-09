@@ -9,7 +9,7 @@ using Shapes2D;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Fait par: Olivier Gonçalves
+// Fait par: Olivier Gonï¿½alves
 public class GestionBoutonNiveau : MonoBehaviour
 {
     [SerializeField] Canvas canvas;
@@ -23,15 +23,16 @@ public class GestionBoutonNiveau : MonoBehaviour
         var fichierTexte = Resources.Load<TextAsset>("Sauvegarde");
         Debug.Log(fichierTexte.text);
         List<string> listeMots = new List<string>(fichierTexte.text.Split('\n'));
-        List<string> liste = File.ReadAllLines(Path).ToList();
+        // List<string> liste = File.ReadAllLines(Path).ToList();
         int numeroNiveau = int.Parse(gameObject.name);
         char[] ligne = listeMots[numeroNiveau - 1].ToCharArray();
+        Debug.Log(numeroNiveau+ ": "+ligne[0]+ligne[1] + ligne[2]);
         int ancienNombreFlap = int.Parse(Sauvegarde.GetAncienNombreFlap(ligne));
         List<GameObject> enfants = GetAllChilds(gameObject);
 
         foreach (var enfant in enfants)
         {
-            if(enfant.name == "Médaille")
+            if(enfant.name == "MÃ©daille")
             {
                 if (ancienNombreFlap != 0)
                 {

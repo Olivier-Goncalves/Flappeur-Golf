@@ -9,38 +9,42 @@ using UnityEngine;
 
 public class Sauvegarde : MonoBehaviour
 {
+    // [SerializeField] private TextAsset fichierTexte;
     private const string Path = "Assets/Sauvegarde Joueur Solo/Sauvegarde.txt";
     public static void CréerSauvegarde(string temps)
     {
         List<string> liste = File.ReadAllLines(Path).ToList();
-        
+        var fichierTexte = Resources.Load<TextAsset>("Sauvegarde");
+        List<string> listeMots = new List<string>(fichierTexte.text.Split('\n'));
         int indiceNiveau = GestionJeuSolo.niveauActuel - 1;
         
-        char[] ligne = liste[indiceNiveau].ToCharArray();
+        char[] ligne = listeMots[indiceNiveau].ToCharArray();
 
         int ancienNbFlaps = int.Parse(GetAncienNombreFlap(ligne));
         string ancienTemps = GetAncienTemps(ligne);
 
-        liste[indiceNiveau] = GestionJeuSolo.niveauActuel + " ";
+        listeMots[indiceNiveau] = GestionJeuSolo.niveauActuel + " ";
 
         int nbSautActuel = GameObject.Find("JoueurLocal").GetComponent<Jump>().nbSauts;
         
         if (nbSautActuel < ancienNbFlaps && TempsMeilleur(ancienTemps, temps))
         {
-            liste[indiceNiveau] += nbSautActuel + " " + temps;
+            listeMots[indiceNiveau] += nbSautActuel + " " + temps;
         }
         else if (nbSautActuel < ancienNbFlaps)
         {
-            liste[indiceNiveau] += nbSautActuel + " " + ancienTemps;
+            listeMots[indiceNiveau] += nbSautActuel + " " + ancienTemps;
         }
         else if (TempsMeilleur(ancienTemps, temps))
         {
-            liste[indiceNiveau] += ancienNbFlaps + " " + temps;
+            listeMots[indiceNiveau] += ancienNbFlaps + " " + temps;
         }
         else
         {
-            liste[indiceNiveau] += ancienNbFlaps + " " + ancienTemps;
+            listeMots[indiceNiveau] += ancienNbFlaps + " " + ancienTemps;
         }
+
+        fichierTexte.
         File.WriteAllLines(Path, liste.ToArray());
     }
 
