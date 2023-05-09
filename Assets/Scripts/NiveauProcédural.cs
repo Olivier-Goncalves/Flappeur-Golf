@@ -7,6 +7,7 @@ using Shapes2D;
 using Unity.VisualScripting;
 using UnityEngine.InputSystem.HID;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
 
@@ -27,6 +28,8 @@ public class NiveauProcédural : MonoBehaviour
     [SerializeField] private GameObject zoneAccelereEtInverseGravité;
     [SerializeField] private GameObject drapeau;
     [SerializeField] private Canvas menuPause;
+    [SerializeField] private Button boutonRetourPartie;
+    [SerializeField] private Button boutonRetourMenu;
     List<Vector3> positionPotentiellesChambres = new();
     
     private List<List<Vector3>> chambres = new();
@@ -52,6 +55,15 @@ public class NiveauProcédural : MonoBehaviour
     private void Awake()
     {
         fondDébut.enabled = true;
+        boutonRetourMenu.onClick.AddListener(()=> 
+        {
+            SceneManager.LoadScene("Solo");
+        
+        });
+        boutonRetourPartie.onClick.AddListener(() =>
+        {
+            menuPause.enabled = false;
+        });
         GestionJeuSolo.niveauActuel = 10;
         boutonRecommencer.onClick.AddListener(() =>
         {

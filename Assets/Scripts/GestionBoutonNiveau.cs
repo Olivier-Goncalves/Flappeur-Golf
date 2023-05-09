@@ -20,9 +20,12 @@ public class GestionBoutonNiveau : MonoBehaviour
     
     private void Awake()
     {
+        var fichierTexte = Resources.Load<TextAsset>("Sauvegarde");
+        Debug.Log(fichierTexte.text);
+        List<string> listeMots = new List<string>(fichierTexte.text.Split('\n'));
         List<string> liste = File.ReadAllLines(Path).ToList();
-        int numeroNiveau = int.Parse(gameObject.name);;
-        char[] ligne = liste[numeroNiveau - 1].ToCharArray();
+        int numeroNiveau = int.Parse(gameObject.name);
+        char[] ligne = listeMots[numeroNiveau - 1].ToCharArray();
         int ancienNombreFlap = int.Parse(Sauvegarde.GetAncienNombreFlap(ligne));
         List<GameObject> enfants = GetAllChilds(gameObject);
 

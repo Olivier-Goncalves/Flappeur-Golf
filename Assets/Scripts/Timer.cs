@@ -5,6 +5,7 @@ public class Timer : MonoBehaviour
 {
     public static float timeRemaining = 0;
     public TMP_Text timeText;
+
     void Update()
     {
         if (GameObject.Find("JoueurLocal").GetComponent<Jump>().nbSauts> 0)
