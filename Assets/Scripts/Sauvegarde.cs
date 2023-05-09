@@ -5,53 +5,55 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using UnityEditor;
 using UnityEngine;
 
 public class Sauvegarde : MonoBehaviour
 {
     // [SerializeField] private TextAsset fichierTexte;
-    private const string Path = "Assets/Sauvegarde Joueur Solo/Sauvegarde.txt";
+    private const string Path = "Assets/Resources/Sauvegarde.txt";
     public static void CréerSauvegarde(string temps)
     {
         List<string> liste = File.ReadAllLines(Path).ToList();
-        var fichierTexte = Resources.Load<TextAsset>("Sauvegarde");
-        List<string> listeMots = new List<string>(fichierTexte.text.Split('\n'));
+        //var fichierTexte = Resources.Load<TextAsset>("Sauvegarde");
+        //List<string> listeMots = new List<string>(fichierTexte.text.Split('\n'));
         int indiceNiveau = GestionJeuSolo.niveauActuel - 1;
         
-        char[] ligne = listeMots[indiceNiveau].ToCharArray();
+        char[] ligne = liste[indiceNiveau].ToCharArray();
 
         int ancienNbFlaps = int.Parse(GetAncienNombreFlap(ligne));
         string ancienTemps = GetAncienTemps(ligne);
 
-        listeMots[indiceNiveau] = GestionJeuSolo.niveauActuel + " ";
+        liste[indiceNiveau] = GestionJeuSolo.niveauActuel + " ";
 
         int nbSautActuel = GameObject.Find("JoueurLocal").GetComponent<Jump>().nbSauts;
         
         if (nbSautActuel < ancienNbFlaps && TempsMeilleur(ancienTemps, temps))
         {
-            listeMots[indiceNiveau] += nbSautActuel + " " + temps;
+            liste[indiceNiveau] += nbSautActuel + " " + temps;
         }
         else if (nbSautActuel < ancienNbFlaps)
         {
-            listeMots[indiceNiveau] += nbSautActuel + " " + ancienTemps;
+            liste[indiceNiveau] += nbSautActuel + " " + ancienTemps;
         }
         else if (TempsMeilleur(ancienTemps, temps))
         {
-            listeMots[indiceNiveau] += ancienNbFlaps + " " + temps;
+            liste[indiceNiveau] += ancienNbFlaps + " " + temps;
         }
         else
         {
-            listeMots[indiceNiveau] += ancienNbFlaps + " " + ancienTemps;
+            liste[indiceNiveau] += ancienNbFlaps + " " + ancienTemps;
         }
 
-        fichierTexte.
         File.WriteAllLines(Path, liste.ToArray());
+        
+        AssetDatabase.ImportAsset(Path); 
     }
 
     public static string GetAncienNombreFlap(char[] ligne)
     {
         string nbFlap = "";
-        int compteur = GestionJeuSolo.niveauActuel == 10 ? 3 : 2;
+        int compteur = GestionJeuSolo.niveauActuel == 10 ? 2 : 1;
         while (ligne[compteur] != ' ')
         {
             nbFlap += ligne[compteur];
