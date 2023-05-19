@@ -8,13 +8,13 @@ public class Timer : MonoBehaviour
 
     void Update()
     {
-        if (GameObject.Find("JoueurLocal").GetComponent<Jump>().nbSauts> 0)
+        if (GameObject.Find("JoueurLocal").GetComponent<Saut>().nbSauts> 0)
         {
             timeRemaining += Time.deltaTime;
             TimeSpan time = TimeSpan.FromSeconds(timeRemaining);
             timeText.text = time.ToString(@"mm\:ss\:ff");
         }
-        else if (GameObject.Find("JoueurLocal").GetComponent<Jump>().nbSauts == 0)
+        else if (GameObject.Find("JoueurLocal").GetComponent<Saut>().nbSauts == 0)
         {
             timeRemaining = 0;
             TimeSpan time = TimeSpan.FromSeconds(timeRemaining);

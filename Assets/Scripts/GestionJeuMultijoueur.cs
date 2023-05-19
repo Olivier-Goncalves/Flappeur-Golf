@@ -17,30 +17,28 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     private int nbJoueurs;
     private bool timerOn;
     private NetworkVariable<float> timeLeft;
-
     private bool montrerClassement;
-    // Variables Menus
+    // Menu Retour
     [SerializeField] private Button boutonRetour;
+    // Menu Début
     [SerializeField] private Button boutonCommencer;
+    // Menu Arrivé
     [SerializeField] private Canvas canvaArriver;
+    // Menu Timer
     [SerializeField] private Image fondTimer;
-    [SerializeField] private Image fondAffichagePosition;
     [SerializeField] private TMP_Text timer;
-    [SerializeField] private TMP_Text affichagePosition;
+    // Menu Classement
     [SerializeField] private Canvas canvasClassement;
     [SerializeField] private TMP_Text classementTexte;
-
     private Dictionary<int, int> pointsJoueurs;
-    // [SerializeField]
-    // private AudioSource musique;
+    // Autres
     private static string[] couleurs = new[]
     {
         "bleu", "noir", "rouge", "vert", "cyan", "magenta", "jaune", "gris",
         "blanc", "orange"
     };
-    private bool gameOn;
 
-    // ------------------------------------------ DEBUT SECTION MENUS ---------------------------------------------------- //
+
     private void Awake()
     {
         pointsJoueurs = new Dictionary<int, int>()
@@ -56,10 +54,6 @@ public class GestionJeuMultijoueur : NetworkBehaviour
             { 8, 0 },
             { 9, 0 },
         };
-        
-
-        // classement = new NetworkList<int>(new int[10]);
-        // points = new NetworkList<int>(new int[10]);
         timeLeft = new NetworkVariable<float>(5);
         boutonRetour.onClick.AddListener(GenererSceneRetour);
         boutonCommencer.onClick.AddListener(() =>
@@ -67,24 +61,9 @@ public class GestionJeuMultijoueur : NetworkBehaviour
             boutonCommencer.gameObject.GetComponentInParent<Canvas>().enabled = false;
             CommencerPartie();
         });
-        // musique.Play();
     }
 
-    private void GenererSceneRetour()
-    {
-        SceneManager.LoadScene("MenuAccueil");
-        if (IsHost)
-        {
-            NetworkManager.Singleton.Shutdown();
-        }
-        Cursor.visible = true;
-    }
-    public void AfficherPositionArrivée(int positionArrivée)
-    {
-        Debug.Log("AfficherPositionArrivée");
-    }
-    
-    // --------------------------------------------- FIN SECTION MENUS ------------------------------------------------- // 
+
     private void Update()
     {
         if (timerOn)
@@ -97,12 +76,12 @@ public class GestionJeuMultijoueur : NetworkBehaviour
                     timeLeft.Value = 5;
                     if (!montrerClassement)
                     {
-                        PlayTimer(false);
+                        joueurMinuteur(false);
                     }
                     else
                     {
                         AfficherClassementClientRpc(false,classementTexte.text);
-                        PlayTimer(true);
+                        joueurMinuteur(true);
                     }
                 }
             }
@@ -111,29 +90,37 @@ public class GestionJeuMultijoueur : NetworkBehaviour
             
         }
     }
+    private void GenererSceneRetour()
+    {
+        SceneManager.LoadScene("MenuAccueil");
+        if (IsHost)
+        {
+            NetworkManager.Singleton.Shutdown();
+        }
+        Cursor.visible = true;
+    }
     private void CommencerPartie()
     {
-        gameOn = true;
+        // gameOn = true;
         nbJoueurs = NetworkManager.ConnectedClientsList.Count;
         CommencerNiveau();
     }
     
     private void CommencerNiveau()
     {
-        PlayTimer(true);
+        joueurMinuteur(true);
         TeleporterClientRpc(indexNiveau);
     }
     
-    private void PlayTimer(bool estActif)
+    private void joueurMinuteur(bool estActif)
     {
-        // Debug.Log("Pars le Timer de 5 secondes");
-        
         timer.enabled = estActif;
         fondTimer.enabled = estActif;
         ActiverJoueursClientRpc(!estActif);
         AfficherTimerClientRpc(estActif);
         timerOn = estActif;
     }
+    
     [ClientRpc]
     private void AfficherTimerClientRpc(bool afficher)
     {
@@ -159,13 +146,10 @@ public class GestionJeuMultijoueur : NetworkBehaviour
         AjusterPositionJoueurClientRpc(positionArrivé + 1);
         if (positionArrivé == nbJoueurs)
         {
-            
-            var mySortedList = pointsJoueurs.OrderBy(d => d.Value).ToList();
-            var joueurIdEnOrdre = (from test in mySortedList select test.Key).Distinct().ToList();
-            //foreach (var element in joueurIdEnOrdre)
-            //{
-            //    Debug.Log("element dans classement: "+element);
-            //}
+            // Classe les joueurs selon leur position et le converti en liste
+            var listeJoueurEnOrdreSelonPosition = pointsJoueurs.OrderBy(joueur => joueur.Value).ToList();
+            // Prend la liste des 
+            var joueurIdEnOrdre = (from joueur in listeJoueurEnOrdreSelonPosition select joueur.Key).Distinct().ToList();
 
             StringBuilder sb = new StringBuilder();
             

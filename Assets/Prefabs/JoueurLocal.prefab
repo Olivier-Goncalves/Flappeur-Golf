@@ -786,8 +786,7 @@ MonoBehaviour:
   flapSFX: {fileID: 1475737990987718849}
   green: {fileID: 2100000, guid: 51707e5c919219f4e96e71ceb7446a28, type: 2}
   jumpStrength: 100
-  text: {fileID: 3461608710537392516}
-  nbSauts: 0
+  texteCompteurSauts: {fileID: 3461608710537392516}
   isOnGreen: 0
 --- !u!54 &5841365167247044646
 Rigidbody:
@@ -833,7 +832,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gestionnaireJeu: {fileID: 0}
-  respawn: {x: 0, y: 0, z: 0}
   deathSFX: {fileID: 2502836235372106554}
   finNiveauSFX: {fileID: 47489929464579616}
   respawnSFX: {fileID: 5845607294640918528}

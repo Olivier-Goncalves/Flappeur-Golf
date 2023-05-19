@@ -419,8 +419,7 @@ MonoBehaviour:
   flapSFX: {fileID: 8204987997387887205}
   green: {fileID: 2100000, guid: 51707e5c919219f4e96e71ceb7446a28, type: 2}
   jumpStrength: 100
-  text: {fileID: 6568693781122826262}
-  nbSauts: 0
+  texteCompteurSauts: {fileID: 6568693781122826262}
   isOnGreen: 0
 --- !u!114 &2588718603704621837
 MonoBehaviour:

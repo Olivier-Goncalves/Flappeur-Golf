@@ -1,15 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using Shapes2D;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 // Fait par Olivier Gonçalves
 public class GestionJeuSolo : MonoBehaviour
 {
-    public int index { get; set; }
+    public int indexNiveau { get; set; }
     [SerializeField] private GameObject joueur;
     //Menu Arrive Trou
     [SerializeField] private Canvas canvasMenuArrive;
@@ -24,10 +20,17 @@ public class GestionJeuSolo : MonoBehaviour
     [SerializeField] private Button btnMenuPause;
     // Menu Nombre de Sauts
     [SerializeField] private TMP_Text nbCoupsTexte;
+    [SerializeField] Canvas canvasNombreSauts;
     // volume slider
     [SerializeField] private Canvas canvasVolumeSlider;
+    // Mode de jeu
     public bool pause { get; set; }
     public bool gameOn {  get; private set; }
+    // Attributs joueur
+    private Saut composantSautJoueur;
+    private MouseControl composantControlesJoueur;
+    private Rigidbody rbJoueur;
+    private Camera cameraJoueur;
     public static int[,] CoupsParTrou = new int[,] 
     {
         {30,35,40},
@@ -43,19 +46,25 @@ public class GestionJeuSolo : MonoBehaviour
 
     public static int niveauActuel = 1;
 
+    private void Awake()
+    {
+        composantSautJoueur = joueur.GetComponent<Saut>();
+        composantControlesJoueur = joueur.GetComponent<MouseControl>();
+        rbJoueur = joueur.GetComponent<Rigidbody>();
+        cameraJoueur = joueur.GetComponentInChildren<Camera>();
+    }
+
     private void Start()
     {
         if (niveauActuel != 10)
         {
             gameOn = false;
-            index = 1;
+            indexNiveau = 1;
             boutonMenuTrou.onClick.AddListener(clickBoutonMenu);
             prochainNiveauTrou.onClick.AddListener(clickBoutonProchainNiveau);
             btnRetourPartie.onClick.AddListener(clickBoutonRetourPartie);
             btnMenuPause.onClick.AddListener(clickBoutonMenu);
         }
-        Debug.Log($"Spawns: {Spawns.spawns[0]} , {Spawns.spawns[1]} , {Spawns.spawns[2]} , {Spawns.spawns[2]} , {Spawns.spawns[3]} , {Spawns.spawns[4]} , {Spawns.spawns[4]} , {Spawns.spawns[5]} , {Spawns.spawns[6]} ");
-        
     }
 
     private void Update()
@@ -67,8 +76,7 @@ public class GestionJeuSolo : MonoBehaviour
                 if (!pause && gameOn)
                 {
                     canvasMenuPause.enabled = true;
-                    joueur.GetComponent<Jump>().enabled = false;
-                    //joueur.GetComponent<MouseControl>().enabled = false;
+                    composantSautJoueur.enabled = false;
                     ChangerPause(true);
                     Cursor.visible = true;
                     canvasVolumeSlider.gameObject.SetActive(true);
@@ -77,8 +85,7 @@ public class GestionJeuSolo : MonoBehaviour
                 {
                     canvasMenuPause.enabled = false;
                     ChangerPause(false);
-                    joueur.GetComponent<Jump>().enabled = true;
-                    //joueur.GetComponent<MouseControl>().enabled = true;   
+                    composantSautJoueur.enabled = true;
                     canvasVolumeSlider.gameObject.SetActive(false);
                 }
             }
@@ -93,27 +100,25 @@ public class GestionJeuSolo : MonoBehaviour
                 AfficherCoupsParTrou(true);
             }
         }
-        
     }
 
     public void AfficherCoupsParTrou(bool actif)
     {
         if (actif)
         { 
-            nbCoupsTexte.text = $"{CoupsParTrou[index - 1,0]}         {CoupsParTrou[index - 1, 1]}         {CoupsParTrou[index - 1, 2]}";
+            nbCoupsTexte.text = $"{CoupsParTrou[indexNiveau - 1,0]}         {CoupsParTrou[indexNiveau - 1, 1]}         {CoupsParTrou[indexNiveau - 1, 2]}";
         }
-        nbCoupsTexte.GetComponentInParent<Canvas>().enabled = actif;
+        canvasNombreSauts.enabled = actif;
         
     }
     public void ChangerNiveau()
     {
-        if (index < Spawns.spawns.Count)
+        if (indexNiveau < Spawns.spawns.Count)
         {
             niveauActuel++;
             Spawns.spawnActuel = Spawns.spawns[niveauActuel - 1];
             Ressusciter();
         }
-
         ActiverJoueur(true);
         gameOn = true;
     }
@@ -123,11 +128,10 @@ public class GestionJeuSolo : MonoBehaviour
         ActiverMenuArriverTrou(false);
         ActiverJoueur(false);
         gameOn = false;
-        
     }
     private void clickBoutonProchainNiveau()
     {
-        joueur.GetComponent<Jump>().isOnGreen = false;
+        composantSautJoueur.isOnGreen = false;
         ChangerNiveau();
         ActiverMenuArriverTrou(false);
         ActiverJoueur(true);
@@ -143,8 +147,8 @@ public class GestionJeuSolo : MonoBehaviour
     }
     public void Ressusciter()
     {
-        joueur.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        joueur.GetComponent<Rigidbody>().useGravity = true;
+        rbJoueur.velocity = Vector3.zero;
+        rbJoueur.useGravity = true;
         ReinitialiserCompteurSaut();
         joueur.transform.position = Spawns.spawnActuel;
         ActiverJoueur(true);
@@ -156,23 +160,22 @@ public class GestionJeuSolo : MonoBehaviour
         boutonMenuTrou.enabled = actif;
         prochainNiveauTrou.enabled = actif;
         canvasMenuArrive.enabled = actif;
-        joueur.GetComponent<Jump>().enabled = false;
+        composantSautJoueur.enabled = false;
     }
     public void ActiverJoueur(bool actif)
     {
         joueur.SetActive(actif);
-        joueur.GetComponent<Jump>().enabled = actif;
-        joueur.GetComponent<MouseControl>().enabled = actif;
-        joueur.GetComponentInChildren<Camera>().enabled = actif;
+        composantSautJoueur.enabled = actif;
+        composantControlesJoueur.enabled = actif;
+        cameraJoueur.enabled = actif;
     }
     public void ReinitialiserCompteurSaut()
     {
-        joueur.GetComponent<Jump>().nbSauts = 0;
+        composantSautJoueur.RéinitialiserCompteurSauts();
     }
     private void ChangerPause(bool estEnPause)
     {
         pause = estEnPause;
-        joueur.GetComponent<MouseControl>().pause = estEnPause;
+        composantControlesJoueur.pause = estEnPause;
     }
-
 }

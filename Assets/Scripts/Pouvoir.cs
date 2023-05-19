@@ -15,7 +15,7 @@ public class Pouvoir : NetworkBehaviour
     {
         if (other.gameObject.layer == pouvoirLayer)
         {
-            GetComponent<Jump>().jumpStrength = UnityEngine.Random.Range(0, 2) == 0 ? 25 : 150;
+            GetComponent<Saut>().jumpStrength = UnityEngine.Random.Range(0, 2) == 0 ? 25 : 150;
             Destroy(other.gameObject);
         }
 
@@ -57,7 +57,7 @@ public class Pouvoir : NetworkBehaviour
         if (elapsedTime > 7.5f)
         {
             elapsedTime = 0;
-            GetComponent<Jump>().jumpStrength = 100;
+            GetComponent<Saut>().jumpStrength = 100;
         }
     }
 }

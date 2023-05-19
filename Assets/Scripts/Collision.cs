@@ -9,6 +9,7 @@ public class Collision : MonoBehaviour
     private static int zoneCollanteLayer = 6;
     private static int zoneAcideLayer = 7;
     private static int trouLayer = 8;
+    private const int layerBouleDeFeu = 9;
     private static int ondeLayer = 14;
     // Dissolution
     private bool seDissout;
@@ -20,17 +21,16 @@ public class Collision : MonoBehaviour
     [SerializeField] private AudioSource finNiveauSFX;
     [SerializeField] public AudioSource respawnSFX;
     // Attributs Joueur
-    private Rigidbody _rigidbody;
-    private Jump jumpComponent;
-
+    private Rigidbody rb;
+    private Saut jumpComponent;
+    
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody>();
         material = GetComponent<Renderer>().material;
-        jumpComponent = GetComponent<Jump>();
+        rb = GetComponent<Rigidbody>();
+        jumpComponent = GetComponent<Saut>();
     }
 
-    private const int layerBouleDeFeu = 9;
 
     void Update()
     {
@@ -89,11 +89,11 @@ public class Collision : MonoBehaviour
 
             if (GestionJeuSolo.niveauActuel == 10)
             {
-                Debug.Log("entrer dans trou");
-                GameObject.Find("Generateur").GetComponent<NiveauProcédural>().boutonRecommencer.GetComponentInParent<Canvas>()
+                NiveauProcédural gestionnaireGenerationProcedurale = GetComponent<NiveauProcédural>();
+                gestionnaireGenerationProcedurale.boutonRecommencer.GetComponentInParent<Canvas>()
                     .enabled = true;
-                GameObject.Find("Generateur").GetComponent<NiveauProcédural>().boutonRecommencer.enabled = true;
-                GameObject.Find("Generateur").GetComponent<NiveauProcédural>().fond.enabled = true;
+                gestionnaireGenerationProcedurale.boutonRecommencer.enabled = true;
+                gestionnaireGenerationProcedurale.fond.enabled = true;
             }
             else
             {
@@ -111,8 +111,7 @@ public class Collision : MonoBehaviour
         else if (collidedLayer == ondeLayer)
         {
             Vector3 force = collision.transform.parent.rotation.eulerAngles * 2;
-            _rigidbody.AddRelativeForce(force);
-            Debug.Log(force);
+            rb.AddRelativeForce(force);
         }
     }
     private void OnCollisionExit(UnityEngine.Collision other)
@@ -127,15 +126,14 @@ public class Collision : MonoBehaviour
     }
     private void Détruire()
     {
-        Rigidbody rb = GetComponent<Rigidbody>();
         rb.velocity = Vector3.zero;
         rb.useGravity = false;
         seDissout = true;
     }
     private void DesactiverAcceleration()
     {
-        transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
+        rb.velocity = Vector3.zero;
+        rb.useGravity = false;
     }
     private void ChangerCouleurApparition(string couleur) => material.SetColor("_DissolveColor", material.GetColor(couleur));
 }

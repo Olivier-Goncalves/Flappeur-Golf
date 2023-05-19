@@ -21,7 +21,7 @@ public class Sauvegarde : MonoBehaviour
 
         liste[indiceNiveau] = GestionJeuSolo.niveauActuel + " ";
 
-        int nbSautActuel = GameObject.Find("JoueurLocal").GetComponent<Jump>().nbSauts;
+        int nbSautActuel = GameObject.Find("JoueurLocal").GetComponent<Saut>().nbSauts;
         
         if (nbSautActuel < ancienNbFlaps && TempsMeilleur(ancienTemps, temps))
         {

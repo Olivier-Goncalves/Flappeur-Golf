@@ -8,14 +8,14 @@ using Unity.Netcode;
 using UnityEngine;
 // Fait par: Louis-Félix Bouvrette
 [RequireComponent(typeof(Rigidbody))]
-public class Jump : MonoBehaviour
+public class Saut : MonoBehaviour
 {
     [SerializeField] private AudioSource flapSFX;
     [SerializeField] private Material green;
     public float jumpStrength = 100;
-    [SerializeField] TMP_Text text;
+    [SerializeField] TMP_Text texteCompteurSauts;
     private Rigidbody _rigidbody;
-    public int nbSauts = 0;
+    public int nbSauts { get; private set; }
     public bool isOnGreen = false;
 
     private void Awake()
@@ -41,21 +41,24 @@ public class Jump : MonoBehaviour
             _rigidbody.AddRelativeForce(new Vector3(0, jumpStrength * 10, jumpStrength * 12));
             nbSauts++;
         }
-            text.text = nbSauts.ToString();
+        texteCompteurSauts.text = nbSauts.ToString();
     }
 
     private bool JoueurSaute() => Input.GetKeyUp(KeyCode.Space);
     private void OnCollisionEnter(UnityEngine.Collision collision)
     {
-        // Si il est sur le green
         if (collision.gameObject.GetComponent<Renderer>().material.name == "green (Instance)")
         {
             isOnGreen = true;
-            // Debug.Log("Is on green");
         }
     }
     private void OnCollisionExit(UnityEngine.Collision other)
     {
         isOnGreen = false;
+    }
+
+    public void RéinitialiserCompteurSauts()
+    {
+        nbSauts = 0;
     }
 }

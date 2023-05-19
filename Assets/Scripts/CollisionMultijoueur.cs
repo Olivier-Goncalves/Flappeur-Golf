@@ -8,16 +8,14 @@ public class CollisionMultijoueur : NetworkBehaviour
 {
     
     private static int StickyZoneLayer = 6;
-    
     private static int AcidZoneLayer = 7;
     private static int TrouLayer = 8;
     private static int ondeLayer = 14;
-    private static int fusilLayer = 16;
-    private bool isDissolving = false;
-    private bool isSolving = false;
+    private bool seDissout = false;
+    private bool seConsolide = false;
     private float alpha = -1.1f;
     private Material material;
-    private Jump jumpComponent;
+    private Saut jumpComponent;
     [SerializeField] private Vector3 respawn;
     [SerializeField] private AudioSource deathSFX;
     [SerializeField] private AudioSource finNiveauSFX;
@@ -56,7 +54,7 @@ public class CollisionMultijoueur : NetworkBehaviour
     {
         _rigidbody = GetComponent<Rigidbody>();
         material = GetComponent<Renderer>().material;
-        jumpComponent = GetComponent<Jump>();
+        jumpComponent = GetComponent<Saut>();
         gestionnaireJeu = GameObject.Find("GestionnaireJeu").GetComponent<GestionJeuMultijoueur>();
         
     }
@@ -67,17 +65,17 @@ public class CollisionMultijoueur : NetworkBehaviour
     
     void Update()
     {
-        if (isDissolving)
+        if (seDissout)
         {
             alpha += Time.deltaTime;
             material.SetFloat("_Alpha", alpha);
             if (alpha >= 1f)    
             {
-                isDissolving = false;
+                seDissout = false;
                 Ressusciter();
             }
         }
-        if (isSolving)
+        if (seConsolide)
         {
             jumpComponent.enabled = false;
             material.SetColor("_DissolveColor", material.GetColor("_Color"));
@@ -85,7 +83,7 @@ public class CollisionMultijoueur : NetworkBehaviour
             material.SetFloat("_Alpha", alpha);
             if (alpha <= -1.1f)
             {
-                isSolving = false;
+                seConsolide = false;
                 alpha = -1.1f;
                 material.SetFloat("_Alpha", alpha);
                 jumpComponent.enabled = true;
@@ -106,7 +104,7 @@ public class CollisionMultijoueur : NetworkBehaviour
             material.SetColor("_DissolveColor", material.GetColor("_AcidDissolveColor"));
             transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            isDissolving = true;
+            seDissout = true;
             jumpComponent.enabled = false;
         }
         else if (collidedLayer == TrouLayer)
@@ -126,7 +124,7 @@ public class CollisionMultijoueur : NetworkBehaviour
             material.SetColor("_DissolveColor", material.GetColor("_FireDissolveColor"));
             transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            isDissolving = true;
+            seDissout = true;
         }
         else if (collidedLayer == ondeLayer)
         {
@@ -144,7 +142,7 @@ public class CollisionMultijoueur : NetworkBehaviour
         respawnSFX.Play();
         gestionnaireJeu.Ressusciter(transform);
         transform.rotation = Quaternion.Euler(0, -90, 0);
-        isSolving = true;
+        seConsolide = true;
     }
     public void CollisionLaser()
     {
@@ -157,7 +155,7 @@ public class CollisionMultijoueur : NetworkBehaviour
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.velocity = Vector3.zero;
         rb.useGravity = false;
-        isDissolving = true;
+        seDissout = true;
         jumpComponent.enabled = false; 
     }
     private void ChangerCouleurApparition(string couleur) => material.SetColor("_DissolveColor", material.GetColor(couleur));

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -5,41 +6,45 @@ using UnityEngine;
 
 public class Fusil: NetworkBehaviour
 {
-    [SerializeField] private KeyCode shootKey;
+    [SerializeField] private KeyCode toucheTirer;
     [SerializeField] private GameObject balle;
-    [SerializeField] private Transform exitTransform;
-    private int compteur = 0;
+    [SerializeField] private Transform positionSortie;
+    private int compteur;
     private int nombreMaxMunition = 3;
-    private float time = 0;
     private GameObject balleInstantie;
+    private NetworkObject balleReseau;
+
+    private void Awake()
+    {
+        balleInstantie.GetComponent<NetworkObject>();
+    }
+
     private void Update()
     {
         if(compteur < nombreMaxMunition)
         {
-            if (Input.GetKeyDown(shootKey))
+            if (Input.GetKeyDown(toucheTirer))
             {
                 ++compteur;
-                balleInstantie= Instantiate(balle, exitTransform.position, exitTransform.rotation);
-                SpawnBalleServerRpc();
-                // balleInstantie.GetComponent<NetworkObject>().Spawn();
+                balleInstantie= Instantiate(balle, positionSortie.position, positionSortie.rotation);
+                SpawnDespawnBalleServerRpc(true);
             }   
         }
         else
         {
-            DespawnBalleServerRpc();
-            // gameObject.GetComponent<NetworkObject>().Despawn();
+            SpawnDespawnBalleServerRpc(false);
         }
     }
     
     
     [ServerRpc(RequireOwnership = false)]
-    private void SpawnBalleServerRpc()
+    private void SpawnDespawnBalleServerRpc(bool spawn)
     {
-        balleInstantie.GetComponent<NetworkObject>().Spawn();
-    }
-    [ServerRpc(RequireOwnership = false)]
-    private void DespawnBalleServerRpc()
-    {
-        gameObject.GetComponent<NetworkObject>().Despawn();
+        if(spawn)
+            balleReseau.Spawn();
+        else
+        {
+            balleReseau.Despawn();
+        }
     }
 }

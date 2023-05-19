@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Balle : MonoBehaviour
 {
-    private float time = 0;
+    private float time;
     private NetworkObject balle;
     private void Awake()
     {
