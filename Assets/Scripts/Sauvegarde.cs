@@ -1,22 +1,17 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
 public class Sauvegarde : MonoBehaviour
 {
-    // [SerializeField] private TextAsset fichierTexte;
     private const string Path = "Assets/Resources/Sauvegarde.txt";
     public static void CréerSauvegarde(string temps)
     {
         List<string> liste = File.ReadAllLines(Path).ToList();
-        //var fichierTexte = Resources.Load<TextAsset>("Sauvegarde");
-        //List<string> listeMots = new List<string>(fichierTexte.text.Split('\n'));
+        
         int indiceNiveau = GestionJeuSolo.niveauActuel - 1;
         
         char[] ligne = liste[indiceNiveau].ToCharArray();
@@ -44,9 +39,7 @@ public class Sauvegarde : MonoBehaviour
         {
             liste[indiceNiveau] += ancienNbFlaps + " " + ancienTemps;
         }
-
         File.WriteAllLines(Path, liste.ToArray());
-        
         AssetDatabase.ImportAsset(Path); 
     }
 
@@ -71,7 +64,6 @@ public class Sauvegarde : MonoBehaviour
         }
         return temps;
     }
-
     private static bool TempsMeilleur(string ancienTemps, string nouveauTemps) => FormatterTemps(nouveauTemps) < FormatterTemps(ancienTemps);
     private static int FormatterTemps(string temps)
     {

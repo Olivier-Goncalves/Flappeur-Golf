@@ -42,55 +42,58 @@ public class GestionJeuSolo : MonoBehaviour
     };
 
     public static int niveauActuel = 1;
-    private void Awake()
-    {
-        gameOn = false;
-        index = 1;
-        boutonMenuTrou.onClick.AddListener(clickBoutonMenu);
-        prochainNiveauTrou.onClick.AddListener(clickBoutonProchainNiveau);
-        btnRetourPartie.onClick.AddListener(clickBoutonRetourPartie);
-        btnMenuPause.onClick.AddListener(clickBoutonMenu);
-
-    }
 
     private void Start()
     {
+        if (niveauActuel != 10)
+        {
+            gameOn = false;
+            index = 1;
+            boutonMenuTrou.onClick.AddListener(clickBoutonMenu);
+            prochainNiveauTrou.onClick.AddListener(clickBoutonProchainNiveau);
+            btnRetourPartie.onClick.AddListener(clickBoutonRetourPartie);
+            btnMenuPause.onClick.AddListener(clickBoutonMenu);
+        }
         Debug.Log($"Spawns: {Spawns.spawns[0]} , {Spawns.spawns[1]} , {Spawns.spawns[2]} , {Spawns.spawns[2]} , {Spawns.spawns[3]} , {Spawns.spawns[4]} , {Spawns.spawns[4]} , {Spawns.spawns[5]} , {Spawns.spawns[6]} ");
         
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
+        if (niveauActuel != 10)
         {
-            if (!pause && gameOn)
+            if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
             {
-                canvasMenuPause.enabled = true;
-                joueur.GetComponent<Jump>().enabled = false;
-                //joueur.GetComponent<MouseControl>().enabled = false;
-                ChangerPause(true);
-                Cursor.visible = true;
-                canvasVolumeSlider.gameObject.SetActive(true);
+                if (!pause && gameOn)
+                {
+                    canvasMenuPause.enabled = true;
+                    joueur.GetComponent<Jump>().enabled = false;
+                    //joueur.GetComponent<MouseControl>().enabled = false;
+                    ChangerPause(true);
+                    Cursor.visible = true;
+                    canvasVolumeSlider.gameObject.SetActive(true);
+                }
+                else
+                {
+                    canvasMenuPause.enabled = false;
+                    ChangerPause(false);
+                    joueur.GetComponent<Jump>().enabled = true;
+                    //joueur.GetComponent<MouseControl>().enabled = true;   
+                    canvasVolumeSlider.gameObject.SetActive(false);
+                }
+            }
+            if (!gameOn)
+            {
+                canvasMenuPause.enabled = false;
+                AfficherCoupsParTrou(false);
+                canvasVolumeSlider.gameObject.SetActive(false);
             }
             else
             {
-                canvasMenuPause.enabled = false;
-                ChangerPause(false);
-                joueur.GetComponent<Jump>().enabled = true;
-                //joueur.GetComponent<MouseControl>().enabled = true;   
-                canvasVolumeSlider.gameObject.SetActive(false);
+                AfficherCoupsParTrou(true);
             }
         }
-        if (!gameOn)
-        {
-            canvasMenuPause.enabled = false;
-            AfficherCoupsParTrou(false);
-            canvasVolumeSlider.gameObject.SetActive(false);
-        }
-        else
-        {
-            AfficherCoupsParTrou(true);
-        }
+        
     }
 
     public void AfficherCoupsParTrou(bool actif)

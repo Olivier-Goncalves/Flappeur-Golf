@@ -1,14 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 // Fait par: Guillaume Flamand
 public class Collision : MonoBehaviour
 {
     [SerializeField] private GestionJeuSolo gestionnaireJeu;
     private static int StickyZoneLayer = 6;
-    
     private static int AcidZoneLayer = 7;
     private static int TrouLayer = 8;
     private static int ondeLayer = 14;
@@ -83,7 +79,6 @@ public class Collision : MonoBehaviour
         }
         else if (collidedLayer == TrouLayer)
         {
-            
             finNiveauSFX.Play();
             Sauvegarde.CréerSauvegarde(TimeSpan.FromSeconds(Timer.timeRemaining).ToString(@"mm\:ss\:ff"));
             // gestionnaireJeu.ReinitialiserCompteurSaut();
@@ -104,8 +99,6 @@ public class Collision : MonoBehaviour
                 gestionnaireJeu.ActiverMenuArriverTrou(true);
                 gestionnaireJeu.ActiverJoueur(false);
             }
-            //isDissolving = true;
-           
         }
         else if (collidedLayer == layerBouleDeFeu)
         {
@@ -125,11 +118,6 @@ public class Collision : MonoBehaviour
     {
         transform.gameObject.GetComponent<Rigidbody>().useGravity = true;
     }
-    //private void Ressusciter()
-    //{
-    //    respawnSFX.Play();
-    //    gestionnaireJeu.Ressusciter(gestionnaireJeu.index);
-    //}
     public void CollisionLaser()
     {
         deathSFX.Play();

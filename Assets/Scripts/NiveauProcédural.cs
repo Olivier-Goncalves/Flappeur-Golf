@@ -1,14 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
-using Shapes2D;
-using Unity.VisualScripting;
-using UnityEngine.InputSystem.HID;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
 
 // Fait par Guillaume Flamand
@@ -19,7 +14,6 @@ public class NiveauProcédural : MonoBehaviour
     [SerializeField] private int nombreDeCorridor = 15;
     [SerializeField] private GameObject plancher;
     [SerializeField] private GameObject mur;
-    [SerializeField] private GameObject joueur;
     [SerializeField] private GameObject lanceurOndes;
     [SerializeField] private GameObject lanceurBouleDeFeu;
     [SerializeField] private GameObject laser;
@@ -54,6 +48,7 @@ public class NiveauProcédural : MonoBehaviour
 
     private void Awake()
     {
+        GestionJeuSolo.niveauActuel = 10;
         fondDébut.enabled = true;
         boutonRetourMenu.onClick.AddListener(()=> 
         {
@@ -64,7 +59,6 @@ public class NiveauProcédural : MonoBehaviour
         {
             menuPause.enabled = false;
         });
-        GestionJeuSolo.niveauActuel = 10;
         boutonRecommencer.onClick.AddListener(() =>
         {
             Recommencer();
@@ -85,7 +79,7 @@ public class NiveauProcédural : MonoBehaviour
             fond.enabled = false;
         });
     }
-    public void Recommencer()
+    private void Recommencer()
     {
         Destroy(parent);
         positionsPlanchers = new List<Vector3>();
@@ -107,7 +101,8 @@ public class NiveauProcédural : MonoBehaviour
         for(int i = 0; i < chambres.Count; ++i)
         {
             GameObject chambre = new GameObject("Chambre #" + i);
-
+            List<int> positionsObstacles = PositionsObstacles();
+            
             for (int j = 0; j < chambres[i].Count; ++j)
             {
                 GameObject nouveauPlancher = Instantiate(plancher, chambres[i][j], transform.rotation); 
@@ -133,7 +128,7 @@ public class NiveauProcédural : MonoBehaviour
                 }
                 else
                 {
-                    if (j == 20 || j == 45 || j == 75 || j == 100)
+                    if (positionsObstacles.Contains(j))
                     {
                         GameObject bdf = Instantiate(lanceurBouleDeFeu, chambres[i][j] + new Vector3(0,0.5f,0), transform.rotation);
                         bdf.transform.rotation = Quaternion.Euler(0,UnityEngine.Random.Range(0,2) == 0 ? -90 : 180,0);
@@ -143,23 +138,24 @@ public class NiveauProcédural : MonoBehaviour
                         nouveauLaser.transform.SetParent(chambre.transform);
 
                         GameObject zone;
-                        switch (UnityEngine.Random.Range(0, 4))
+                        switch (UnityEngine.Random.Range(0, 3))
                         {
                             case 0:
                                 zone = Instantiate(zoneInverseGravité,chambres[i][j], transform.rotation);
-                                zone.transform.SetParent(chambre.transform);
                                 break;
                             case 1:
                                 zone = Instantiate(zoneAccelereGravité,chambres[i][j], transform.rotation);
-                                zone.transform.SetParent(chambre.transform);
                                 break;
                             case 2:
                                 zone = Instantiate(zoneAccelereEtInverseGravité,chambres[i][j], transform.rotation);
-                                zone.transform.SetParent(chambre.transform);
+                                break;
+                            default:
+                                zone = new GameObject();
                                 break;
                         }
+                        zone.transform.SetParent(chambre.transform);
                     }
-                    if (j == 5)
+                    if (j == UnityEngine.Random.Range(0,110))
                     {
                         GameObject onde = Instantiate(lanceurOndes, chambres[i][j] + new Vector3(0,4f,0), transform.rotation);
                         onde.transform.SetParent(chambre.transform);
@@ -174,6 +170,19 @@ public class NiveauProcédural : MonoBehaviour
         GameObject.Find("JoueurLocal").transform.position = Spawns.spawnActuel;
     }
 
+    private List<int> PositionsObstacles()
+    {
+        List<int> positions = new List<int>();
+        while (positions.Count < 5)
+        {
+            int nouvellePosition = UnityEngine.Random.Range(0, 109);
+            if (!positions.Contains(nouvellePosition))
+            {
+                positions.Add(nouvellePosition);
+            }
+        }
+        return positions;
+    }
     private void InstancierMurs()
     {
         GameObject murs = new GameObject("Murs");

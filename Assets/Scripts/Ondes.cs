@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Ondes : MonoBehaviour
@@ -52,11 +49,9 @@ public class Ondes : MonoBehaviour
             }
             Onde.transform.SetParent(transform);
             Onde.transform.rotation = angles[i];
-            
             ondes.Add(Onde);
         }
     }
-    
     private void Update()
     {
         for (int i = 0; i < ondes.Count; ++i)
