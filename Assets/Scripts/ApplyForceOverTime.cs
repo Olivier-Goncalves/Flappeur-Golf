@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-    [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody))]
 public class ApplyForceOverTime : MonoBehaviour
 {
     [SerializeField] private Vector3 forceToApply;
@@ -12,7 +12,6 @@ public class ApplyForceOverTime : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        // forceToApplyInWorldSpace = rb.velocity.TransformPoint(forceToApply);
     }
 
     void Update()

@@ -6,21 +6,23 @@ using UnityEngine;
 // Fait par: Guillaume Flamand
 public class Collision : MonoBehaviour
 {
+    // Gestionnaire
     [SerializeField] private GestionJeuSolo gestionnaireJeu;
-    private static int StickyZoneLayer = 6;
-    
-    private static int AcidZoneLayer = 7;
-    private static int TrouLayer = 8;
+    // Layer
+    private static int zoneCollanteLayer = 6;
+    private static int zoneAcideLayer = 7;
+    private static int trouLayer = 8;
     private static int ondeLayer = 14;
-    private bool isDissolving = false;
-    private bool isSolving = false;
+    // Dissolution
+    private bool seDissout;
+    private bool seConsolide;
     private float alpha = -1.1f;
     private Material material;
-    [SerializeField] private Vector3 respawn;
+    // Sons
     [SerializeField] private AudioSource deathSFX;
     [SerializeField] private AudioSource finNiveauSFX;
     [SerializeField] public AudioSource respawnSFX;
-    private Transform transformComp;
+    // Attributs Joueur
     private Rigidbody _rigidbody;
     private Jump jumpComponent;
 
@@ -28,7 +30,6 @@ public class Collision : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody>();
         material = GetComponent<Renderer>().material;
-        transformComp = GetComponent < Transform>();
         jumpComponent = GetComponent<Jump>();
     }
     
@@ -36,23 +37,22 @@ public class Collision : MonoBehaviour
     
     void Update()
     {
-        if (isDissolving)
+        if (seDissout)
         {
             alpha += Time.deltaTime;
             material.SetFloat("_Alpha", alpha);
             jumpComponent.enabled = false;
             if (alpha >= 1f)    
             {
-                isDissolving = false;
-                isSolving = true;
+                seDissout = false;
+                seConsolide = true;
                 
                 gestionnaireJeu.Ressusciter();
-                
                 
                 respawnSFX.Play();
             }
         }
-        if (isSolving)
+        if (seConsolide)
         {
             jumpComponent.enabled = false;
             material.SetColor("_DissolveColor", material.GetColor("_Color"));
@@ -60,7 +60,7 @@ public class Collision : MonoBehaviour
             material.SetFloat("_Alpha", alpha);
             if (alpha <= -1.1f)
             {
-                isSolving = false;
+                seConsolide = false;
                 alpha = -1.1f;
                 material.SetFloat("_Alpha", alpha);
                 jumpComponent.enabled = true;
@@ -70,18 +70,18 @@ public class Collision : MonoBehaviour
     private void OnCollisionEnter(UnityEngine.Collision collision)
     {
         int collidedLayer = collision.contacts[0].otherCollider.gameObject.layer;
-        if (collidedLayer == StickyZoneLayer)
+        if (collidedLayer == zoneCollanteLayer)
         {
             DesactiverAcceleration();
         }
-        else if (collidedLayer == AcidZoneLayer || collidedLayer == 14)
+        else if (collidedLayer == zoneAcideLayer || collidedLayer == 14)
         {
             deathSFX.Play();
             material.SetColor("_DissolveColor", material.GetColor("_AcidDissolveColor"));
             DesactiverAcceleration();
             Détruire();
         }
-        else if (collidedLayer == TrouLayer)
+        else if (collidedLayer == trouLayer)
         {
             
             finNiveauSFX.Play();
@@ -141,7 +141,7 @@ public class Collision : MonoBehaviour
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.velocity = Vector3.zero;
         rb.useGravity = false;
-        isDissolving = true;
+        seDissout = true;
     }
     private void DesactiverAcceleration()
     {
