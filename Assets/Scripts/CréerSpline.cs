@@ -1,11 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Double;
 using UnityEngine;
-using Matrix = MathNet.Numerics.LinearAlgebra.Complex.Matrix;
 // Fait par: Guillaume Flamand
 public class CréerSpline : MonoBehaviour
 {
@@ -22,7 +18,7 @@ public class CréerSpline : MonoBehaviour
     private float elapsedTime;
     private void Awake()
     {
-        pointsSpline = new[] {new Vector2(0, 0), new(20, UnityEngine.Random.Range(21,25)), new(35, UnityEngine.Random.Range(13,20))};
+        pointsSpline = new[] {new Vector2(0, 0), new(20, UnityEngine.Random.Range(21,30)), new(35, UnityEngine.Random.Range(15,30))};
 
         Vector<double> b = CréerMatriceB(pointsSpline[0].y, pointsSpline[1].y, pointsSpline[2].y);
         Matrix<double> A = CréerMatriceA(pointsSpline[0].x, pointsSpline[1].x, pointsSpline[2].x);

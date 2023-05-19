@@ -1,11 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using Newtonsoft.Json;
-using Shapes2D;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +6,6 @@ using UnityEngine.UI;
 public class GestionBoutonNiveau : MonoBehaviour
 {
     [SerializeField] Canvas canvas;
-    private const string Path = "Assets/Sauvegarde Joueur Solo/Sauvegarde.txt";
     private const string or = "#F8FF00";
     private const string argent = "#AFB0B2";
     private const string bronze = "#964732";
@@ -22,15 +14,7 @@ public class GestionBoutonNiveau : MonoBehaviour
     {
         GestionJeuSolo.niveauActuel = 1;
         var fichierTexte = Resources.Load<TextAsset>("Sauvegarde");
-        //Debug.Log(fichierTexte.text);
         List<string> listeMots = new List<string>(fichierTexte.text.Split('\n'));
-        /*
-        foreach (var str in listeMots)
-        {
-            Debug.Log(str);
-        }
-        */
-        // List<string> liste = File.ReadAllLines(Path).ToList();
         int numeroNiveau = int.Parse(gameObject.name);
         char[] ligne = listeMots[numeroNiveau - 1].ToCharArray();
         string line = "";
@@ -38,9 +22,6 @@ public class GestionBoutonNiveau : MonoBehaviour
         {
             line += ligne[i];
         }
-        Debug.Log(line);
-        //Debug.Log(numeroNiveau+ ": "+ligne[0]+ligne[1] + ligne[2]);
-        
         int ancienNombreFlap = int.Parse(Sauvegarde.GetAncienNombreFlap(ligne));
         Debug.Log(ancienNombreFlap);
         List<GameObject> enfants = GetAllChilds(gameObject);
@@ -95,7 +76,7 @@ public class GestionBoutonNiveau : MonoBehaviour
         GameObject.Find("GameManagerSolo").GetComponent<GestionJeuSolo>().Ressusciter();
         canvas.enabled = false;
     }
-    public static List<GameObject> GetAllChilds(GameObject gameObject)
+    private static List<GameObject> GetAllChilds(GameObject gameObject)
     {
         List<GameObject> list = new List<GameObject>();
         for (int i = 0; i< gameObject.transform.childCount; i++)

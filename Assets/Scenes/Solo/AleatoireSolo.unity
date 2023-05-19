@@ -1235,7 +1235,7 @@ PrefabInstance:
     - target: {fileID: -3182200702577882433, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
       propertyPath: gestionnaireJeu
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1382990867}
     - target: {fileID: 803747304, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0.5
@@ -1354,6 +1354,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1382990865}
   - component: {fileID: 1382990866}
+  - component: {fileID: 1382990867}
   m_Layer: 0
   m_Name: Generateur
   m_TagString: Untagged
@@ -1393,7 +1394,6 @@ MonoBehaviour:
   nombreDeCorridor: 50
   plancher: {fileID: 4047618615723812425, guid: ddb988396b37ab4459da3fa79c59826d, type: 3}
   mur: {fileID: 4881061931879636568, guid: 246886a0225a5e14dbc98e721e7581f7, type: 3}
-  joueur: {fileID: 5841365167247044648, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
   lanceurOndes: {fileID: 218833260306100948, guid: 1535683be1b7d0e48bf3bd7d8d18f1d1, type: 3}
   lanceurBouleDeFeu: {fileID: 4505538425031287349, guid: 36001cfe4f94b3f42a18f75d7271b8a2, type: 3}
   laser: {fileID: 4210717250828663770, guid: a626c87afa66c3d4cbe01b2dd58241d8, type: 3}
@@ -1408,6 +1408,29 @@ MonoBehaviour:
   boutonRecommencer: {fileID: 1719120915}
   fond: {fileID: 588269029}
   "fondD\xE9but": {fileID: 898880639}
+--- !u!114 &1382990867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1382990864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e647025a9f653f94dac7daa9c55de04f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joueur: {fileID: 1706057194}
+  canvasMenuArrive: {fileID: 0}
+  boutonMenuTrou: {fileID: 0}
+  prochainNiveauTrou: {fileID: 0}
+  "textF\xE9licitation": {fileID: 0}
+  canvasMenuPrincipal: {fileID: 0}
+  canvasMenuPause: {fileID: 0}
+  btnRetourPartie: {fileID: 0}
+  btnMenuPause: {fileID: 0}
+  nbCoupsTexte: {fileID: 0}
+  canvasVolumeSlider: {fileID: 0}
 --- !u!1 &1383891814
 GameObject:
   m_ObjectHideFlags: 0
@@ -2049,6 +2072,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1706057194 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5841365167247044648, guid: a272347b3a49018499361ac9e8b2d42c, type: 3}
+  m_PrefabInstance: {fileID: 1368668603}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1719120913
 GameObject:
   m_ObjectHideFlags: 0

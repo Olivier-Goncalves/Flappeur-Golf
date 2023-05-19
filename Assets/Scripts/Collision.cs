@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 // Fait par: Guillaume Flamand
 public class Collision : MonoBehaviour
@@ -32,9 +29,9 @@ public class Collision : MonoBehaviour
         material = GetComponent<Renderer>().material;
         jumpComponent = GetComponent<Jump>();
     }
-    
+
     private const int layerBouleDeFeu = 9;
-    
+
     void Update()
     {
         if (seDissout)
@@ -42,13 +39,13 @@ public class Collision : MonoBehaviour
             alpha += Time.deltaTime;
             material.SetFloat("_Alpha", alpha);
             jumpComponent.enabled = false;
-            if (alpha >= 1f)    
+            if (alpha >= 1f)
             {
                 seDissout = false;
                 seConsolide = true;
-                
+
                 gestionnaireJeu.Ressusciter();
-                
+
                 respawnSFX.Play();
             }
         }
@@ -83,14 +80,13 @@ public class Collision : MonoBehaviour
         }
         else if (collidedLayer == trouLayer)
         {
-            
             finNiveauSFX.Play();
             Sauvegarde.CréerSauvegarde(TimeSpan.FromSeconds(Timer.timeRemaining).ToString(@"mm\:ss\:ff"));
             // gestionnaireJeu.ReinitialiserCompteurSaut();
             jumpComponent.enabled = true;
             material.SetColor("_DissolveColor", Color.red);
-            DesactiverAcceleration();  
-            
+            DesactiverAcceleration();
+
             if (GestionJeuSolo.niveauActuel == 10)
             {
                 Debug.Log("entrer dans trou");
@@ -104,8 +100,6 @@ public class Collision : MonoBehaviour
                 gestionnaireJeu.ActiverMenuArriverTrou(true);
                 gestionnaireJeu.ActiverJoueur(false);
             }
-            //isDissolving = true;
-           
         }
         else if (collidedLayer == layerBouleDeFeu)
         {
@@ -125,16 +119,11 @@ public class Collision : MonoBehaviour
     {
         transform.gameObject.GetComponent<Rigidbody>().useGravity = true;
     }
-    //private void Ressusciter()
-    //{
-    //    respawnSFX.Play();
-    //    gestionnaireJeu.Ressusciter(gestionnaireJeu.index);
-    //}
     public void CollisionLaser()
     {
         deathSFX.Play();
         ChangerCouleurApparition("_LaserDissolveColor");
-        Détruire(); 
+        Détruire();
     }
     private void Détruire()
     {
