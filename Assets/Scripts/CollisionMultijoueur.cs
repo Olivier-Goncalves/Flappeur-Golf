@@ -1,36 +1,42 @@
-﻿using System;
-using Unity.Netcode;
-using Unity.VisualScripting;
+﻿using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class CollisionMultijoueur : NetworkBehaviour
 {
-    
+    // Layers
     private static int StickyZoneLayer = 6;
     private static int AcidZoneLayer = 7;
     private static int TrouLayer = 8;
+    private const int layerBouleDeFeu = 9;
     private static int ondeLayer = 14;
-    private bool seDissout = false;
-    private bool seConsolide = false;
+    // Matériaux
+    private bool seDissout;
+    private bool seConsolide;
     private float alpha = -1.1f;
-    private Material material;
-    private Saut jumpComponent;
-    [SerializeField] private Vector3 respawn;
-    [SerializeField] private AudioSource deathSFX;
+    private Material materiel;
+    // Sons
+    [SerializeField] private AudioSource mortSFX;
     [SerializeField] private AudioSource finNiveauSFX;
-    [SerializeField] private AudioSource respawnSFX;
-    [SerializeField] private GameObject fusil;
-    
-    private Rigidbody _rigidbody;
+    [SerializeField] private AudioSource ressuscitementSFX;
+    // Composants joueur
+    private Saut composantSaut;
+    private Rigidbody rb;
+    // Logique jeu
     private GestionJeuMultijoueur gestionnaireJeu;
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        materiel = GetComponent<Renderer>().material;
+        composantSaut = GetComponent<Saut>();
+        gestionnaireJeu = GameObject.Find("GestionnaireJeu").GetComponent<GestionJeuMultijoueur>();
+    }
     public override void OnNetworkSpawn()
     {
         base.OnNetworkDespawn();
         AjusterCollisionsJoueursClientRpc();
         AjusterCollisionJoueurLocal();
     }
-
+    
     private void AjusterCollisionJoueurLocal()
     {
         var listeJoueurs = GameObject.FindGameObjectsWithTag("Player");
@@ -45,30 +51,19 @@ public class CollisionMultijoueur : NetworkBehaviour
             }
         }
     }
+    
     [ClientRpc]
     private void AjusterCollisionsJoueursClientRpc()
     {
         AjusterCollisionJoueurLocal();
     }
-    private void Awake()
-    {
-        _rigidbody = GetComponent<Rigidbody>();
-        material = GetComponent<Renderer>().material;
-        jumpComponent = GetComponent<Saut>();
-        gestionnaireJeu = GameObject.Find("GestionnaireJeu").GetComponent<GestionJeuMultijoueur>();
-        
-    }
-
-    
-
-    private const int layerBouleDeFeu = 9;
     
     void Update()
     {
         if (seDissout)
         {
             alpha += Time.deltaTime;
-            material.SetFloat("_Alpha", alpha);
+            materiel.SetFloat("_Alpha", alpha);
             if (alpha >= 1f)    
             {
                 seDissout = false;
@@ -77,16 +72,16 @@ public class CollisionMultijoueur : NetworkBehaviour
         }
         if (seConsolide)
         {
-            jumpComponent.enabled = false;
-            material.SetColor("_DissolveColor", material.GetColor("_Color"));
+            composantSaut.enabled = false;
+            materiel.SetColor("_DissolveColor", materiel.GetColor("_Color"));
             alpha -= Time.deltaTime;
-            material.SetFloat("_Alpha", alpha);
+            materiel.SetFloat("_Alpha", alpha);
             if (alpha <= -1.1f)
             {
                 seConsolide = false;
                 alpha = -1.1f;
-                material.SetFloat("_Alpha", alpha);
-                jumpComponent.enabled = true;
+                materiel.SetFloat("_Alpha", alpha);
+                composantSaut.enabled = true;
             }
         }
     }
@@ -95,68 +90,65 @@ public class CollisionMultijoueur : NetworkBehaviour
         int collidedLayer = collision.contacts[0].otherCollider.gameObject.layer;
         if (collidedLayer == StickyZoneLayer)
         {
-            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
+            rb.velocity = Vector3.zero;
+            rb.useGravity = false;
         }
         else if (collidedLayer == AcidZoneLayer || collidedLayer == 14)
         {
-            deathSFX.Play();
-            material.SetColor("_DissolveColor", material.GetColor("_AcidDissolveColor"));
-            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
+            mortSFX.Play();
+            materiel.SetColor("_DissolveColor", materiel.GetColor("_AcidDissolveColor"));
+            rb.velocity = Vector3.zero;
+            rb.useGravity = false;
             seDissout = true;
-            jumpComponent.enabled = false;
+            composantSaut.enabled = false;
         }
         else if (collidedLayer == TrouLayer)
         {
             finNiveauSFX.Play();
-            //material.SetColor("_DissolveColor", Color.red);
-            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            //isDissolving = true;
+            rb.velocity = Vector3.zero;
+            rb.useGravity = false;
             gestionnaireJeu.ArriverTrou((int)OwnerClientId);
-            jumpComponent.enabled = false;
+            composantSaut.enabled = false;
         }
         else if (collidedLayer == layerBouleDeFeu)
         {
-            deathSFX.Play();
-            jumpComponent.enabled = false;
-            material.SetColor("_DissolveColor", material.GetColor("_FireDissolveColor"));
-            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.gameObject.GetComponent<Rigidbody>().useGravity = false;
+            mortSFX.Play();
+            composantSaut.enabled = false;
+            materiel.SetColor("_DissolveColor", materiel.GetColor("_FireDissolveColor"));
+            rb.velocity = Vector3.zero;
+            rb.useGravity = false;
             seDissout = true;
         }
         else if (collidedLayer == ondeLayer)
         {
             Vector3 force = collision.transform.parent.rotation.eulerAngles * 2;
-            _rigidbody.AddRelativeForce(force);
+            rb.AddRelativeForce(force);
             Debug.Log(force);
         }
     }
     private void OnCollisionExit(UnityEngine.Collision other)
     {
-        transform.gameObject.GetComponent<Rigidbody>().useGravity = true;
+        rb.useGravity = true;
     }
     private void Ressusciter()
     {
-        respawnSFX.Play();
+        ressuscitementSFX.Play();
         gestionnaireJeu.Ressusciter(transform);
         transform.rotation = Quaternion.Euler(0, -90, 0);
         seConsolide = true;
     }
     public void CollisionLaser()
     {
-        deathSFX.Play();
+        mortSFX.Play();
         ChangerCouleurApparition("_LaserDissolveColor");
         Détruire();
     }
     private void Détruire()
     {
-        Rigidbody rb = GetComponent<Rigidbody>();
         rb.velocity = Vector3.zero;
         rb.useGravity = false;
         seDissout = true;
-        jumpComponent.enabled = false; 
+        composantSaut.enabled = false; 
     }
-    private void ChangerCouleurApparition(string couleur) => material.SetColor("_DissolveColor", material.GetColor(couleur));
+    private void ChangerCouleurApparition(string couleur) => materiel.SetColor("_DissolveColor", materiel.GetColor(couleur));
 }

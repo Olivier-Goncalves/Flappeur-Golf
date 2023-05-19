@@ -25,7 +25,7 @@ public class GestionJeuSolo : MonoBehaviour
     [SerializeField] private Canvas canvasVolumeSlider;
     // Mode de jeu
     public bool pause { get; set; }
-    public bool gameOn {  get; private set; }
+    public bool jeuEnCours {  get; private set; }
     // Attributs joueur
     private Saut composantSautJoueur;
     private MouseControl composantControlesJoueur;
@@ -58,7 +58,7 @@ public class GestionJeuSolo : MonoBehaviour
     {
         if (niveauActuel != 10)
         {
-            gameOn = false;
+            jeuEnCours = false;
             indexNiveau = 1;
             boutonMenuTrou.onClick.AddListener(clickBoutonMenu);
             prochainNiveauTrou.onClick.AddListener(clickBoutonProchainNiveau);
@@ -73,7 +73,7 @@ public class GestionJeuSolo : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
             {
-                if (!pause && gameOn)
+                if (!pause && jeuEnCours)
                 {
                     canvasMenuPause.enabled = true;
                     composantSautJoueur.enabled = false;
@@ -89,7 +89,7 @@ public class GestionJeuSolo : MonoBehaviour
                     canvasVolumeSlider.gameObject.SetActive(false);
                 }
             }
-            if (!gameOn)
+            if (!jeuEnCours)
             {
                 canvasMenuPause.enabled = false;
                 AfficherCoupsParTrou(false);
@@ -120,14 +120,14 @@ public class GestionJeuSolo : MonoBehaviour
             Ressusciter();
         }
         ActiverJoueur(true);
-        gameOn = true;
+        jeuEnCours = true;
     }
     private void clickBoutonMenu()
     {
         canvasMenuPrincipal.enabled = true;
         ActiverMenuArriverTrou(false);
         ActiverJoueur(false);
-        gameOn = false;
+        jeuEnCours = false;
     }
     private void clickBoutonProchainNiveau()
     {
@@ -135,7 +135,7 @@ public class GestionJeuSolo : MonoBehaviour
         ChangerNiveau();
         ActiverMenuArriverTrou(false);
         ActiverJoueur(true);
-        gameOn = true;
+        jeuEnCours = true;
     }
     private void clickBoutonRetourPartie()
     {
@@ -143,7 +143,7 @@ public class GestionJeuSolo : MonoBehaviour
         ActiverJoueur(true);
         canvasMenuPause.enabled = false;
         ChangerPause(false);
-        gameOn = true;
+        jeuEnCours = true;
     }
     public void Ressusciter()
     {
@@ -152,7 +152,7 @@ public class GestionJeuSolo : MonoBehaviour
         ReinitialiserCompteurSaut();
         joueur.transform.position = Spawns.spawnActuel;
         ActiverJoueur(true);
-        gameOn = true;
+        jeuEnCours = true;
         ChangerPause(false);
     }
     public void ActiverMenuArriverTrou(bool actif)

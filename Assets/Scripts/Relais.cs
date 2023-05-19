@@ -14,24 +14,25 @@ using Unity.VisualScripting;
 using UnityEngine.UI;
 
 // Fait par: Olivier Gonçalves
-public class Relay : MonoBehaviour
+// https://www.youtube.com/watch?v=msPNJ2cxWfw&t=485s
+public class Relais : MonoBehaviour
 {
-    public static int QuantitéJoueurs;
+    public static int QuantitéJoueursMax;
     
     [SerializeField] private TMP_InputField inputJoinCode;
     [SerializeField] private Button btnCréerRelais;
     [SerializeField] private Button btnJoindreRelais;
-    [SerializeField] private TMP_Text textJoinCode;
-    [SerializeField ]private Canvas canvasRelayUI;
-    [SerializeField] private Canvas canvasJoinCodeUI;
+    [SerializeField] private TMP_Text texteCode;
+    [SerializeField ]private Canvas canvasRelais;
+    [SerializeField] private Canvas canvasCodeUI;
     private void Awake()
     {
-        btnCréerRelais.onClick.AddListener(CreateRelay);
-        btnJoindreRelais.onClick.AddListener(JoinRelay);
-        canvasRelayUI = GetComponentInChildren<Canvas>();
-        canvasJoinCodeUI.enabled = false;
+        btnCréerRelais.onClick.AddListener(CreerRelais);
+        btnJoindreRelais.onClick.AddListener(JoindreRelais);
+        canvasRelais = GetComponentInChildren<Canvas>();
+        canvasCodeUI.enabled = false;
         Cursor.visible = true;
-        QuantitéJoueurs = 8;
+        QuantitéJoueursMax = 8;
     }
 
     private void Update()
@@ -44,7 +45,7 @@ public class Relay : MonoBehaviour
         await UnityServices.InitializeAsync();
         AuthenticationService.Instance.SignedIn += () =>
         {
-            Debug.Log("Signed in " + AuthenticationService.Instance.PlayerId);
+            Debug.Log("Connecté avec " + AuthenticationService.Instance.PlayerId);
         };
         if (!AuthenticationService.Instance.IsSignedIn)
         {
@@ -52,23 +53,23 @@ public class Relay : MonoBehaviour
         }
     }
     
-    private async void CreateRelay()
+    private async void CreerRelais()
     {
         try
         {
-            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(QuantitéJoueurs - 1);
+            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(QuantitéJoueursMax - 1);
             
             string joinCode =  await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-            textJoinCode.text = "Join Code: " + joinCode;
-            canvasJoinCodeUI.enabled = true;
+            texteCode.text = "Code: " + joinCode;
+            canvasCodeUI.enabled = true;
             
-            RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
+            RelayServerData donneesRelaisServeur = new RelayServerData(allocation, "dtls");
             
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(donneesRelaisServeur);
             
             NetworkManager.Singleton.StartHost();
             
-            canvasRelayUI.enabled = false;
+            canvasRelais.enabled = false;
             Cursor.visible = false;
         }
         catch (RelayServiceException e)
@@ -77,20 +78,20 @@ public class Relay : MonoBehaviour
         }
     }
     
-    private async void JoinRelay()
+    private async void JoindreRelais()
     {
         try
         {
-            Debug.Log("Joining Relay with : " + inputJoinCode.text);
+            Debug.Log("En train de joindre avec : " + inputJoinCode.text);
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(inputJoinCode.text);
             
-            RelayServerData relayServerData = new RelayServerData(joinAllocation, "dtls");
+            RelayServerData donneesRelaisServeur = new RelayServerData(joinAllocation, "dtls");
             
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(donneesRelaisServeur);
 
             NetworkManager.Singleton.StartClient();
 
-            canvasRelayUI.enabled = false;
+            canvasRelais.enabled = false;
         }
         catch (RelayServiceException r)
         {

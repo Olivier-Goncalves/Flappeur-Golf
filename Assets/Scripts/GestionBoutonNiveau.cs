@@ -1,18 +1,22 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Fait par: Olivier Gon�alves
+// Fait par: Olivier Goncalves
 public class GestionBoutonNiveau : MonoBehaviour
 {
     [SerializeField] Canvas canvas;
     private const string or = "#F8FF00";
     private const string argent = "#AFB0B2";
     private const string bronze = "#964732";
-    
+    private string[] couleursMedailles = { "#F8FF00", "#AFB0B2", "#964732" };
+
+
     private void Awake()
     {
         GestionJeuSolo.niveauActuel = 1;
+        // Louis-Félix C a aidé pour cette partie puisque c'est lui qui a fait la sauvegarde
         var fichierTexte = Resources.Load<TextAsset>("Sauvegarde");
         List<string> listeMots = new List<string>(fichierTexte.text.Split('\n'));
         int numeroNiveau = int.Parse(gameObject.name);
@@ -23,37 +27,39 @@ public class GestionBoutonNiveau : MonoBehaviour
             line += ligne[i];
         }
         int ancienNombreFlap = int.Parse(Sauvegarde.GetAncienNombreFlap(ligne));
-        Debug.Log(ancienNombreFlap);
-        List<GameObject> enfants = GetAllChilds(gameObject);
-
+        List<GameObject> enfants = TrouverTousLesEnfants(gameObject);
+        Image medaille = null;
         foreach (var enfant in enfants)
         {
             if(enfant.name == "Médaille")
             {
-                if (ancienNombreFlap != 0)
-                {
-                    if (ancienNombreFlap <= GestionJeuSolo.CoupsParTrou[numeroNiveau-1,0])
-                    {
-                        AssignerCouleur(or, enfant);
-                    }
-                    else if (ancienNombreFlap <= GestionJeuSolo.CoupsParTrou[numeroNiveau-1, 1])
-                    {
-                        AssignerCouleur(argent, enfant);
-                    }
-                    else if (ancienNombreFlap <= GestionJeuSolo.CoupsParTrou[numeroNiveau-1, 2])
-                    {
-                        AssignerCouleur(bronze, enfant);
-                    }
-                }
-                else
-                {
-                    enfant.transform.GetComponent<Image>().color = Color.black;
-                }
+                medaille = enfant.GetComponent<Image>();
+                break;
             }
         }
+
+        if (ancienNombreFlap != 0)
+        {
+            try
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    if (ancienNombreFlap <= GestionJeuSolo.CoupsParTrou[numeroNiveau - 1, i])
+                    {
+                        AssignerCouleur(couleursMedailles[i], medaille.gameObject);
+                        break;
+                    }
+                }
+            }
+            catch (NullReferenceException medailleException)
+            {
+                Debug.Log("Médaille n'existe pas");
+            }
+        }
+
         GetComponent<Button>().onClick.AddListener(() =>
         {
-            if (!GameObject.Find("GameManagerSolo").GetComponent<GestionJeuSolo>().gameOn)
+            if (!GameObject.Find("GameManagerSolo").GetComponent<GestionJeuSolo>().jeuEnCours)
             {
                 GestionJeuSolo.niveauActuel = int.Parse(gameObject.name);
                 Spawns.spawnActuel = Spawns.spawns[GestionJeuSolo.niveauActuel - 1];
@@ -76,7 +82,7 @@ public class GestionBoutonNiveau : MonoBehaviour
         GameObject.Find("GameManagerSolo").GetComponent<GestionJeuSolo>().Ressusciter();
         canvas.enabled = false;
     }
-    private static List<GameObject> GetAllChilds(GameObject gameObject)
+    private static List<GameObject> TrouverTousLesEnfants(GameObject gameObject)
     {
         List<GameObject> list = new List<GameObject>();
         for (int i = 0; i< gameObject.transform.childCount; i++)
@@ -85,5 +91,4 @@ public class GestionBoutonNiveau : MonoBehaviour
         }
         return list;
     }
-    
 }

@@ -11,12 +11,12 @@ using TMPro;
 public class GestionJeuMultijoueur : NetworkBehaviour
 {
     // Variables Logique jeu
-    public List<Transform> spawns;
+    public List<Transform> pointsRessuscitement;
     private int positionArrivé;
     private int indexNiveau;
     private int nbJoueurs;
-    private bool timerOn;
-    private NetworkVariable<float> timeLeft;
+    private bool chronometreActif;
+    private NetworkVariable<float> tempsRestant;
     private bool montrerClassement;
     // Menu Retour
     [SerializeField] private Button boutonRetour;
@@ -54,7 +54,7 @@ public class GestionJeuMultijoueur : NetworkBehaviour
             { 8, 0 },
             { 9, 0 },
         };
-        timeLeft = new NetworkVariable<float>(5);
+        tempsRestant = new NetworkVariable<float>(5);
         boutonRetour.onClick.AddListener(GenererSceneRetour);
         boutonCommencer.onClick.AddListener(() =>
         {
@@ -66,14 +66,14 @@ public class GestionJeuMultijoueur : NetworkBehaviour
 
     private void Update()
     {
-        if (timerOn)
+        if (chronometreActif)
         {
             if (IsHost)
             {
-                timeLeft.Value -= Time.deltaTime;
-                if(timeLeft.Value <= 0)
+                tempsRestant.Value -= Time.deltaTime;
+                if(tempsRestant.Value <= 0)
                 {
-                    timeLeft.Value = 5;
+                    tempsRestant.Value = 5;
                     if (!montrerClassement)
                     {
                         joueurMinuteur(false);
@@ -86,7 +86,7 @@ public class GestionJeuMultijoueur : NetworkBehaviour
                 }
             }
             
-            timer.text = Mathf.RoundToInt(timeLeft.Value).ToString();
+            timer.text = Mathf.RoundToInt(tempsRestant.Value).ToString();
             
         }
     }
@@ -118,7 +118,7 @@ public class GestionJeuMultijoueur : NetworkBehaviour
         fondTimer.enabled = estActif;
         ActiverJoueursClientRpc(!estActif);
         AfficherTimerClientRpc(estActif);
-        timerOn = estActif;
+        chronometreActif = estActif;
     }
     
     [ClientRpc]
@@ -126,7 +126,7 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     {
         timer.enabled = afficher;
         fondTimer.enabled = afficher;
-        timerOn = true;
+        chronometreActif = true;
     }
     
     public void ArriverTrou(int networkId)
@@ -148,9 +148,9 @@ public class GestionJeuMultijoueur : NetworkBehaviour
         {
             // Classe les joueurs selon leur position et le converti en liste
             var listeJoueurEnOrdreSelonPosition = pointsJoueurs.OrderBy(joueur => joueur.Value).ToList();
-            // Prend la liste des 
-            var joueurIdEnOrdre = (from joueur in listeJoueurEnOrdreSelonPosition select joueur.Key).Distinct().ToList();
-
+            // Prend la liste ordonné selon les positions et prend les ids des joueurs pour les mettre dans une liste
+            var joueurIdEnOrdre = (from joueur in listeJoueurEnOrdreSelonPosition select joueur.Key).ToList();
+            
             StringBuilder sb = new StringBuilder();
             
             for (int i = 0; i < nbJoueurs; i++)
@@ -159,8 +159,8 @@ public class GestionJeuMultijoueur : NetworkBehaviour
                 sb.Append($"points: {pointsJoueurs[joueurIdEnOrdre[indexJoueur]]} -- Joueur {couleurs[joueurIdEnOrdre[indexJoueur]]}\n");
             }
 
-                classementTexte.text = sb.ToString();
-            if (indexNiveau < spawns.Count-1)
+            classementTexte.text = sb.ToString();
+            if (indexNiveau < pointsRessuscitement.Count-1)
             {
                 AfficherClassementClientRpc(true, classementTexte.text);
                 indexNiveau++;
@@ -198,7 +198,7 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     {
         classementTexte.text = texteClassement;
         montrerClassement = actif;
-        timerOn = actif;
+        chronometreActif = actif;
         canvasClassement.enabled = actif;
     }
     
@@ -215,7 +215,9 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     [ClientRpc]
     private void ActiverJoueursClientRpc(bool estActif)
     {
+        // Chaque client doit faire la recherche des autres joueurs puisqu'il peut en avoir de nouveaux
         var objetsAvecTag = GameObject.FindGameObjectsWithTag("Player");
+        // Nous ne savons pas lequel est notre joueur en tant que tel puisque tous les clients en ont un différent
         foreach(var client in objetsAvecTag)
         {
             client.GetComponent<ParametreJoueur>().ActiverJoueur(estActif);
@@ -224,6 +226,6 @@ public class GestionJeuMultijoueur : NetworkBehaviour
     
     public void Ressusciter(Transform joueur)
     {
-        joueur.position = spawns[indexNiveau].position;
+        joueur.position = pointsRessuscitement[indexNiveau].position;
     }
 }

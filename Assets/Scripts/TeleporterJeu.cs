@@ -13,7 +13,7 @@ public class TeleporterJeu : NetworkBehaviour
 
     private void Awake()
     {
-        spawns = GameObject.Find("GestionnaireJeu").GetComponent<GestionJeuMultijoueur>().spawns;
+        spawns = GameObject.Find("GestionnaireJeu").GetComponent<GestionJeuMultijoueur>().pointsRessuscitement;
     }
 
     public void Teleporter(int index)
@@ -22,7 +22,6 @@ public class TeleporterJeu : NetworkBehaviour
         {
             transform.position = spawns[index].position;
             GetComponent<Rigidbody>().velocity = Vector3.zero;
-            // Debug.Log("Téléporter est appellé avec l'index: " + index);
         }
     }
 }

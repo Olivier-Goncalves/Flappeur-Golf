@@ -17,6 +17,9 @@ public class Magnus : MonoBehaviour
  
     void FixedUpdate()
     {
+        // La formule de la force résultante de l'effet magnus est la suivante: F = 4/3 * PI * densité air * rayonBalle^3 
+        // La direction de la force résultante est orthogonale à la vitesse linéaire et la vitesse angulaire
+        // https://en.wikipedia.org/wiki/Magnus_effect
         var direction = Vector3.Cross(rb.angularVelocity, rb.velocity);
         var magnitude = 4 / 3f * Mathf.PI * densiteAir * Mathf.Pow(rayon, 3);
         rb.AddForce(magnitude * direction);
